@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load utilidades %}
+{% block head %}{% endblock %}
+{% block content %}
+<div class="d-flex align-items-center">
+    <div class="flex-grow-1 text-truncate">
+        <h5 class="m-0">Nuevo Recinto | {{pabellon.nombre}}</h5>
+        <span class="sub-titulo">{{establecimiento}}</span> 
+    </div>
+    <div class="d-flex align-items-center">
+        
+    </div>
+</div>
+<nav aria-label="breadcrumb" style="font-size: 13px;">
+    <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'detalle_establecimiento' establecimiento.id %}" style="text-decoration: none;">Detalle Establecimiento</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'instrucciones_plan_infra' establecimiento.id %}" style="text-decoration: none;">Instrucciones Plan {{plan.year}}</a></li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'editar_plan_infra' plan.id establecimiento.id %}" style="text-decoration: none;">Edición Plan {{plan.year}}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Detalle Pabellón</li>
+    </ol>
+</nav>
+{% if tipo == 1 %}
+<h5><i class="fa-regular fa-layer-group"></i> Piso Nº{{piso}}</h5>
+{% endif %}
+<form method="POST">
+  {% csrf_token %}
+  <div class="mb-3">
+      <label class="form-label">Nombre Rencinto</label>
+      <input type="text" class="form-control" required name="nombre">
+  </div>
+  <div class="col mb-3">
+      <div class="row">
+          <div class="col-6">
+                {% if tipo == 1 %}
+                <label class="form-label">Categoría Recinto</label>
+                {% else %}
+                <label class="form-label">Categoría Area</label>
+                {% endif %}
+                <select class="form-select form-select-sm" required id="categoria_recinto" name="categoria">
+                    <option selected value="">-- Seleccione opción --</option>
+                    {% for categoria in listado_categoria_recinto %}                
+                    <option value="{{categoria.id}}">{{categoria.nombre}} ({{categoria.codigo}})</option>
+                    {% endfor %}              
+                </select>
+          </div>
+          <div class="col-6">
+                {% if tipo == 1 %}
+                <label class="form-label">Tipo Recinto</label>
+                {% else %}
+                <label class="form-label">Tipo Area</label>
+                {% endif %}
+                <select class="form-select form-select-sm" required id="tipo_recinto" name="tipo_recinto">
+                    <option selected value="">-- Seleccione opción --</option>
+                    {% for tipo_recinto in listado_tipo_recinto %}
+                    <option value="{{ tipo_recinto.id }}" data-chained="{{ tipo_recinto.categoria.id }}">{{ tipo_recinto }}</option>
+                    {% endfor %}
+                </select>
+          </div>                
+      </div>
+  </div>
+  <div class="mb-3">
+      <label for="exampleFormControlTextarea1" class="form-label">Descripción</label>
+      <textarea class="form-control" rows="3" placeholder="Ingrese descripción opcional." name="descripcion"></textarea>
+  </div>
+  <input hidden name="piso" value="{{piso}}">
+  <input hidden name="pabellon" value="{{pabellon.id}}">
+  <div class="mt-2 mb-4" style="text-align: end;">
+      <a class="btn btn-secondary btn-sm" href="{% url 'detalle_pabellon' plan.id pabellon.id %}">Cancelar</a>
+      <button class="btn btn-primary btn-sm" type="submit">Guardar</button>
+  </div>
+</form>
+{% endblock %}
+{% block jscript %}
+<script>
+    $(function(){      
+      $("#tipo_recinto").chained("#categoria_recinto");
+    });
+</script>
+{% endblock %}
+
+

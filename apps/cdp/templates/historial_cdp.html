@@ -1,0 +1,8 @@
+<div>
+    {% for cdp in cdps %}
+    <h3>
+        {{cdp.fecha_cdp}} - {{cdp.item_presupuestario.concepto_presupuestario_item}} - {{cdp.monto}}   
+    </h3>
+    {% endfor %}
+</div>
+{% include 'base_toast.html' %}

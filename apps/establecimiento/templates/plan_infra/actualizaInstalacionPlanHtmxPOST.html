@@ -1,0 +1,44 @@
+<div id="id_alert_sin_evaluar" hx-swap-oob="true">
+    {% if cantidad_instalaciones_sin_evaluar != 0 %}
+    <div class="alert alert-warning d-flex align-items-center" role="alert">
+        <svg class="bi flex-shrink-0 me-2" width="18" height="18" role="img" aria-label="Warning:">
+            <use xlink:href="#exclamation-triangle-fill" />
+        </svg>
+        <div>
+            Existen <strong>{{cantidad_instalaciones_sin_evaluar}} ítems de Instalaciones</strong> sin evaluar. Se solicita
+            completar la información antes de enviar la información.
+        </div>
+    </div>
+    {% endif %}
+</div>
+<table class="table" style="font-size: 11.5px;">
+    <tr>      
+    <th style="width: 200px;">Descripción</th>
+    <td style="text-align: left;">{{instalacion.categoria_instalaciones.descripcion}}</td>      
+    </tr>
+    <tr>      
+    <th style="width: 200px;">Estado Funcionamiento</th>
+    <td style="text-align: left;">
+        <span class="badge {{instalacion.estado.class_css}}" >{{instalacion.estado}}</span>
+    </tr>
+    <tr>      
+    <th style="width: 200px;">Observaciones</th>
+    <td>
+        {% if instalacion.observaciones %}
+        {{instalacion.observaciones}}
+        {% else %}
+        S/Obs.
+        {% endif %}
+    </td>      
+    </tr>
+</table>
+<a
+    class="btn btn-primary btn-sm"
+    href="#"
+    hx-get="{% url 'actualiza_instalacion_plan_htmx' instalacion.id %}"
+    hx-push-url="false"
+    hx-target="#id_{{instalacion.id}}"
+    hx-swap="innerHTML">
+    <i class="fa-solid fa-arrows-rotate"></i> Actualizar
+</a>
+{% include 'base_toast.html' %}

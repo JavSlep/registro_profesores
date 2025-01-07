@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load utilidades %}
+{% block head %}{% endblock %}
+{% block content %}
+
+<div class="d-flex align-items-center">
+    <div class="flex-grow-1 text-truncate">
+        <h5 class="m-0">Listado Categoría Recintos</h5>
+        <span class="sub-titulo">Servicio Local de Educación Puerto Cordillera</span> 
+    </div>
+    <div class="d-flex align-items-center">
+        <a class="btn-round" type="button" href="{% url 'nueva_categoria_recinto' %}"><i class='bx bx-plus-circle'></i></a> 
+    </div>
+</div>
+
+<table class="table" style="font-size: 13px;">
+    <thead>
+        <tr>
+            <th>Cod.</th>
+            <th>Nombre</th>           
+            <th>Descripción</th>                   
+        </tr>
+    </thead>
+    <tbody>
+        {% for categoria_recinto in listado_categoria_recinto %}
+        <tr>
+            <th>
+                <a href="{% url 'editar_categoria_recinto' categoria_recinto.id %}" style="text-decoration: none;">{{categoria_recinto.codigo}}</a> 
+            </th>
+            <td>{{categoria_recinto.nombre}}</td>            
+            <td>{{categoria_recinto.descripcion}}</td>           
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+{% block jscript %}
+{% endblock %}
+
+

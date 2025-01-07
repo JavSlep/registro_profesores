@@ -1,0 +1,42 @@
+{% extends 'base_login.html' %}
+{% load static %}
+{% block head %}{% endblock %}
+{% block content %}
+<div class="container d-flex align-items-center justify-content-center">
+  <div class="row" style="width: 1000px; background-color: white; border-radius: 20px; padding-top: 30px; padding-bottom: 30px; padding-left: 15px; padding-right: 15px;">
+
+    <div class="col-md-7" style="text-align: start;">
+      <div class="d-flex">        
+        <img class="mb-3" src="{% static 'img/logo_slep.png' %}" alt="" height="90">       
+      </div>      
+      <div class="d-flex mt-3 mb-2">
+        <i class="fa-regular fa-helmet-safety logo"></i>       
+        <div style="margin-left: 10px;">       
+          <h2 class="mb-0" style="line-height: 1.1">Infra</h2>
+          <h6 class="mt-0" style="color: rgb(136, 136, 136);">Sistema de Infraestructura y Mantemimiento</h6>          
+        </div>        
+      </div>     
+    </div>
+    <div class="col-md-5">
+      <div style="text-align: left;">
+        {% if listado_usuario_entidad %}      
+        <p style="line-height: 15px;">Seleccione la entidad con la que desea operar.</p>
+          <ul>
+            {% for usuario in listado_usuario_entidad %}
+              <li><a style="text-decoration: none; font-weight: 500; font-size: 16px;" href="{% url 'seleccion_entidad' usuario.entidad.id %}">{{usuario.entidad.nombre}}</a></li>
+            {% endfor %}
+          </ul>               
+        {% else %}        
+          No existen entidades asociadas al usuario.                    
+        {% endif %}
+      </div>
+      
+      <p class="mt-5 mb-3 text-muted">Copyright &copy; 2024 - Infra</p>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block javascrips %}
+{% endblock %}
+
+

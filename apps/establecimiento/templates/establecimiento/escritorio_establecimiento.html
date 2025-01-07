@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load utilidades %}
+{% block head %}{% endblock %}
+{% block content %}
+<div class="d-flex align-items-center">
+    <div class="flex-grow-1 text-truncate">
+        <h5 class="m-0">{{establecimiento.nombre}}</h5>
+        <span class="sub-titulo">Servicio Local de Educación Puerto Cordillera</span> 
+    </div>
+    <div class="d-flex align-items-center">
+        <a class="btn-round" type="button" href="#"><i class='bx bx-help-circle'></i></a>
+        <a class="btn-round" type="button" href="#"><i class='bx bx-bell'></i></a>
+        <a class="btn-round" type="button" href="#"><i class='bx bx-cog'></i></a>
+    </div>
+</div>
+<hr>      
+<h5 class="mb-1">Escritorio</h5>
+<h6>Bienvenido {{request.session.usuario_entidad.usuario}}</h6>
+{% if not plan %}
+<div class="alert alert-warning d-flex align-items-center mb-1" role="alert">
+  <svg class="bi flex-shrink-0 me-2" width="18" height="18" role="img" aria-label="Warning:">
+      <use xlink:href="#exclamation-triangle-fill" />
+  </svg>
+  <div>
+      A la fecha <strong>Plan de Infraestructura y Mantenimiento 2025</strong> no ha sido creado. Se recuerda que la fecha máxima de entrega es el <strong>20/12/2024</strong>.
+  </div>
+</div>
+
+{% else %}
+  {% if plan.estado == 1 and dias_restantes >= 0 %}
+  <div class="alert alert-warning d-flex align-items-center mb-1" role="alert">
+    <svg class="bi flex-shrink-0 me-2" width="18" height="18" role="img" aria-label="Warning:">
+        <use xlink:href="#exclamation-triangle-fill" />
+    </svg>
+    <div>
+        Se recuerdo enviar a la brevedad <strong>Plan de Infraestructura y Mantenimiento 2025</strong>. Le quedan <strong>{{dias_restantes}} días</strong> de plazo para enviar la propuesta.
+    </div>
+  </div>
+  {% elif plan.estado == 1 and dias_restantes < 0 %}
+  <div class="alert alert-danger d-flex align-items-center mb-1" role="alert">
+    <svg class="bi flex-shrink-0 me-2" width="18" height="18" role="img" aria-label="Warning:">
+        <use xlink:href="#exclamation-triangle-fill" />
+    </svg>
+    <div>
+        No se ha dado cumplimiento con la fecha de envío del <strong>Plan de Infraestructura y Mantenimiento 2025</strong>. El plazo se encuentra <strong>vencido</strong>.
+    </div>
+  </div>
+  {% endif %}
+{% endif %}
+
+
+<br>
+<!-- {% if not plan %}
+<div class="alert alert-primary mt-2 d-flex" role="alert" style="padding: 15px;">
+  <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+  <div>
+    <h5 class="alert-heading">Plan de Infraestructura y Mantenimiento 2025</h5>
+    <p class="mb-0">Estimado(a) Director(a):</p>
+    <p class="mb-0">
+      De acuerdo con lo establecido en el <strong>Plan Estratégico Local 2020-2028</strong>, le solicitamos iniciar la creación del <strong>Plan de Infraestructura y Mantenimiento 2025.</strong>.
+    </p>
+    <p class="mb-0">
+      Le recordamos que la información debe ser enviada a más tardar el <strong>15 de Diciembre de 2024.</strong>
+    </p>
+    <hr class="m-1">
+    <p class="mb-2">Para iniciar el proceso haga clic en el siguiente botón.</p> 
+    <a href="{% url 'instrucciones_plan_infra' establecimiento.id %}" class="btn btn-sm btn btn-primary"><strong>Ingresar Plan 2025</strong></a>
+  </div>    
+</div>
+{% else %}
+  {% if plan.estado == 1 %}
+  <div class="alert alert-primary mt-2 d-flex" role="alert" style="padding: 15px;">
+    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+    <div>
+      <h5 class="alert-heading">Plan de Infraestructura y Mantenimiento 2025</h5>
+      <p class="mb-0">Estimado(a) Director(a):</p>      
+      <p class="mb-0">        
+        Le recordamos que la información correspondiente al <strong>Plan de Infraestructura y Mantenimiento 2025.</strong> debe ser enviada a más tardar el <strong>15 de Diciembre de 2024.</strong>
+      </p>
+      <hr class="m-1">
+      <p class="mb-2">Para editar el plan hacer clic en el siguiente botón.</p> 
+      <a href="{% url 'editar_plan_infra' plan.id establecimiento.id %}" class="btn btn-sm btn btn-primary"><strong>Editar Plan 2025</strong></a>
+    </div>    
+  </div>
+  {% elif plan.estado == 2 %}
+  <div class="alert alert-success mt-2 d-flex" role="alert" style="padding: 15px;">
+    <svg class="bi flex-shrink-0 me-2" width="18" height="18" role="img" aria-label="Success:">
+      <use xlink:href="#check-circle-fill"/>
+    </svg>
+    <div>
+      <h5 class="alert-heading">Plan de Infraestructura y Mantenimiento 2025</h5>
+      <p class="mb-0">Estimado(a) Director(a):</p>
+      <p class="mb-0">
+        El <strong>Plan de Ingraestructura y Mantenimiento 2025</strong> fue enviado con éxito con fecha {{plan.fecha_envio}}.
+      </p>      
+      <hr class="m-1">
+      <p class="mb-2">Para ver el resumen del plan enviado haga clic en el siguiente botón.</p> 
+      <a href="{% url 'detalle_plan_infra' plan.id establecimiento.id %}" class="btn btn-sm btn btn-primary"><strong>Propuesta Plan 2025</strong></a>
+    </div>    
+  </div>
+  {% endif %}
+{% endif %}
+ -->
+
+
+
+{% if not diagnostico %}
+<div class="alert alert-primary mt-2 d-flex" role="alert" style="padding: 15px;">
+  <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+  <div>
+    <h5 class="alert-heading">Plan de Infraestructura y Mantenimiento 2025</h5>
+    <p class="mb-0">Estimado(a) Director(a):</p>
+    <p class="mb-0">
+      De acuerdo con lo establecido en el <strong>Plan Estratégico Local 2020-2028</strong>, le solicitamos iniciar la creación del <strong>Plan de Infraestructura y Mantenimiento 2025.</strong>.
+    </p>
+    <p class="mb-0">
+      Le recordamos que la información debe ser enviada a más tardar el <strong>20 de Diciembre de 2024.</strong>
+    </p>
+    <hr class="m-1">
+    <p class="mb-2">Para iniciar el proceso haga clic en el siguiente botón.</p> 
+    <a href="{% url 'instrucciones_diagnostico' establecimiento.id %}" class="btn btn-sm btn btn-primary"><strong>Ingresar Plan 2025</strong></a>
+  </div>    
+</div>
+{% else %}
+  {% if diagnostico.estado == 1 %}
+  <div class="alert alert-primary mt-2 d-flex" role="alert" style="padding: 15px;">
+    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+    <div>
+      <h5 class="alert-heading">Plan de Infraestructura y Mantenimiento 2025</h5>
+      <p class="mb-0">Estimado(a) Director(a):</p>      
+      <p class="mb-0">        
+        Le recordamos que la información correspondiente al <strong>Plan de Infraestructura y Mantenimiento 2025.</strong> debe ser enviada a más tardar el <strong>20 de Diciembre de 2024.</strong>
+      </p>
+      <hr class="m-1">
+      <p class="mb-2">Para editar el plan hacer clic en el siguiente botón.</p> 
+      <a href="{% url 'instrucciones_diagnostico' establecimiento.id %}" class="btn btn-sm btn btn-primary"><strong>Instrucciones</strong></a>
+      <a href="{% url 'editar_diagnostico' diagnostico.id establecimiento.id %}" class="btn btn-sm btn btn-primary"><strong>Editar Plan 2025</strong></a>
+    </div>    
+  </div>
+  {% elif diagnostico.estado == 2 %}
+  <div class="alert alert-success mt-2 d-flex" role="alert" style="padding: 15px;">
+    <svg class="bi flex-shrink-0 me-2" width="18" height="18" role="img" aria-label="Success:">
+      <use xlink:href="#check-circle-fill"/>
+    </svg>
+    <div>
+      <h5 class="alert-heading">Plan de Infraestructura y Mantenimiento 2025</h5>
+      <p class="mb-0">Estimado(a) Director(a):</p>
+      <p class="mb-0">
+        El <strong>Plan de Ingraestructura y Mantenimiento 2025</strong> fue enviado con éxito con fecha {{diagnostico.fecha_envio}}.
+      </p>      
+      <hr class="m-1">
+      <p class="mb-2">Para ver el resumen del plan enviado haga clic en el siguiente botón.</p> 
+      <a href="{% url 'editar_diagnostico' diagnostico.id establecimiento.id %}" class="btn btn-sm btn btn-primary"><strong>Propuesta Plan 2025</strong></a>
+    </div>    
+  </div>
+  {% endif %}
+{% endif %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
+{% block jscript %}
+{% endblock %}

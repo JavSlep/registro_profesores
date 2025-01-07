@@ -1,0 +1,44 @@
+<div id="id_alert_fotos" hx-swap-oob="true">
+    {% if cantidad_fotos_faltantes > 0 %}
+    <div class="alert alert-warning d-flex align-items-center mb-1" role="alert">
+        <svg class="bi flex-shrink-0 me-2" width="18" height="18" role="img" aria-label="Warning:">
+            <use xlink:href="#exclamation-triangle-fill" />
+        </svg>
+        <div>
+            <strong>Faltan {{cantidad_fotos_faltantes}} fotografías</strong> para cumplir con el mínimo exigido. Se solicita completar antes de enviar la información.
+        </div>
+    </div>
+    {% else %}
+    <div class="alert alert-success d-flex align-items-center mb-1" role="alert">
+        <svg class="bi flex-shrink-0 me-2" width="18" height="18" role="img" aria-label="Warning:">
+            <use xlink:href="#check-circle-fill" />
+        </svg>
+        <div>
+            <strong>Ha cumplido</strong> con la cantidad de fotografías mínimas exigidas.
+        </div>
+    </div>
+    {% endif %}
+</div>
+<div class="container-fluid">
+    <div class="row">
+        {% for foto in fotos %}
+        <div class="col-md-3 div-image" style="padding-left: 3px !important;padding-right: 3px !important; margin-top: 6px !important ;position: relative;" id="id_{{foto.id}}">
+            <div class="image-wrapper-2">
+                <img class="img-diagnostico" src="{{foto.imagen.url}}">
+            </div>
+            {% if estado_diagnostico == 1 %}
+            <a 
+                class="btn btn-danger btn-sm"
+                style="position: absolute; top: 10px; right: 10px; font-size: 22px;"    
+                hx-get="{% url 'eliminar_imagen_diagnostico_htmx' foto.id %}"
+                hx-push-url="false" 
+                hx-target="#id_{{foto.id}}" 
+                hx-swap="outerHTML swap:1s">
+                Eliminar
+            </a>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+

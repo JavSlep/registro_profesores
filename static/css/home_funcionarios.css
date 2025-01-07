@@ -1,0 +1,119 @@
+.btn-thick {
+    border-width: 5px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-align: center;
+    vertical-align: middle;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    outline: none;
+    white-space: nowrap;
+}
+
+.btn-thick:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+/* Botón con fondo verde */
+.btn-thick-verde {
+    background-color: rgba(144, 207, 56, 1) !important;
+    color: #fff !important;
+}
+
+.btn-thick-verde:hover {
+    background-color: rgba(120, 180, 50, 1) !important;
+}
+
+.btn-thick-verde:active {
+    background-color: rgba(100, 160, 40, 1) !important;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Botón con fondo azul */
+.btn-thick-azul {
+    background-color: rgba(31, 132, 236, 1) !important;
+    color: #fff !important;
+}
+
+.btn-thick-azul:hover {
+    background-color: rgba(0, 105, 217, 1) !important;
+}
+
+.btn-thick-azul:active {
+    background-color: rgba(0, 85, 197, 1) !important;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Botón con fondo celeste */
+.btn-thick-celeste {
+    background-color: rgba(57, 190, 239, 1) !important;
+    color: #fff !important;
+}
+
+.btn-thick-celeste:hover {
+    background-color: rgba(30, 160, 210, 1) !important;
+}
+
+.btn-thick-celeste:active {
+    background-color: rgba(20, 140, 190, 1) !important;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Botón con fondo amarillo */
+.btn-thick-amarillo {
+    background-color: rgba(255, 193, 7, 1) !important;
+    color: #fff !important;
+}
+
+.btn-thick-amarillo:hover {
+    background-color: rgba(255, 173, 0, 1) !important;
+}
+
+.btn-thick-amarillo:active {
+    background-color: rgba(235, 153, 0, 1) !important;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Botón con fondo rojo */
+.btn-thick-rojo {
+    background-color: rgba(220, 53, 69, 1) !important;
+    color: #fff !important;
+}
+
+.btn-thick-rojo:hover {
+    background-color: rgba(200, 35, 50, 1) !important;
+}
+
+.btn-thick-rojo:active {
+    background-color: rgba(180, 25, 40, 1) !important;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Estilos para la sección principal */
+.main-content {
+    display: flex;
+    align-items: stretch;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    min-height: 200px; /* Asegura una altura mínima */
+}
+
+.info-section {
+    flex: 1;
+    padding-right: 20px;
+}
+
+
+/* Estilos para la línea divisora vertical */
+.vertical-divider {
+    width: 2px;
+    background-color: #dee2e6;
+    margin: 0 20px;
+    align-self: stretch;
+}
+

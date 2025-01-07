@@ -1,0 +1,241 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load utilidades %}
+{% block head %}
+{% endblock %}
+{% block content %}
+<div class="row mb-3">
+    <div class="col-md-3">
+        <img class="bi me-2" src="/static/img/logo_slep.png" height="70" alt="logo">
+    </div>
+    <div class="col-md-6 d-flex align-items-center">
+        <h4>Plan Infraestructura y Mantenimiento 2025</h4>
+    </div>
+    <div class="col-md-3 d-flex align-items-center justify-content-end">
+        {% if plan.estado == 1 %}
+        <div>
+            <a class="btn btn-primary btn-sm" type="button" href="{% url 'editar_plan_infra' plan.id establecimiento.id %}"><i class="fa-regular fa-pen"></i> Editar Plan</a>
+            <a type="button" href="#" class="abrir_modal btn btn-primary btn btn-success btn-sm" data-form="{% url 'modal_confirmar_envio_plan' plan.id establecimiento.id %}"><i class="fa-regular fa-paper-plane-top"></i> Enviar</a>
+        
+        </div>
+        {% endif %}
+    </div>
+</div>
+<table class="table table-light mb-4" style="font-size: 11.5px;">
+    <tr>
+        <th class="mb-0 mt-0" style="width: 240px;">
+            <h6 class="mb-1">Monto Total Estimado</h6>
+        </th>
+        <td style="text-align: left;">
+            <h6 class="mb-0 mt-0">$ {{plan.total | montoFormateado}}</h6>
+        </td>
+    </tr>    
+</table>
+<div class="div_title">
+    Información Establecimiento
+</div>
+<div id="id_alert_sin_evaluar">
+    {% if monto_saldo <= 0 %}
+    <div class="alert alert-warning d-flex align-items-center" role="alert">
+        <svg class="bi flex-shrink-0 me-2" width="18" height="18" role="img" aria-label="Warning:">
+            <use xlink:href="#exclamation-triangle-fill" />
+        </svg>
+        <div>
+            Monto estimado <strong>Plan {{plan.year}}</strong> supera el monto estimativo referencial. Se sugiere ajustar cantidades de intervenciones para ajustar el monto.
+        </div>
+    </div>
+    {% endif %}
+</div>
+<table class="table table-light mb-4" style="font-size: 11.5px;">
+  <tr>
+    <th class="td-table" style="width: 170px;">
+      Establecimiento
+    </th>
+    <td style="text-align: left;">
+      {{establecimiento}}
+    </td>
+  </tr>
+  <tr>
+    <th class="td-table">
+      RBD
+    </th>
+    <td style="text-align: left;">
+        {{establecimiento.codigo}}
+    </td>
+  </tr>
+  <tr>
+    <th class="td-table">
+      Dirección
+    </th>
+    <td style="text-align: left;">
+        {{establecimiento.direccion}}
+    </td>
+  </tr>
+  <tr>
+    <th class="td-table">
+      Comuna
+    </th>
+    <td style="text-align: left;">
+        {{establecimiento.comuna}}
+    </td>
+  </tr>
+</table>
+<div class="mb-4">
+    <div class="div_title">
+        Pabellones
+    </div>
+    {% if listado_pabellones %}
+        {% for pabellon in listado_pabellones %}
+            <div class="mb-3" style="border-bottom: 1px solid #575757;">
+                <h5 class="mb-1">{{pabellon.nombre}}</h5>
+            </div> 
+            {% for recinto in listado_recintos_pabellones %}
+                {% if recinto.pabellon.id == pabellon.id %}
+                    <h6>{{recinto.nombre}}</h6>                    
+                    <table class="table table-light mb-4" style="font-size: 11.5px;">
+                        <tr>
+                          <th class="td-table" style="width: 170px;">        
+                            Monto Total Recinto
+                          </th>
+                          <td style="text-align: left;">
+                            $ {{recinto.total | montoFormateado}}
+                          </td>
+                        </tr>
+                        <tr>
+                          <th class="td-table">
+                            Estado Recinto
+                          </th>
+                          <td style="text-align: left;">
+                            <span class="badge {{recinto.estado.class_css}}" >{{recinto.estado}}</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <th class="td-table">
+                            Descripción Estado
+                          </th>
+                          <td style="text-align: left;">
+                            {{recinto.estado.descripcion}}
+                          </td>                                                
+                        </tr>
+                        <tr>
+                            <th class="td-table">
+                              Observación Estado
+                            </th>
+                            <td style="text-align: left;">
+                                {% if recinto.observacion_estado %}
+                                {{recinto.observacion_estado}}
+                                {% else %}
+                                S/Obs.
+                                {% endif %}
+                            </td>                                                
+                          </tr>
+                      </table>
+                {% endif %}              
+            {% endfor %}
+        {% endfor %}
+    {% else %}
+    <div class="alert alert-warning mt-3" role="alert">       
+        No existen Pabellones ingresados.        
+    </div>
+    {% endif %}
+
+</div>
+
+<div class="mb-4">
+    <div class="div_title">
+        Areas Exteriores
+    </div>
+    {% if listado_areas %}
+    <table class="table table-light" style="font-size: 11.5px;">
+        <thead>
+            <tr>
+                <th>Area Exterior</th>
+                <th>Descripción Area</th>
+                <th>Monto Estimado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for area in listado_areas %}
+            <tr>
+                <th>
+                    <a href="{% url 'detalle_pabellon' plan.id area.id %}"
+                        style="text-decoration: none;">{{area.nombre}}</a>
+                </th>
+                <td>
+                    {% if area.descripcion %}
+                        {{area.descripcion}}
+                    {% else %}
+                        Sin Descripción
+                    {% endif %}
+                </td>
+                <td>$ {{area.total | montoFormateado }}</td>            
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="alert alert-warning mt-3" role="alert">        
+        No existen Areas Exteriores ingresadas.
+    </div>    
+    {% endif %}
+</div>
+
+<div class="mb-4">
+    <div class="div_title">
+        Evaluación Instalaciones
+    </div>
+    {% if cantidad_instalaciones_sin_evaluar != 0 %}
+        <div class="alert alert-warning d-flex align-items-center mb-1" role="alert">
+            <svg class="bi flex-shrink-0 me-2" width="18" height="18" role="img" aria-label="Warning:">
+                <use xlink:href="#exclamation-triangle-fill" />
+            </svg>
+            <div>
+                Existen <strong>{{cantidad_instalaciones_sin_evaluar}} ítems de Instalaciones</strong> sin evaluar. Se solicita
+                completar la información antes de enviar propuesta.
+            </div>
+        </div>
+    {% endif %}
+
+    {% if cantidad_instalaciones_sin_justificar != 0 %}
+        <div class="alert alert-warning d-flex align-items-center mb-1" role="alert">
+            <svg class="bi flex-shrink-0 me-2" width="18" height="18" role="img" aria-label="Warning:">
+                <use xlink:href="#exclamation-triangle-fill" />
+            </svg>
+            <div>
+                Existen <strong>{{cantidad_instalaciones_sin_justificar}} ítems de Instalaciones</strong> sin observaciones. Se solicita justificar
+                el estado de la instalación antes de enviar propuesta.
+            </div>
+        </div>
+    {% endif %}
+    {% for i in listado_instalaciones %}
+    <h5 style="font-size: 1rem !important;"><i class="{{i.categoria_instalaciones.icono}}"></i> {{i.categoria_instalaciones.nombre}}</h5>
+    <table class="table table-light mb-4 mt-2" style="font-size: 11.5px;">
+        <tr>      
+        <th style="width: 200px;">Estado Funcionamiento</th>
+        <td style="text-align: left;">
+            <span class="badge {{i.estado.class_css}}" >{{i.estado}}</span>                
+        </td>      
+        </tr>
+        <tr>      
+        <th style="width: 200px;">Observaciones</th>
+        <td>
+            {% if i.observaciones %}
+            {{i.observaciones}}
+            {% else %}
+            <div class="alert alert-warning d-flex align-items-center mb-1" role="alert">
+                <svg class="bi flex-shrink-0 me-2" width="18" height="18" role="img" aria-label="Warning:">
+                    <use xlink:href="#exclamation-triangle-fill" />
+                </svg>
+                <div>
+                    Se solicita justificar el estado de la instalación antes de enviar el propuesta.
+                </div>
+            </div>
+            {% endif %}
+        </td>      
+        </tr>         
+    </table>   
+    {% endfor %}
+</div>
+{% endblock %}
+{% block jscript %}
+{% endblock %}

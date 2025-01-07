@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load utilidades %}
+
+{% block head %}
+<link href="{% static 'css/home_funcionarios.css' %}" rel="stylesheet">
+<link href="{% static 'css/actualizar_ley_presupuesto.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center">Ley Presupuestaria {{ current_year }}</h2>
+    <br>
+    <form id="yearForm" action="{% url 'cambiar_year' %}" method="post">
+        {% csrf_token %}
+
+        
+        <select id="year" class="form-select" aria-label="Default select example" name="year">
+            {% for year in years %}
+            <option value="{{ year.year }}" {% if year.year == current_year %}selected{% endif %}>{{ year.year }}</option>
+            {% endfor %}
+        </select>
+        
+    </form>
+
+
+
+
+    <br>        
+        <!-- Título grande para P01 GASTOS ADMINISTRATIVOS -->
+        <h3 class="mt-4 border-bottom pb-2">Programa 01: GASTOS ADMINISTRATIVOS</h3>
+        {% for subtitulo in subtitulos_p01 %}
+            <div class="form-group row" style="margin-top: 15px;">
+                <label class="col-sm-5 col-form-label">{{ subtitulo.subtitulo }}</label>
+                <div class="col-sm-7">
+                    <input type="text" class="form-control" value="{{ subtitulo.ley_presupuestaria_subtitulo|floatformat:0 }}" disabled>
+                </div>
+            </div>
+        {% endfor %}
+        
+        <!-- Título grande para P02 SERVICIOS EDUCATIVOS -->
+        <h3 class="mt-4 border-bottom pb-2">Programa 02: SERVICIOS EDUCATIVOS</h3>
+        {% for subtitulo in subtitulos_p02 %}
+            <div class="form-group row" style="margin-top: 15px;">
+                <label class="col-sm-5 col-form-label">{{ subtitulo.subtitulo }}</label>
+                <div class="col-sm-7">
+                    <input type="text" class="form-control" value="{{ subtitulo.ley_presupuestaria_subtitulo|floatformat:0 }}" disabled>
+                </div>
+            </div>
+        {% endfor %}
+        
+        <a href="{% url 'actualizar_ley_presupuestaria' current_year %}" class="btn btn-success mt-4">Actualizar</a>
+
+
+    {% if error %}
+        <div class="alert alert-danger mt-4" role="alert">
+            <p>{{ error }}</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block jscript %}
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    function formatNumberWithDots(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Formatear los valores iniciales
+        document.querySelectorAll('input[type="text"]').forEach(function(input) {
+            input.value = formatNumberWithDots(input.value);
+        });
+
+        // Formatear los valores mientras se escriben
+        document.querySelectorAll('input[type="text"]').forEach(function(input) {
+            input.addEventListener('input', function() {
+                let value = input.value.replace(/\./g, '');
+                if (!isNaN(value) && value !== '') {
+                    input.value = formatNumberWithDots(value);
+                } else {
+                    input.value = input.value.slice(0, -1); // Eliminar el último carácter si no es un número
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    // Detectar cambio en el <select> y enviar el formulario
+    document.getElementById('year').addEventListener('change', function() {
+      const year = this.value;
+
+      if (year) {
+        // Enviar el formulario automáticamente
+        document.getElementById('yearForm').submit();
+      } else {
+        alert('Por favor, selecciona un año válido.');
+      }
+    });
+  </script>
+
+<script>
+    // Variable con el año a preseleccionar
+    const preselectedYear = {{ current_year }}; // Cambia esto al año que necesites
+
+    // Preseleccionar el año al cargar la página
+    window.addEventListener('DOMContentLoaded', () => {
+      const yearSelect = document.getElementById('year');
+      if (preselectedYear) {
+        yearSelect.value = preselectedYear;
+      }
+    });
+</script>
+
+{% endblock %}

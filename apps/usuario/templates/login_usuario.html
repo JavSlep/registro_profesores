@@ -1,0 +1,62 @@
+{% extends 'base_login.html' %}
+{% load static %}
+{% block head %}{% endblock %}
+{% block content %}
+<div class="container d-flex align-items-center justify-content-center">
+  <div class="row" style="width: 1000px; background-color: white; border-radius: 20px; padding-top: 30px; padding-bottom: 30px; padding-left: 15px; padding-right: 15px;">
+
+    <div class="col-md-7" style="text-align: start;">
+      <div class="d-flex">        
+        <img class="mb-3" src="{% static 'img/logo_slep.png' %}" alt="" height="90">       
+      </div>
+      
+      <div class="d-flex mt-3 mb-2">
+        <i class="fa-regular fa-helmet-safety logo"></i>       
+        <div style="margin-left: 10px;">       
+          <h2 class="mb-0" style="line-height: 1.1">Infra</h2>
+          <h6 class="mt-0" style="color: rgb(136, 136, 136);">Sistema de Infraestructura y Mantemimiento</h6>          
+        </div>        
+      </div>
+     
+    </div>
+    <div class="col-md-5">
+      <form method="POST" id="form">
+        {% csrf_token %}      
+        <div class="form-floating mb-3">          
+          {{form.email}}
+          <label for="floatingInput">Email</label>
+        </div>
+        <div class="form-floating mb-3">          
+          {{form.password}}
+          <label for="floatingPassword">Password</label>
+        </div>
+        <!-- {{form.captcha}} -->      
+        <!-- <div class="mt-1" style="text-align: start;">
+          <a href="{% url 'password_reset_form' %}" style="text-decoration: none;font-weight: 500; color:#4285F4; font-size: 14px;">Olvidaste tu contraseña?</a>
+        </div> -->
+        <div style="text-align: end;">    
+          <button class="btn btn btn-primary" type="submit" id="btn_submit">
+            <span class="spinner-border spinner-border-sm" id="btn_spinner" style="display: none;"></span>
+            <span id="btn_text">Iniciar sesión</span>
+          </button>
+        </div>         
+        <p class="mt-5 mb-3 text-muted">Copyright &copy; 2024 - Infra</p>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block javascrips %}
+<script>
+  $(function () {
+    $("#form").submit(function () {
+      $("#btn_spinner").removeAttr("style");
+      $("#btn_submit").attr("disabled", true);
+      $("#btn_text").text('');
+      return true;
+    });
+  });
+</script>
+{% endblock %}
+
+

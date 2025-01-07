@@ -1,0 +1,398 @@
+[
+ {
+  "codigo": "of",
+  "nombre": "Oficina",
+  "categoria": "c76dda97-8749-478b-a0bc-0b1ab728237a",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "utp",
+  "nombre": "Unidad Técnico Pedagógica (UTP)",
+  "categoria": "c76dda97-8749-478b-a0bc-0b1ab728237a",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "sp",
+  "nombre": "Sala de Profesores",
+  "categoria": "c76dda97-8749-478b-a0bc-0b1ab728237a",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "arch",
+  "nombre": "Archivo",
+  "categoria": "c76dda97-8749-478b-a0bc-0b1ab728237a",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "in",
+  "nombre": "Oficina Inspectores",
+  "categoria": "c76dda97-8749-478b-a0bc-0b1ab728237a",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "ori",
+  "nombre": "Orientador",
+  "categoria": "c76dda97-8749-478b-a0bc-0b1ab728237a",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "apa",
+  "nombre": "Sala de atención Padres y Apoderados",
+  "categoria": "c76dda97-8749-478b-a0bc-0b1ab728237a",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "re",
+  "nombre": "Recepción",
+  "categoria": "c76dda97-8749-478b-a0bc-0b1ab728237a",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "se",
+  "nombre": "Sala de espera",
+  "categoria": "c76dda97-8749-478b-a0bc-0b1ab728237a",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "sec",
+  "nombre": "Secretaria",
+  "categoria": "c76dda97-8749-478b-a0bc-0b1ab728237a",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "sum",
+  "nombre": "Sala Multiuso \/ sala uso múltiple",
+  "categoria": "c76dda97-8749-478b-a0bc-0b1ab728237a",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "sum_paux",
+  "nombre": "Sala primeros auxilios",
+  "categoria": "c76dda97-8749-478b-a0bc-0b1ab728237a",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "amam",
+  "nombre": "Sala de amamantamiento (sala cuna)",
+  "categoria": "c76dda97-8749-478b-a0bc-0b1ab728237a",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "gab_prof",
+  "nombre": "Gabinete profesionales educ. especial",
+  "categoria": "c76dda97-8749-478b-a0bc-0b1ab728237a",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "of_pie",
+  "nombre": "Oficina Profesionales PIE",
+  "categoria": "c76dda97-8749-478b-a0bc-0b1ab728237a",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "fono",
+  "nombre": "Fonoaudiologo",
+  "categoria": "c76dda97-8749-478b-a0bc-0b1ab728237a",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "ca",
+  "nombre": "Centro de Alumnos",
+  "categoria": "c76dda97-8749-478b-a0bc-0b1ab728237a",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "cp",
+  "nombre": "Centro de Padres",
+  "categoria": "c76dda97-8749-478b-a0bc-0b1ab728237a",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "po",
+  "nombre": "Portería",
+  "categoria": "c76dda97-8749-478b-a0bc-0b1ab728237a",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "a",
+  "nombre": "Aulas",
+  "categoria": "edaa71ad-e1cb-4968-ab85-8e837465fef8",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "sshh_parv",
+  "nombre": "Sala de Mudas y Hábitos Higiénicos (Sala Cuna - Nivel Medio)",
+  "categoria": "edaa71ad-e1cb-4968-ab85-8e837465fef8",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "lab",
+  "nombre": "Laboratorio",
+  "categoria": "edaa71ad-e1cb-4968-ab85-8e837465fef8",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "ta",
+  "nombre": "Taller o multitaller",
+  "categoria": "edaa71ad-e1cb-4968-ab85-8e837465fef8",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "biblio",
+  "nombre": "Biblioteca",
+  "categoria": "edaa71ad-e1cb-4968-ab85-8e837465fef8",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "cra",
+  "nombre": "CRA - (Centro de Recursos para el Aprendizaje)",
+  "categoria": "edaa71ad-e1cb-4968-ab85-8e837465fef8",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "audit",
+  "nombre": "Auditorio",
+  "categoria": "edaa71ad-e1cb-4968-ab85-8e837465fef8",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "gim",
+  "nombre": "Gimnasio (Recinto Cerrado)",
+  "categoria": "edaa71ad-e1cb-4968-ab85-8e837465fef8",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "p_c",
+  "nombre": "Patio cubierto",
+  "categoria": "24b84e4e-6217-40a1-84e0-7c944c1f89ac",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "p_d",
+  "nombre": "Patio descubierto",
+  "categoria": "24b84e4e-6217-40a1-84e0-7c944c1f89ac",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "mu",
+  "nombre": "Multicancha descubierta",
+  "categoria": "24b84e4e-6217-40a1-84e0-7c944c1f89ac",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "muc",
+  "nombre": "Multicancha cubierta o techada",
+  "categoria": "24b84e4e-6217-40a1-84e0-7c944c1f89ac",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "pd",
+  "nombre": "Otro tipo Patio Docente",
+  "categoria": "24b84e4e-6217-40a1-84e0-7c944c1f89ac",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "ta_tp",
+  "nombre": "Taller de especialidad TP",
+  "categoria": "5a610dbb-aca4-4cb4-af97-3c8a2cc2c385",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "a_tp",
+  "nombre": "Aula teórica TP",
+  "categoria": "5a610dbb-aca4-4cb4-af97-3c8a2cc2c385",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "of_tp",
+  "nombre": "Oficina jefe de especialidad TP",
+  "categoria": "5a610dbb-aca4-4cb4-af97-3c8a2cc2c385",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "bod",
+  "nombre": "Bodega, closet o gabinete materiales",
+  "categoria": "63027ef4-15e4-4e5f-93fb-ea1d074515d6",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "sshh_alumnos",
+  "nombre": "SSHH Alumnas",
+  "categoria": "63027ef4-15e4-4e5f-93fb-ea1d074515d6",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "sshh_alumnas",
+  "nombre": "SSHH Alumnos",
+  "categoria": "63027ef4-15e4-4e5f-93fb-ea1d074515d6",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "sshh_preb",
+  "nombre": "SSHH Prebásica (Kinder y Prekinder)",
+  "categoria": "63027ef4-15e4-4e5f-93fb-ea1d074515d6",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "sshh_da",
+  "nombre": "SSHH Docentes y Administrativos",
+  "categoria": "63027ef4-15e4-4e5f-93fb-ea1d074515d6",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "sshh_ps",
+  "nombre": "SSHH Personal de Servicio",
+  "categoria": "63027ef4-15e4-4e5f-93fb-ea1d074515d6",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "sshh_man",
+  "nombre": "SSHH manipuladoras de alimentos",
+  "categoria": "63027ef4-15e4-4e5f-93fb-ea1d074515d6",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "sshh_au",
+  "nombre": "SSHH Accesibilidad Universal",
+  "categoria": "63027ef4-15e4-4e5f-93fb-ea1d074515d6",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "cam",
+  "nombre": "camarines",
+  "categoria": "63027ef4-15e4-4e5f-93fb-ea1d074515d6",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "vman",
+  "nombre": "vestidor de manipuladoras",
+  "categoria": "63027ef4-15e4-4e5f-93fb-ea1d074515d6",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "coc",
+  "nombre": "Cocina",
+  "categoria": "63027ef4-15e4-4e5f-93fb-ea1d074515d6",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "des",
+  "nombre": "Despensa",
+  "categoria": "63027ef4-15e4-4e5f-93fb-ea1d074515d6",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "com",
+  "nombre": "Comedor Alumnos",
+  "categoria": "63027ef4-15e4-4e5f-93fb-ea1d074515d6",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "com_da",
+  "nombre": "Comedor Docentes y\/o Administrativos",
+  "categoria": "63027ef4-15e4-4e5f-93fb-ea1d074515d6",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "com_ps",
+  "nombre": "Comedor Personal de servicio",
+  "categoria": "63027ef4-15e4-4e5f-93fb-ea1d074515d6",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "kio",
+  "nombre": "kiosco saludable",
+  "categoria": "63027ef4-15e4-4e5f-93fb-ea1d074515d6",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "ors",
+  "nombre": "Otro recinto de Servicio",
+  "categoria": "63027ef4-15e4-4e5f-93fb-ea1d074515d6",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "p_serv",
+  "nombre": "Patio de Servicio Descubierto",
+  "categoria": "e41c8e4e-d2c7-4a3e-8ca7-36a1fbfbcd87",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "p_serv_cub",
+  "nombre": "Patio de Servicio Cubierto",
+  "categoria": "e41c8e4e-d2c7-4a3e-8ca7-36a1fbfbcd87",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "e_vehi",
+  "nombre": "Estacionamientos",
+  "categoria": "e41c8e4e-d2c7-4a3e-8ca7-36a1fbfbcd87",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "o_ps",
+  "nombre": "Otro Patio Servicio",
+  "categoria": "e41c8e4e-d2c7-4a3e-8ca7-36a1fbfbcd87",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "cir_des",
+  "nombre": "Pasillos o Circulaciones horizontales descubiertas",
+  "categoria": "dc9d46d3-1b18-4691-83b8-6dec7e5b918c",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "cir_cub",
+  "nombre": "Pasillos o Circulaciones horizontales cubiertas",
+  "categoria": "dc9d46d3-1b18-4691-83b8-6dec7e5b918c",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "cir_e_cub",
+  "nombre": "Escaleras cubiertas",
+  "categoria": "dc9d46d3-1b18-4691-83b8-6dec7e5b918c",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "cir_e_descub",
+  "nombre": "Escaleras descubiertas",
+  "categoria": "dc9d46d3-1b18-4691-83b8-6dec7e5b918c",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "cir_r_descub",
+  "nombre": "Rampas y\/o pasarelas descubiertas",
+  "categoria": "dc9d46d3-1b18-4691-83b8-6dec7e5b918c",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "cir_r_cub",
+  "nombre": "Rampas y\/o pasarelas cubiertas",
+  "categoria": "dc9d46d3-1b18-4691-83b8-6dec7e5b918c",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "asc",
+  "nombre": "Recinto Ascensor",
+  "categoria": "dc9d46d3-1b18-4691-83b8-6dec7e5b918c",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "jar",
+  "nombre": "Jardindes o Areas Verdes",
+  "categoria": "8e816ec3-823c-4cd6-8788-8a57ce105f17",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "cont",
+  "nombre": "Contenedores",
+  "categoria": "4f5117a7-08f9-433c-ac3e-36d35ad66e80",
+  "categoria_instalaciones": ""
+ },
+ {
+  "codigo": "edif_auto",
+  "nombre": "Edificaciones autoconstruidas",
+  "categoria": "4f5117a7-08f9-433c-ac3e-36d35ad66e80",
+  "categoria_instalaciones": ""
+ }
+]

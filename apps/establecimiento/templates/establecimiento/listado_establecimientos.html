@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}{% endblock %}
+{% block content %}
+<div class="d-flex align-items-center">
+    <div class="flex-grow-1 text-truncate">
+        <h5 class="m-0">Listado de Establecimientos | Folios Emitidos</h5>
+        <span class="sub-titulo">Servicio Local de Educación Puerto Cordillera</span> 
+    </div>
+    <div class="d-flex align-items-center">
+        <a class="btn-round" type="button" href="#"><i class='bx bx-help-circle'></i></a>
+        <a class="btn-round" type="button" href="#"><i class='bx bx-bell'></i></a>
+        <a class="btn-round" type="button" href="#"><i class='bx bx-cog'></i></a>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <table class="table table-hover" style="font-size: 13px;">
+            <thead>
+                <tr>
+                    <th scope="col">RBD</th>
+                    <th scope="col">Establecimiento</th>
+                    <th scope="col">Comuna</th>
+                    <th scope="col">Categoría</th>
+                    <th scope="col">Matrícula</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for establecimiento in establecimientos %}
+                <tr>
+                    <th scope="row"><a href="{% url 'detalle_establecimiento' establecimiento.id %}">{{establecimiento.rbd}}</a></th>
+                    <td>{{establecimiento.nombre}}</th>
+                    <td>{{establecimiento.comuna}}</td>
+                    <td>{{establecimiento.categoria}}</td>
+                    <td>
+                        {% if establecimiento.matricula_actual %}                                
+                        {{establecimiento.matricula_actual}}
+                        {% else %}
+                        Sin Registro
+                        {% endif %}                            
+                    </td>                         
+                </tr>
+                {% endfor %}          
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
+{% block jscript %}
+{% endblock %}

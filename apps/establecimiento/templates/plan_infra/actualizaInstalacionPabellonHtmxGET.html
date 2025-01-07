@@ -1,0 +1,34 @@
+
+<table class="table table-light mb-4" style="font-size: 13px;">    
+    <tbody>
+        <tr>      
+            <th style="width: 200px;">Descripción</th>
+            <td style="text-align: left;">{{instalacion.categoria_instalaciones.descripcion}}</td>      
+        </tr>
+        <tr>      
+            <th style="width: 200px;">Estado Funcionamiento</th>
+            <td style="text-align: left;">{{form.estado}}</td>      
+        </tr>
+        <tr>      
+            <th style="width: 200px;">Observaciones</th>
+            <td>
+            {{form.observaciones}}
+            </td>      
+        </tr>
+        <tr>      
+            <th style="width: 200px;"></th>
+            <td>
+                <a 
+                    class="btn btn-secondary btn-sm"
+                    hx-get="{% url 'actualiza_instalacion_pabellon_htmx_cancel' instalacion.id %}"
+                    hx-push-url="false"
+                    hx-target="#id_{{instalacion.id}}"
+                    hx-swap="innerHTML">
+                    Cancelar
+                </a>
+                <button class="btn btn-primary btn-sm" type="submit">Actualizar</button>
+            </td>      
+        </tr>
+    </tbody>
+</table>
+{% include 'base_toast.html' %}

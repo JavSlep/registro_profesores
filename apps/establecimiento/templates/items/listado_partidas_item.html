@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load utilidades %}
+{% block head %}{% endblock %}
+{% block content %}
+<div class="d-flex align-items-center mb-3 mt-2">
+    <div class="flex-grow-1 text-truncate">
+        <h4 class="m-0">Listado Partidas</h4>
+        <span class="sub-titulo">Servicio Local de Educación Puerto Cordillera</span> 
+    </div>
+    <div class="d-flex align-items-center">     
+    </div>
+</div>
+
+<div class="d-flex div-filter mb-3">
+    <div class="flex-grow-1">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-3">
+                    <select class="form-select form-select-sm" name="id_categoria" id="id_categoria">
+                        <option value="" selected>Todas las categorías</option>
+                        {% for categoria in filtro_categoria %}
+                        <option value="{{categoria.id}}">{{categoria}}</option>
+                        {% endfor %}
+                    </select>
+                </div>                
+                <div class="col-6" style="text-align:start">
+                    {% if filter_aplicado == True %}
+                    <a type="button" class="btn btn-primary btn-sm" href="{% url 'listado_partidas_item' %}"><i class="fa-regular fa-filter-circle-xmark"></i></a>
+                    {% endif %}
+                    <button type="submit" class="btn btn-primary btn-sm"><i class="fa-regular fa-filter"></i> Filtrar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div style="margin-left: 10px !important;">
+        <a class="btn btn-primary btn-sm" href="{% url 'nueva_partida_item' %}"><i class="fa-solid fa-plus"></i> Nueva Partida</a>       
+    </div>
+</div>
+<!-- table-striped -->
+<table class="table table-hover mb-5" id="datatable" style="font-size: 12px;" data-page-length='50'>
+    <thead>
+        <tr>
+            <th style="width: 60px;">Cód.</th>
+            <th>Nombre</th>
+            <th>Categoría</th>
+            <th>Unidad</th>         
+            <th>Precio</th>           
+        </tr>
+    </thead>
+    <tbody>
+        {% for partida in listado_partidas %}
+        <tr class="link_fila" data-href="{% url 'editar_partida_item' partida.id %}" style="user-select: none; cursor:pointer;">
+            <th>
+                {{partida.codigo}}
+            </th>
+            <td>{{partida.nombre}}</td>
+            <td>{% if partida.categoria_partida %}
+                    {{partida.categoria_partida}}
+                {% else %}
+                    Sin Asignar
+                {% endif %}
+            </td>
+            <td>{{partida.unidad}}</td>      
+            <td>$ {{partida.precio | montoFormateado}}</td>          
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+{% block jscript %}
+<script>
+    $(document).ready(function(){
+      $('.link_fila').click(function(){
+        window.location = $(this).data('href');
+        return false;
+      });
+    });
+</script>
+<script>
+    $(function(){
+      $("#id_categoria").val("{{id_categoria}}").change();     
+    });
+</script>
+{% endblock %}

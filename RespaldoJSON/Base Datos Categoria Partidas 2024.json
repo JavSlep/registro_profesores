@@ -1,0 +1,52 @@
+﻿[
+    {
+        "id": "f2a19dcb-ef11-41e1-b707-0b83723d4fd3",
+        "nombre": "Reparaciones Mantenciones e Instalaciones para Exterior",
+        "nomina_precios": "9152d359-dc44-4d49-87ea-19464702c461"
+    },
+    {
+        "id": "db0a5f37-f2b4-4785-ae8c-6a4c008dfe4e",
+        "nombre": "Reparaciones e Instalaciones Eléctricas",
+        "nomina_precios": "9152d359-dc44-4d49-87ea-19464702c461"
+    },
+    {
+        "id": "c73aef43-8c89-41d9-8061-f10cd736505d",
+        "nombre": "Quincallería y Cerraduras",
+        "nomina_precios": "9152d359-dc44-4d49-87ea-19464702c461"
+    },
+    {
+        "id": "c3f73d65-4e0a-4ef4-b30e-2bb0ab0a183e",
+        "nombre": "Puertas Ref. (2mt X 0.90cm)",
+        "nomina_precios": "9152d359-dc44-4d49-87ea-19464702c461"
+    },
+    {
+        "id": "84e9a522-a5dd-4515-b238-289fc7df0dc6",
+        "nombre": "Pinturas",
+        "nomina_precios": "9152d359-dc44-4d49-87ea-19464702c461"
+    },
+    {
+        "id": "7403b75a-536b-4344-bd46-4016d4cd856a",
+        "nombre": "Reparaciones e Instalaciones Sanitarias",
+        "nomina_precios": "9152d359-dc44-4d49-87ea-19464702c461"
+    },
+    {
+        "id": "503967ef-d9fd-423c-80eb-50d955d7b3b4",
+        "nombre": "Pisos (preparación e instalaciones)",
+        "nomina_precios": "9152d359-dc44-4d49-87ea-19464702c461"
+    },
+    {
+        "id": "48c282fa-bfd5-41e2-8ad0-1a854b386206",
+        "nombre": "Reparación e Instalaciones de Gas",
+        "nomina_precios": "9152d359-dc44-4d49-87ea-19464702c461"
+    },
+    {
+        "id": "34f5670b-033f-41fd-b8a0-b363a42dbf9a",
+        "nombre": "Mobiliario",
+        "nomina_precios": "9152d359-dc44-4d49-87ea-19464702c461"
+    },
+    {
+        "id": "14dcc7ad-0311-4d0f-b8ce-9169c39a78e0",
+        "nombre": "Otras Reparaciones, Mantenciones e Instalaciones Varios",
+        "nomina_precios": "9152d359-dc44-4d49-87ea-19464702c461"
+    }
+]

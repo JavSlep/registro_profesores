@@ -1,0 +1,25 @@
+{% comment%}
+{% extends 'base.html' %}
+{% load static %}
+{% load utilidades %}
+{% block head %}{% endblock %}
+{% block content %}
+{% endcomment %}
+{% load crispy_forms_tags %}
+
+<div>
+    <h3>Ingresar CDP para el Área</h3>
+
+    <form hx-post="{% url 'ingresar_cdp' %}" hx-target="#dinamico" hx-swap="innerHTML">
+        {% csrf_token %}
+        {% comment %} {{ form.as_p |as_crispy }} {% endcomment %}
+        {% crispy form %}
+        <button type="submit" class="btn btn-success">Guardar CDP</button>
+    </form>
+</div>
+{% comment %}
+{% endblock %}
+{% block jscript %}
+{% endblock %}
+
+{% endcomment %}

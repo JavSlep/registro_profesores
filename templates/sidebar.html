@@ -1,0 +1,176 @@
+{% load static %}
+<div class="sidebar" style="background-color: #e4e9f5;">
+  <div class="d-flex flex-column flex-shrink-0 h-100">
+    <a href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
+      <!-- <img class="bi me-2" src="{% static 'img/icono_32.svg' %}" width="30" height="30" alt="logo"> -->
+      <img class="bi me-2" src="{% static 'img/logo_slep.png' %}" height="60" alt="logo">          
+    </a>
+    <ul class="list-unstyled ps-0 flex-column mb-auto">
+      {% if request.session.establecimiento %}      
+      <li class="mb-1">
+        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+          data-bs-target="#home-collapse" aria-expanded="true">
+          Establecimiento
+        </button>
+        <div class="collapse show" id="home-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li><a href="{% url 'escritorio_establecimiento' request.session.establecimiento.id %}" class="link-dark rounded">Escritorio</a></li>
+            <li><a href="{% url 'detalle_establecimiento' request.session.establecimiento.id %}" class="link-dark rounded">Información General</a></li>
+            <!-- <li><a href="#" class="link-dark rounded">Matricula</a></li> -->
+          </ul>
+        </div>
+      </li>
+      <li class="mb-1">
+        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+          data-bs-target="#home-collapse" aria-expanded="true">
+          Infraestructura
+        </button>
+        <div class="collapse show" id="home-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li><a href="{% url 'instrucciones_diagnostico' request.session.establecimiento.id %}" class="link-dark rounded">Plan 2025</a></li>
+          </ul>
+        </div>
+      </li>
+      {% endif %}
+
+      {% if '/home-funcionarios/' in request.path  %}
+      <li class="mb-1">
+        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+          data-bs-target="#general-collapse" aria-expanded="true">
+          General
+        </button>
+        <div class="collapse show" id="general-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li>
+              <a href="{% url 'home_funcionarios' %}" class="link-dark rounded">Home Funcionarios</a>
+            </li>
+          </ul>
+        </div>
+      </li>
+      <li class="mb-1">
+        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+          data-bs-target="#presupuesto-collapse" aria-expanded="true">
+          Presupuesto
+        </button>
+        <div class="collapse show" id="presupuesto-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li>
+              <a href="{% url 'ley_presupuestaria' request.session.usuario_entidad.year %}" class="link-dark rounded">Ley Presupuesto</a>
+            </li>
+          </ul>
+        </div>
+        <div class="collapse show" id="presupuesto-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li>
+              <a href="{% url 'actualizar_ley_presupuestaria' request.session.usuario_entidad.year %}" class="link-dark rounded">Actualizar Presupuesto {{request.session.usuario_entidad.year}}</a>
+            </li>
+          </ul>
+        </div>
+        <div class="collapse show" id="presupuesto-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li>
+              <a href="{% url 'generar_ley_presupuestaria' %}" class="link-dark rounded">Generar Ley presupuestaria anual</a>
+            </li>
+          </ul>
+        </div>
+      </li>
+      {% endif %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      {% if request.session.usuario_entidad.administrador == True %} 
+      <li class="mb-1">
+        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+          data-bs-target="#home-collapse" aria-expanded="true">
+          Establecimientos
+        </button>
+        <div class="collapse show" id="home-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li><a href="{% url 'listado_establecimientos' %}" class="link-dark rounded">Listado Establecimientos</a>
+            </li>
+            <li><a href="#" class="link-dark rounded">Matriculas</a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="mb-1">
+        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+          data-bs-target="#dashboard-collapse" aria-expanded="false">
+          Infraestructura
+        </button>
+        <div class="collapse" id="dashboard-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            
+            <li><a href="{% url 'resumen_plan_infraestructura' 2025 %}" class="link-dark rounded">Resumen Plan 2025</a></li>
+            
+            
+            <li><a href="{% url 'listado_items' %}" class="link-dark rounded">Listado Items</a></li>
+            <li><a href="{% url 'listado_partidas_item' %}" class="link-dark rounded">Listado Partidas</a></li>
+            <li><a href="{% url 'listado_categoria_recinto' %}" class="link-dark rounded">Listado Categoria Recinto</a>
+            </li>
+            <li><a href="{% url 'listado_tipo_recinto' %}" class="link-dark rounded">Listado Tipo Recinto</a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="mb-1">
+        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+          data-bs-target="#orders-collapse" aria-expanded="false">
+          Orders
+        </button>
+        <div class="collapse" id="orders-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li><a href="#" class="link-dark rounded">New</a></li>
+            <li><a href="#" class="link-dark rounded">Processed</a></li>
+            <li><a href="#" class="link-dark rounded">Shipped</a></li>
+            <li><a href="#" class="link-dark rounded">Returned</a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="border-top my-3"></li>
+      <li class="mb-1">
+        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+          data-bs-target="#account-collapse" aria-expanded="false">
+          Mantenimiento
+        </button>
+        <div class="collapse" id="account-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li><a href="#" class="link-dark rounded">Listado Partidas</a></li>
+            <li><a href="#" class="link-dark rounded">Profile</a></li>
+            <li><a href="#" class="link-dark rounded">Settings</a></li>
+            <li><a href="#" class="link-dark rounded">Sign out</a></li>
+          </ul>
+        </div>
+      </li>
+      {% endif %} 
+    </ul>
+    <div>
+      <hr class="m-1">
+      <div class="d-flex mt-3 mb-2 align-items-center">
+        <i class="fa-regular fa-helmet-safety logo"></i>
+        <div style="padding-left: 10px; font-weight: 600; font-size: 22px;">
+          Infra
+        </div> 
+      </div>
+    </div>
+  </div>
+
+</div>

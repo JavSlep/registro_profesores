@@ -1,0 +1,76 @@
+<!-- filepath: /c:/Users/javie/Desktop/proyecto-master/apps/cdp/templates/listado.html -->
+<div hx-swap-oob="true" id="dinamico2" hx-swap="innerHTML"><h1>Listado de CDP</h1></div>
+
+<div hx-swap-oob="true" id="dinamico3" hx-swap="innerHTML"><button class="btn btn-primary">Ingresar</button></div>
+
+<table class="table" id="datatable">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Fecha CDP</th>
+      <th scope="col">Fondo</th>
+      <th scope="col">Monto</th>
+      <th scope="col">Programa</th>
+    </tr>
+    <tr>
+      <th></th>
+      <th><input type="text" placeholder="Buscar Fecha" class="form-control form-control-sm"></th>
+      <th><input type="text" placeholder="Buscar Fondo" class="form-control form-control-sm"></th>
+      <th></th>
+      <th><input type="text" placeholder="Buscar Programa" class="form-control form-control-sm"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for cdp in cdps %}
+    <tr>
+      <th scope="row">{{ forloop.counter }}</th>
+      <td>{{ cdp.fecha_cdp }}</td>
+      <td>{{ cdp.fondo }}</td>
+      <td>{{ cdp.monto }}</td>
+      <td>{{ cdp.item_presupuestario.subtitulo_presupuestario.programa_presupuestario }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script>
+  $(document).ready(function () {
+    // Inicializar DataTables
+    var table = $('#datatable').DataTable({
+      language: {
+        "decimal": "",
+        "emptyTable": "No hay información",
+        "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+        "infoEmpty": "Mostrando 0 a 0 de 0 Entradas",
+        "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+        "infoPostFix": "",
+        "thousands": ",",
+        "lengthMenu": "Mostrar _MENU_ entradas",
+        "loadingRecords": "Cargando...",
+        "processing": "Procesando...",
+        "search": "Buscar:",
+        "zeroRecords": "Sin resultados encontrados",
+        "paginate": {
+          "first": "Primero",
+          "last": "Último",
+          "next": "Siguiente",
+          "previous": "Anterior"
+        }
+      }
+    });
+
+    // Búsqueda específica por columna
+    $('#datatable thead tr:eq(1) th').each(function (i) {
+      $('input', this).on('keyup change', function () {
+        if (table.column(i).search() !== this.value) {
+          table
+            .column(i)
+            .search(this.value)
+            .draw();
+        }
+      });
+    });
+  });
+</script>

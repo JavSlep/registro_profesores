@@ -1,0 +1,209 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load utilidades %}
+{% block head %}
+<style>
+  .td-table {
+    width: 150px;
+  }   
+</style>
+{% endblock %}
+{% block content %}
+<div class="d-flex align-items-center">
+  <div class="flex-grow-1 text-truncate">
+      <h5 class="m-0">{{recinto.nombre}}</h5>
+      <h6 class="mt-0 mb-0">{{pabellon.nombre}}</h6>
+      <span class="sub-titulo">{{establecimiento}}</span> 
+  </div>
+  <div class="d-flex align-items-center">
+      
+  </div>
+</div>
+<nav aria-label="breadcrumb" style="font-size: 13px;">
+  <ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="{% url 'detalle_establecimiento' establecimiento.id %}" style="text-decoration: none;">Establecimiento</a></li>
+  <li class="breadcrumb-item"><a href="{% url 'instrucciones_plan_infra' establecimiento.id %}" style="text-decoration: none;">Plan {{plan.year}}</a></li>
+  <li class="breadcrumb-item"><a href="{% url 'editar_plan_infra' plan.id establecimiento.id %}" style="text-decoration: none;">Listado Pabellones</a></li>
+  <li class="breadcrumb-item"><a href="{% url 'detalle_pabellon' plan.id pabellon.id %}" style="text-decoration: none;">{{pabellon.nombre}}</a></li>
+  <li class="breadcrumb-item active">{{recinto.nombre}}</li>
+  </ol>
+</nav>
+<div class="div_title">
+  Información General
+</div>
+<div id="id_alert_estado">
+  {% if boolean_estado == False %}
+    <div class="mt-2 alert alert-warning d-flex align-items-center" role="alert">
+        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:">
+            <use xlink:href="#exclamation-triangle-fill" />
+        </svg>
+        <div>
+            No se ha evaluado el <strong>estado del recinto</strong>. Se solicita
+            completar la información antes de enviar.
+        </div>
+    </div>
+  {% endif %}
+</div>
+<div class="card shadow mb-4 mt-2"  style="border: 1px solid #0000; font-size: 12px; line-height: 14px;">
+  <div class="card-body" style="padding-bottom: 15px !important;">
+    <table class="table" style="font-size: 11.5px;">
+      <tr>
+        <th class="td-table">
+          Categoría
+        </th>
+        <td style="text-align: left;">
+          {{recinto.tipo_recinto.categoria}}
+        </td>
+      </tr>
+      <tr>
+        <th class="td-table">
+          Tipo Recinto
+        </th>
+        <td style="text-align: left;">
+          {{recinto.tipo_recinto}}
+        </td>
+      </tr>
+      <tr>
+        <th class="td-table">
+          Descripción
+        </th>
+        <td style="text-align: left;">
+          {% if recinto.descripcion %}
+            {{recinto.descripcion}}
+          {% else %}
+            Sin Descripción
+          {% endif %}
+        </td>
+      </tr>
+      <tr>
+        <th class="td-table">
+          Monto Total Recinto
+        </th>
+        <td style="text-align: left;">
+          <strong>$ <span id="total_recinto">{{recinto.total | montoFormateado}}</span></strong>
+        </td>
+      </tr>
+    </table>
+    <div class="d-flex">
+      <div class="flex-grow-1">
+        <a href="{% url 'eliminar_recinto' plan.id recinto.id %}" class="btn btn-danger btn-sm"><i class="fa-regular fa-trash"></i> Eliminar Recinto</a>
+      </div>
+      <div>
+        <a href="{% url 'editar_recinto' plan.id recinto.id %}" class="btn btn-primary btn-sm"><i class="fa-regular fa-pen"></i> Editar Recinto</a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="div_title">
+  Items de Partidas
+</div>
+{% for item in listado_item %}
+  <div class="card shadow mb-2"  style="border: 1px solid #0000; font-size: 12px; line-height: 14px;">
+    <div class="card-body" style="padding-bottom: 15px !important;">
+      <h5 style="font-size: 1rem !important;">{{item}}</h5>
+      <table class="table" style="font-size: 11.5px;">
+        <thead>
+          <tr>
+            <th style="width: 50px;">Cod.</th>
+            <th>Partida</th>           
+            <th>Unidad</th>
+            <th>Cantidad</th>
+            <th style="text-align: end;">Precio</th>
+            <th style="text-align: end;">Total Partida</th>
+            <th style="text-align: end;">Acción</th>
+          </tr>
+        </thead>
+        <tbody>    
+          {% for i in listado_partidas_recinto %}
+            {% if i.item == item  %}
+              <tr>                           
+                <th>{{i.partida.codigo}}</th>
+                <td>{{i.partida.nombre}}</td>                
+                <td>{{i.partida.unidad}}</td>
+                <td>
+                  <div id="id_{{i.id}}">
+                    <input type="number" name="cantidad" style="width: 70px; padding: 3px !important; font-size: 13px !important;" min="0" step="1" class="form-control form-control-sm" value="{{i.cantidad}}" required>
+                  </div>
+                </td> 
+                <td style="text-align: end;">$ {{i.partida.precio | montoFormateado}}</td>
+                <th style="text-align: end;">$ <span id="id_total_{{i.id}}">{{i.total | montoFormateado}}</span></th>
+                <td style="text-align: end;">                  
+                  <a
+                    class="btn btn-primary btn-sm"
+                    style="font-size: 11.5px !important;"
+                    href="#"
+                    hx-post="{% url 'actualiza_cantidad_partida_recinto_htmx' i.id %}"
+                    hx-push-url="false"
+                    hx-target="#id_{{i.id}}"
+                    hx-swap="innerHTML"
+                    hx-include="closest tr">
+                    <i class="fa-solid fa-arrows-rotate"></i> Actualizar
+                  </a>
+                </td>         
+              </tr>
+            {% endif %}
+          {% endfor %}                  
+        </tbody>
+      </table>
+    </div>
+  </div>  
+{% endfor %}
+<div class="div_title mt-4">
+  Evaluación Estado Recinto
+</div>
+
+<div class="card shadow mb-4 mt-2"  style="border: 1px solid #0000; font-size: 12px; line-height: 14px;">
+  <div class="card-body" style="padding-bottom: 15px !important;">
+    <form hx-post="{% url 'actualiza_estado_recinto_htmx' recinto.id %}" hx-push-url="false" hx-target="#id_{{recinto.id}}" hx-swap="innerHTML">
+      {% csrf_token %}
+      <div id="id_{{recinto.id}}">          
+          <table class="table" style="font-size: 11.5px;">
+            <tbody>            
+                <tr>      
+                  <th style="width: 200px;">Estado Recinto</th>
+                  <td style="text-align: left;">
+                      <span class="badge {{recinto.estado.class_css}}" >{{recinto.estado}}</span>                
+                  </td>      
+                </tr>
+                <tr>      
+                  <th style="width: 200px;">Descripción Estado</th>
+                  <td style="text-align: left;">{{recinto.estado.descripcion}}</td>      
+                </tr>
+                <tr>      
+                  <th style="width: 200px;">Observación</th>
+                  <td>
+                      {% if recinto.observacion_estado %}
+                      {{recinto.observacion_estado}}
+                      {% else %}
+                      S/Obs.
+                      {% endif %}
+                  </td>      
+                </tr>
+            </tbody>
+          </table>
+          <a
+          class="btn btn-primary btn-sm"
+          href="#"
+          hx-get="{% url 'actualiza_estado_recinto_htmx' recinto.id %}"
+          hx-push-url="false"
+          hx-target="#id_{{recinto.id}}"
+          hx-swap="innerHTML">
+          <i class="fa-solid fa-arrows-rotate"></i> Actualizar
+          </a>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+<div class="mt-4 text-end">
+  <a href="{% url 'detalle_pabellon' plan.id pabellon.id %}" class="btn btn-primary btn-sm"><i class="fas fa-long-arrow-left"></i> Regresar a Pabellón</a>
+</div>
+{% endblock %}
+{% block jscript %}
+{% endblock %}
+
+
+
+

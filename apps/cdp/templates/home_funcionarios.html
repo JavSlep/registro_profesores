@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load utilidades %}
+{% block head %}
+<link href="{% static 'css/home_funcionarios.css' %}" rel="stylesheet">
+{% endblock %}
+{% block content %} 
+<div class="d-flex justify-content-between align-items-center main-content">
+    <div class="info-section">
+        <h3>Bienvenido, {{ request.session.usuario_entidad.usuario }}</h3>
+        <h5 class="card-title">Información del Área</h5>
+        <p><strong>Unidad: </strong>{{ request.session.unidad.nombre }}</p>
+        <p><strong>Área: </strong>{{ request.session.area_unidad.nombre }}</p>
+    </div>
+    <div class="vertical-divider"></div>
+    <a href="{% url 'actualizar_ley_presupuestaria' current_year %}" class="btn btn-thick btn-thick-rojo">Actualizar Ley Presupuesto Anual</a>
+</div>
+<hr>
+<div class="d-flex justify-content-around" style="margin-top: 20px;">
+    <a href="#" class="btn btn-thick btn-thick-verde" hx-get="{% url 'ingresar_cdp' %}" hx-target="#dinamico" hx-swap="innerHTML">Ingresar CDP</a>
+    <a href="#" class="btn btn-thick btn-thick-celeste" hx-get="{% url 'historial_cdp' %}" hx-target="#dinamico" hx-swap="innerHTML">Historial CDP</a>
+    <a href="#" class="btn btn-thick btn-thick-amarillo" hx-get="{% url 'listado' %}" hx-target="#dinamico" hx-swap="innerHTML">Listado</a>
+</div>
+<hr>
+<div id="dinamico" style="margin:20px"></div>
+<hr>
+
+<div style="background-color: lightblue; padding: 20px; margin: 20px; text-align: center; display: flex; justify-content: space-between;">
+    <h1>Prueba</h1>
+    <button class="btn btn-thick btn-thick-azul">ingresar</button>
+    <h2>Prueba2</h2>
+</div>
+
+{% endblock %}
+{% block jscript %}
+{% endblock %}

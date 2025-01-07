@@ -1,0 +1,22 @@
+<form method="post" hx-post="{% url 'actualiza_observacion_diagnostico_htmx' diagnostico.id %}" hx-push-url="false"  hx-target="#id_{{diagnostico.id}}" hx-swap="innerHTML">
+    
+    {{form.observaciones}}
+    <div class="mt-2">
+        <a 
+            class="btn btn-secondary btn-sm"
+            style="font-size: 11.5px !important;"  
+            hx-get="{% url 'actualiza_observacion_diagnostico_htmx_cancel' diagnostico.id %}"
+            hx-push-url="false"
+            hx-target="#id_{{diagnostico.id}}"
+            hx-swap="innerHTML">
+            <i class="fa-sharp fa-regular fa-xmark"></i>Cancelar
+        </a>
+        <button
+            class="btn btn-success btn-sm"
+            type="submit"
+            style="font-size: 11.5px !important;">
+            <i class="fa-sharp fa-solid fa-check"></i> Guardar
+        </button>
+    </div>
+</form>
+{% include 'base_toast.html' %}

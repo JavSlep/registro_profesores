@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load utilidades %}
+{% block head %}
+<link href="{% static 'css/home_funcionarios.css' %}" rel="stylesheet">
+{% endblock %}
+{% block content %} 
+
+<h3>Genere la nueva ley presupuestaria para el año: {{current_year}}</h3>
+
+<form action="{% url 'generar_ley_presupuestaria' %}" method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-thick btn-thick-celeste">Generar ley presupuestaria año {{current_year}}</button>
+</form>
+
+    
+
+{% endblock %}
+{% block jscript %}
+{% endblock %}
