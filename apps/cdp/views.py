@@ -39,21 +39,19 @@ def ingresar_cdp(request):
     # Si el formulario se envía por POST
     if request.method == 'POST':
         form = CDPForm(request.POST)
-
+        
         if form.is_valid():
             cdp = form.save(commit=False)
             # Lógica para guardar el CDP en la base de datos
             cdp.save()
-                       
+            #La alerta me salta despues de cambiar de pagina
+            messages.success(request, "CDP guardado exitosamente")
             cdps = Cdp.objects.all()
             context = {
                 'cdps': cdps
             }
-            messages.success(request, "CDP guardado exitosamente")
-            return render(request, 'historial_cdp.html', context)
-        else:
-            print("Error en el formulario", form.errors)
-
+            
+            return render(request, 'listado.html', context)
     context = {
         'form': form,
         'title_nav': 'Ingresar CDP',
@@ -134,6 +132,10 @@ def generar_ley_presupuestaria(request):
         # Buscar el año actual en el modelo Year
         try:
             current_year = Year.objects.get(year=current_year_value)
+            messages.info(request, "El año ya se ha creado anteriormente")
+            return render(request,'generar_ley_presupuestaria.html',context)
+        except Year.DoesNotExist:
+            current_year = Year.objects.create(year=current_year_value)
             for subt in Subtitulo.objects.all():
                 for prog in PROGRAMAS_PRESUPUESTARIOS:
                     subtitulo = SubtituloPresupuestario.objects.create(
@@ -142,15 +144,9 @@ def generar_ley_presupuestaria(request):
                         programa_presupuestario=prog[0],
                         ley_presupuestaria_subtitulo=0,
                         )
-            messages.info(request, "El año ya se ha creado anteriormente")
-            return render(request,'generar_ley_presupuestaria.html',context)
-        except Year.DoesNotExist:
-            current_year = Year.objects.create(year=current_year_value)
-            
-            
             messages.success(request, f"El año presupuestario {current_year_value} se ha creado correctamente")
             return render(request,'generar_ley_presupuestaria.html',context)
-    # Asegúrate de devolver un HttpResponse en caso de GET o si no se cumple ninguna condición
+
     return render(request, 'generar_ley_presupuestaria.html', context)
     
 

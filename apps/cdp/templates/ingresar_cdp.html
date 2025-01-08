@@ -1,25 +1,30 @@
-{% comment%}
-{% extends 'base.html' %}
-{% load static %}
-{% load utilidades %}
-{% block head %}{% endblock %}
-{% block content %}
-{% endcomment %}
+<!-- filepath: /c:/Users/javie/Desktop/proyecto-master/apps/cdp/templates/ingresar_cdp.html -->
 {% load crispy_forms_tags %}
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'libs/toast/toastr.min.css' %}" media="all" />
 
 <div>
     <h3>Ingresar CDP para el Área</h3>
 
     <form hx-post="{% url 'ingresar_cdp' %}" hx-target="#dinamico" hx-swap="innerHTML">
         {% csrf_token %}
-        {% comment %} {{ form.as_p |as_crispy }} {% endcomment %}
         {% crispy form %}
-        <button type="submit" class="btn btn-success">Guardar CDP</button>
+        
     </form>
+    {% if form.errors %}
+        <div class="alert alert-danger" role="alert" style="margin-top: 10px; width: 80%; max-width: 400px;">
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
 </div>
-{% comment %}
-{% endblock %}
-{% block jscript %}
-{% endblock %}
 
-{% endcomment %}
+
+

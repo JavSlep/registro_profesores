@@ -1,8 +1,9 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} 
 {% load static %}
 {% load utilidades %}
 {% block head %}
 <link href="{% static 'css/home_funcionarios.css' %}" rel="stylesheet">
+<script src="https://unpkg.com/htmx.org@1.6.1"></script>
 {% endblock %}
 {% block content %} 
 <div class="d-flex justify-content-between align-items-center main-content">
@@ -13,13 +14,13 @@
         <p><strong>Área: </strong>{{ request.session.area_unidad.nombre }}</p>
     </div>
     <div class="vertical-divider"></div>
-    <a href="{% url 'actualizar_ley_presupuestaria' current_year %}" class="btn btn-thick btn-thick-rojo">Actualizar Ley Presupuesto Anual</a>
+    <a href="{% url 'actualizar_ley_presupuestaria' current_year %}" class="btn btn-thick btn-thick-rojo">Actualizar Ley Presupuesto Anual {{ current_year }}</a>
 </div>
 <hr>
 <div class="d-flex justify-content-around" style="margin-top: 20px;">
     <a href="#" class="btn btn-thick btn-thick-verde" hx-get="{% url 'ingresar_cdp' %}" hx-target="#dinamico" hx-swap="innerHTML">Ingresar CDP</a>
-    <a href="#" class="btn btn-thick btn-thick-celeste" hx-get="{% url 'historial_cdp' %}" hx-target="#dinamico" hx-swap="innerHTML">Historial CDP</a>
-    <a href="#" class="btn btn-thick btn-thick-amarillo" hx-get="{% url 'listado' %}" hx-target="#dinamico" hx-swap="innerHTML">Listado</a>
+    <a href="#" class="btn btn-thick btn-thick-amarillo" hx-get="{% url 'listado' %}" hx-target="#dinamico" hx-swap="innerHTML">Historial CDP</a>
+    <a href="#" class="btn btn-thick btn-thick-celeste" hx-get="{% url 'historial_cdp' %}" hx-target="#dinamico" hx-swap="innerHTML">los cdps</a>
 </div>
 <hr>
 <div id="dinamico" style="margin:20px"></div>
@@ -30,7 +31,6 @@
     <button class="btn btn-thick btn-thick-azul">ingresar</button>
     <h2>Prueba2</h2>
 </div>
-
 {% endblock %}
 {% block jscript %}
 {% endblock %}

@@ -184,7 +184,7 @@ class EjecucionPresupuestaria(models.Model):
 #############--------------------------------------Cdp--------------------------################
 
 class CdpCounter(models.Model):
-    count = models.IntegerField(default=0)
+    count = models.IntegerField(default=1)
 
     def __str__(self):
         return str(self.count)
@@ -204,9 +204,9 @@ class Cdp(models.Model):
     id=models.CharField(primary_key=True, default=uuid.uuid4, editable=False, max_length=36)
      
     #Relaciones
-    establecimiento = models.ForeignKey(Establecimiento, on_delete=models.CASCADE,null=True, blank=True)# Aqui relacionamos el cdp con el establecimiento
+    establecimiento = models.ForeignKey(Establecimiento, on_delete=models.CASCADE,null=True, blank=True)
     unidad = models.ForeignKey(Unidad, on_delete=models.PROTECT,null=True, blank=True)
-    item_presupuestario = models.ForeignKey(ItemPresupuestario, on_delete=models.PROTECT, related_name='cdps',null=True, blank=True)
+    item_presupuestario = models.ForeignKey(ItemPresupuestario, on_delete=models.PROTECT, related_name='cdps',null=False, blank=False)
     ##########################################################
     #El programa se saca del item presupuestario
     ##########################################################
