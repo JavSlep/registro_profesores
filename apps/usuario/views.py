@@ -55,7 +55,7 @@ def loginUsuario(request):
                   'id': usuario_entidad.area_unidad.unidad.id,
                   'nombre': usuario_entidad.area_unidad.unidad.nombre,
                 }             
-              return redirect('home_funcionarios')
+              return redirect('home_funcionarios',programa='none')
             else:
               return redirect('index')
           else:            

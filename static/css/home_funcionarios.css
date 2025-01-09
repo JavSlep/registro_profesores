@@ -92,6 +92,22 @@
     box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3) !important;
 }
 
+/* Botón con fondo rosado */
+.btn-thick-rosado {
+    background-color: rgba(254, 121, 137, 1) !important;
+    color: #fff !important;
+}
+
+.btn-thick-rosado:hover {
+    background-color: rgba(234, 101, 117, 1) !important;
+}
+
+.btn-thick-rosado:active {
+    background-color: rgba(214, 81, 97, 1) !important;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3) !important;
+}
+
+
 /* Estilos para la sección principal */
 .main-content {
     display: flex;

@@ -28,32 +28,58 @@ class crearCdp(CreateView):
     form_class = CDPForm
 
 # Vista 'cdp'
-def cdp(request):
+def cdp(request,programa):
     # Por ejemplo, cargar los datos asociados a esa área o unidad
     year = datetime.datetime.now().year
-    return render(request, 'home_funcionarios.html',{'current_year':year})
+    
+    programas_presupuestarios = [('none', '---')] + list(PROGRAMAS_PRESUPUESTARIOS)
+
+    try:
+        year_in_db = Year.objects.get(year=year)
+    except Year.DoesNotExist:
+        # Si no hay year en la base de datos
+        messages.error(request, f"Debes generar el inicio del año {year} en el sistema (Boton rojo)")
+        context ={
+        'current_year':year,
+        'current_program':programa,
+        'programs': programas_presupuestarios,
+        'state': True
+        }
+        return render(request, 'home_funcionarios.html',context)
+ 
+    context ={
+        'current_year':year,
+        'current_program':programa,
+        'programs': programas_presupuestarios,
+    }
+    return render(request, 'home_funcionarios.html',context)
 
 @csrf_exempt
-def ingresar_cdp(request):
-    form = CDPForm()
+def ingresar_cdp(request,year,programa):
+    if programa =='none':
+        programa = None
+    form = CDPForm(programa=programa)
     # Si el formulario se envía por POST
     if request.method == 'POST':
-        form = CDPForm(request.POST)
-        
+        form = CDPForm(request.POST,programa=programa)
         if form.is_valid():
+            
             cdp = form.save(commit=False)
-            # Lógica para guardar el CDP en la base de datos
+            
             cdp.save()
             #La alerta me salta despues de cambiar de pagina
             messages.success(request, "CDP guardado exitosamente")
-            cdps = Cdp.objects.all()
+            cdps = Cdp.objects.filter(item_presupuestario__subtitulo_presupuestario__year__year=year, item_presupuestario__subtitulo_presupuestario__programa_presupuestario=programa)
             context = {
                 'cdps': cdps
             }
             
             return render(request, 'listado.html', context)
+    
     context = {
         'form': form,
+        'current_program': programa,
+        'current_year': year,
         'title_nav': 'Ingresar CDP',
     }
     # Renderizamos la página con el formulario
@@ -123,7 +149,6 @@ def actualizar_ley_presupuestaria(request, year):
 
 def generar_ley_presupuestaria(request):
     current_year_value = datetime.datetime.now().year
-    current_year_value = 2026
     context={
             'current_year':current_year_value
         }
@@ -151,9 +176,10 @@ def generar_ley_presupuestaria(request):
     
 
 
-def listado(request):
+def listado(request,year,programa):
+    print(f"{programa} {year}")
     # Lógica para obtener el listado de CDPs
-    cdps = Cdp.objects.all()
+    cdps = Cdp.objects.filter(item_presupuestario__subtitulo_presupuestario__year__year=year, item_presupuestario__subtitulo_presupuestario__programa_presupuestario=programa)
     context = {
         'cdps': cdps
     }
@@ -180,3 +206,9 @@ def cambiar_year(request):
         year = request.POST.get('year')
         
         return redirect( 'ley_presupuestaria',year)
+
+def cambiar_programa(request):
+    if request.method == 'POST':
+        programa = request.POST.get('programa')
+        
+        return redirect( 'home_funcionarios',programa)

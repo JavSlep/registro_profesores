@@ -13,19 +13,12 @@
     <br>
     <form id="yearForm" action="{% url 'cambiar_year' %}" method="post">
         {% csrf_token %}
-
-        
         <select id="year" class="form-select" aria-label="Default select example" name="year">
             {% for year in years %}
             <option value="{{ year.year }}" {% if year.year == current_year %}selected{% endif %}>{{ year.year }}</option>
             {% endfor %}
         </select>
-        
     </form>
-
-
-
-
     <br>        
         <!-- Título grande para P01 GASTOS ADMINISTRATIVOS -->
         <h3 class="mt-4 border-bottom pb-2">Programa 01: GASTOS ADMINISTRATIVOS</h3>
@@ -34,6 +27,7 @@
                 <label class="col-sm-5 col-form-label">{{ subtitulo.subtitulo }}</label>
                 <div class="col-sm-7">
                     <input type="text" class="form-control" value="{{ subtitulo.ley_presupuestaria_subtitulo|floatformat:0 }}" disabled>
+                    
                 </div>
             </div>
         {% endfor %}
@@ -41,16 +35,25 @@
         <!-- Título grande para P02 SERVICIOS EDUCATIVOS -->
         <h3 class="mt-4 border-bottom pb-2">Programa 02: SERVICIOS EDUCATIVOS</h3>
         {% for subtitulo in subtitulos_p02 %}
-            <div class="form-group row" style="margin-top: 15px;">
-                <label class="col-sm-5 col-form-label">{{ subtitulo.subtitulo }}</label>
-                <div class="col-sm-7">
-                    <input type="text" class="form-control" value="{{ subtitulo.ley_presupuestaria_subtitulo|floatformat:0 }}" disabled>
-                </div>
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <label for="subtitulo-{{ forloop.counter }}" style="font-size: 14px;">{{ subtitulo.subtitulo |truncatechars:30  }}</label>
+                <input type="text" style="width: 100%; height: 30px; font-size: 14px;" id="subtitulo-{{ forloop.counter }}" value="{{ subtitulo.ley_presupuestaria_subtitulo|floatformat:0}}" disabled>
             </div>
+            <div class="col-md-4">
+                <label for="monto-{{ forloop.counter }}" style="font-size: 16px;">Monto ejecución presupuestaria</label>
+                <input type="text" style="width: 100%; height: 30px; font-size: 14px;" id="monto-{{ forloop.counter }}" value="{{ subtitulo.monto_ejecucion_presupuestaria_subtitulo|floatformat:0 }}" disabled>
+            </div>
+            <div class="col-md-4">
+                <label for="monto-{{ forloop.counter }}" style="font-size: 16px;">Monto total</label>
+                <input type="text" style="width: 100%; height: 30px; font-size: 14px;" id="monto-{{ forloop.counter }}" value="{{ subtitulo.monto_ejecucion_presupuestaria_subtitulo|floatformat:0 }}" disabled>
+            </div>
+        </div>
+        
+        </div>
         {% endfor %}
         
-        <a href="{% url 'actualizar_ley_presupuestaria' current_year %}" class="btn btn-success mt-4">Actualizar</a>
-
+        <a href="{% url 'actualizar_ley_presupuestaria' current_year %}" class="btn btn-thick btn-thick-azul">Actualizar</a>
 
     {% if error %}
         <div class="alert alert-danger mt-4" role="alert">

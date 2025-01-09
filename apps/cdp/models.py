@@ -2,6 +2,8 @@ from django.db import models
 from django.utils import timezone
 from babel.numbers import format_decimal
 import uuid
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from ..establecimiento.models import Establecimiento
 from ..usuario.models import Unidad
 
@@ -29,7 +31,8 @@ class Year(models.Model):
             f"Monto total ley presupuestaria: {self.monto_total_ley_presupuestaria}, "
             f"Monto total comprometido: {self.monto_total_comprometido}"
         )
-    
+
+
 class Subtitulo(models.Model):
     id=models.CharField(primary_key=True, default=uuid.uuid4, editable=False, max_length=36)
 
@@ -68,6 +71,10 @@ class SubtituloPresupuestario(models.Model):
     def monto_comprometido_subtitulo(self):
         return sum(item.saldo_comprometido for item in self.items_presupuestarios.all())
     
+    @property
+    def monto_ejecucion_presupuestaria_subtitulo(self):
+        return sum(item.ejecucion_presupuestaria_item for item in self.items_presupuestarios.all())
+
     @property #Saldo total por comprometer
     def monto_por_comprometer(self):
         return self.ley_presupuestaria_subtitulo - self.monto_comprometido_subtitulo
@@ -104,6 +111,7 @@ class ItemPresupuestario(models.Model):
     subtitulo_presupuestario = models.ForeignKey(SubtituloPresupuestario, on_delete=models.CASCADE,related_name='items_presupuestarios',default=99)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     ley_presupuestaria_item = models.IntegerField(null=False,default=0)#Este es un valor de la ley de presupuesto
+    ejecucion_presupuestaria_item = models.IntegerField(default=0)
     monto_comprometido = models.IntegerField(null=False,default=0)
 
     updated=models.DateTimeField(auto_now=True, null=True, blank=True)
@@ -159,7 +167,9 @@ class EjecucionPresupuestaria(models.Model):
             monto_ley_presupuesto = self.item_presupuestario.ley_presupuestaria_item
             monto_comprometido = self.item_presupuestario.monto_comprometido
             return monto_ley_presupuesto - monto_comprometido
-        
+    
+
+
     @property
     def ejecucion_comprometida(self):#Porcentaje entre el valor comprometido y el total de la ley de presupuesto
         if self.subtitulo_presupuestario:
@@ -184,7 +194,7 @@ class EjecucionPresupuestaria(models.Model):
 #############--------------------------------------Cdp--------------------------################
 
 class CdpCounter(models.Model):
-    count = models.IntegerField(default=1)
+    count = models.IntegerField(default=0)
 
     def __str__(self):
         return str(self.count)
@@ -198,6 +208,7 @@ FONDOS = [
     ('PRO-RETENCION', 'PRO-RETENCION'),
     ('MANTENIMIENTO', 'MANTENIMIENTO'),
     ('APORTE FISCAL', 'APORTE FISCAL'),
+    ('OTROS','OTROS')
 ]
 # Create your models here.
 class Cdp(models.Model):
@@ -206,7 +217,7 @@ class Cdp(models.Model):
     #Relaciones
     establecimiento = models.ForeignKey(Establecimiento, on_delete=models.CASCADE,null=True, blank=True)
     unidad = models.ForeignKey(Unidad, on_delete=models.PROTECT,null=True, blank=True)
-    item_presupuestario = models.ForeignKey(ItemPresupuestario, on_delete=models.PROTECT, related_name='cdps',null=False, blank=False)
+    item_presupuestario = models.ForeignKey(ItemPresupuestario, on_delete=models.CASCADE, related_name='cdps',null=False, blank=False)
     ##########################################################
     #El programa se saca del item presupuestario
     ##########################################################
@@ -215,7 +226,7 @@ class Cdp(models.Model):
     # cuenta_contable = models.CharField(max_length=50) Este dato se puede sacar de la tabla de items 2102
     cdp = models.CharField(max_length=4,blank=True,editable=False)
     folio_sigfe = models.CharField(max_length=5)
-    documento = models.CharField(max_length=50)
+    n_orden = models.CharField(max_length=50)
     monto = models.IntegerField()
     detalle = models.CharField(max_length=500)
     otros = models.CharField(max_length=100, blank=True, null=True)
@@ -230,7 +241,7 @@ class Cdp(models.Model):
             counter, created = CdpCounter.objects.get_or_create(id=1)
             counter.count += 1
             counter.save()
-            self.cdp = f"{counter.count}"
+            self.cdp = f"{counter.count}" 
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -247,4 +258,12 @@ class Files(models.Model):
     created=models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.nombre
-    
+
+#---------------------|Signals|---------------------  
+# Signal para resetear el contador 
+@receiver(post_save, sender=Year)
+def reset_cdp_counter(sender, instance, created, **kwargs):
+    if created:#Creado por primera vez (true) o actualizacion (false)
+        CdpCounter.objects.all().delete()
+        CdpCounter.objects.create(id=1)
+

@@ -14,16 +14,32 @@
         <p><strong>Área: </strong>{{ request.session.area_unidad.nombre }}</p>
     </div>
     <div class="vertical-divider"></div>
-    <a href="{% url 'actualizar_ley_presupuestaria' current_year %}" class="btn btn-thick btn-thick-rojo">Actualizar Ley Presupuesto Anual {{ current_year }}</a>
+    <div class="d-flex flex-column">
+        <a href="{% url 'actualizar_ley_presupuestaria' current_year %}" class="btn btn-thick btn-thick-azul">Actualizar Ley Presupuesto Anual {{ current_year }}</a>
+        {% if state %}
+        <a href="{% url 'generar_ley_presupuestaria' %}" class="btn btn-thick btn-thick-rojo" style="margin-top: 10px;">Debes generar Ley Presupuesto Anual {{ current_year }}</a>
+        {% endif %}
+    </div>
 </div>
 <hr>
+<h4>PROGRAMA SELECIONADO</h4>
+<form id="programaForm" action="{% url 'cambiar_programa' %}" method="post">
+    {% csrf_token %}
+    <select id="programa" class="form-select" aria-label="Default select example" name="programa">
+        {% for programa in programs %}
+        <option value="{{ programa.0 }}" {% if programa.0 == current_program %}selected{% endif %}>{{ programa.1 }}</option>
+        {% endfor %}
+    </select>
+</form>
+
+<hr>
 <div class="d-flex justify-content-around" style="margin-top: 20px;">
-    <a href="#" class="btn btn-thick btn-thick-verde" hx-get="{% url 'ingresar_cdp' %}" hx-target="#dinamico" hx-swap="innerHTML">Ingresar CDP</a>
-    <a href="#" class="btn btn-thick btn-thick-amarillo" hx-get="{% url 'listado' %}" hx-target="#dinamico" hx-swap="innerHTML">Historial CDP</a>
+    <a href="#" class="btn btn-thick btn-thick-verde" hx-get="{% url 'ingresar_cdp' request.session.usuario_entidad.year current_program  %}" hx-target="#dinamico" hx-swap="innerHTML">Ingresar CDP</a>
+    <a href="#" class="btn btn-thick btn-thick-amarillo" hx-get="{% url 'listado' request.session.usuario_entidad.year current_program %}" hx-target="#dinamico" hx-swap="innerHTML">Historial CDP</a>
     <a href="#" class="btn btn-thick btn-thick-celeste" hx-get="{% url 'historial_cdp' %}" hx-target="#dinamico" hx-swap="innerHTML">los cdps</a>
 </div>
 <hr>
-<div id="dinamico" style="margin:20px"></div>
+<div id="dinamico" style="margin:20px"><br></div>
 <hr>
 
 <div style="background-color: lightblue; padding: 20px; margin: 20px; text-align: center; display: flex; justify-content: space-between;">
@@ -33,4 +49,23 @@
 </div>
 {% endblock %}
 {% block jscript %}
+
+<script>
+    // Detectar cambio en el <select> y enviar el formulario
+    document.getElementById('programa').addEventListener('change', function() {
+      const programa = this.value;
+
+      if (programa) {
+        // Enviar el formulario automáticamente
+        document.getElementById('programaForm').submit();
+      } else {
+        alert('Por favor, selecciona un programa válido.');
+      }
+    });
+</script>
+
+
+
 {% endblock %}
+
+

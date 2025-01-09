@@ -7,8 +7,9 @@
 <div>
     <h3>Ingresar CDP para el Área</h3>
 
-    <form hx-post="{% url 'ingresar_cdp' %}" hx-target="#dinamico" hx-swap="innerHTML">
+    <form hx-post="{% url 'ingresar_cdp' current_year current_program %}" hx-target="#dinamico" hx-swap="innerHTML">
         {% csrf_token %}
+        
         {% crispy form %}
         
     </form>
@@ -25,6 +26,5 @@
         </div>
     {% endif %}
 </div>
-
 
 

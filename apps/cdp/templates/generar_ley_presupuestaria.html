@@ -10,7 +10,7 @@
 
 <form action="{% url 'generar_ley_presupuestaria' %}" method="post">
     {% csrf_token %}
-    <button type="submit" class="btn btn-thick btn-thick-celeste">Generar ley presupuestaria año {{current_year}}</button>
+    <button type="submit" class="btn btn-thick btn-thick-rojo" style="margin-top: 10px;">Generar ley presupuestaria año {{current_year}}</button>
 </form>
 
     
