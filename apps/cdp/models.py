@@ -72,8 +72,14 @@ class SubtituloPresupuestario(models.Model):
         return sum(item.saldo_comprometido for item in self.items_presupuestarios.all())
     
     @property
-    def monto_ejecucion_presupuestaria_subtitulo(self):
-        return sum(item.ejecucion_presupuestaria_item for item in self.items_presupuestarios.all())
+    def monto_ajuste_presupuestaria_subtitulo(self):
+        return sum(item.ajuste_presupuestaria_item for item in self.items_presupuestarios.all())
+    
+    @property
+    def monto_total_ajuste_presupuestario(self):
+        if self.monto_ajuste_presupuestaria_subtitulo:
+            return self.monto_ajuste_presupuestaria_subtitulo+self.ley_presupuestaria_subtitulo
+        return self.ley_presupuestaria_subtitulo
 
     @property #Saldo total por comprometer
     def monto_por_comprometer(self):
@@ -111,12 +117,17 @@ class ItemPresupuestario(models.Model):
     subtitulo_presupuestario = models.ForeignKey(SubtituloPresupuestario, on_delete=models.CASCADE,related_name='items_presupuestarios',default=99)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     ley_presupuestaria_item = models.IntegerField(null=False,default=0)#Este es un valor de la ley de presupuesto
-    ejecucion_presupuestaria_item = models.IntegerField(default=0)
+    ajuste_presupuestaria_item = models.IntegerField(default=0)
     monto_comprometido = models.IntegerField(null=False,default=0)
 
     updated=models.DateTimeField(auto_now=True, null=True, blank=True)
     created=models.DateTimeField(auto_now_add=True)
     
+    @property
+    def monto_total_ajuste_presupuestario(self):
+        if self.ajuste_presupuestaria_item:
+            return self.ajuste_presupuestaria_item + self.ley_presupuestaria_item
+        return self.ley_presupuestaria_item
     @property
     def concepto_presupuestario_item(self):
         return self.item.subtitulo.n_subtitulo+self.item.n_item+" "+self.item.denominacion
@@ -245,7 +256,7 @@ class Cdp(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"CDP:{self.cdp} ,{self.item_presupuestario.subtitulo_presupuestario.programa_presupuestario}, {self.item_presupuestario.subtitulo_presupuestario.concepto_presupuestario}, cuenta: {self.item_presupuestario.item.denominacion} monto_cdp: {self.monto}"
+        return f"CDP: {self.cdp}, {self.fecha_cdp}, monto: {self.monto}"
 
 
     

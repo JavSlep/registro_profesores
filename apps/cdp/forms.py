@@ -98,7 +98,7 @@ class CDPForm(forms.ModelForm):
         elif programa == 'P02 SERVICIOS EDUCATIVOS':
             self.helper.layout = Layout(
                 Row(
-                    Column('establecimiento', css_class='form-group col-md-12 mb-0'),
+                    Column('establecimiento', css_class='select-field form-group col-md-12 mb-0 '),
                     css_class='form-row'
                 ),
                 Column('item_presupuestario'),

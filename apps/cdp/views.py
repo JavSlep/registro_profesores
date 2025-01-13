@@ -6,6 +6,7 @@ from ..cdp.models import *
 from django.views.generic import ListView, CreateView
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
+from uuid import UUID
 
 
 
@@ -86,7 +87,6 @@ def ingresar_cdp(request,year,programa):
     return render(request, 'ingresar_cdp.html', context)
 
 def historial_cdp(request):
-    # Lógica para obtener el listado de CDPs
     if request.method == 'POST':
         ingresar_cdp(request)
     cdp = Cdp.objects.all()
@@ -95,16 +95,32 @@ def historial_cdp(request):
     }
     return render(request, 'historial_cdp.html',context)
 
+def historial_items(request, id):
+    
+    try:
+        item = ItemPresupuestario.objects.get(id=id)
+    except ValueError:
+        raise ValueError("El ID proporcionado no es un UUID válido")
+    except Item.DoesNotExist:
+        raise ValueError("El ítem con el ID proporcionado no existe")
+
+    cdps_items = Cdp.objects.filter(item_presupuestario=item)
+    context = {
+        'item': item,
+        'cdps_items': cdps_items
+    }
+    return render(request, 'modal_prueba.html', context)
+
 def ley_presupuestaria(request,year):
     subtitulos_presupuestarios = SubtituloPresupuestario.objects.filter(year__year=year).order_by('subtitulo__n_subtitulo')
-    print(subtitulos_presupuestarios)
-    # Agrupar los subtítulos por programa_presupuestario
-    subtitulos_p01 = subtitulos_presupuestarios.filter(programa_presupuestario="P01 GASTOS ADMINISTRATIVOS")
-    subtitulos_p02 = subtitulos_presupuestarios.filter(programa_presupuestario="P02 SERVICIOS EDUCATIVOS")
 
+    items = ItemPresupuestario.objects.filter(subtitulo_presupuestario__year__year=year).order_by('item__n_item')
+    cdps = Cdp.objects.filter(item_presupuestario__subtitulo_presupuestario__year__year=year).order_by('item_presupuestario__subtitulo_presupuestario__subtitulo__n_subtitulo')
     context = {
-        'subtitulos_p01': subtitulos_p01,
-        'subtitulos_p02': subtitulos_p02,
+        'cdps': cdps,
+        'programas': PROGRAMAS_PRESUPUESTARIOS,
+        'subtitulos': subtitulos_presupuestarios,
+        'items_presupuestarios': items,
         'years': Year.objects.all(),
         'current_year': year,
     }
@@ -212,3 +228,7 @@ def cambiar_programa(request):
         programa = request.POST.get('programa')
         
         return redirect( 'home_funcionarios',programa)
+    
+def modal_prueba(request):
+    form = CDPForm()
+    return render(request, 'modal_prueba.html', {'form': form})

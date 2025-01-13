@@ -19,6 +19,11 @@ urlpatterns = [
     path('cambiar_programa',cambiar_programa, name='cambiar_programa'),
 ]
 
+urlpatterns += [
+    path('historial_items/<uuid:id>', historial_items, name='historial_items'),
+    path('modal_prueba/', modal_prueba, name='modal_prueba'),
+]
+
 # URL excel
 urlpatterns += [
     path('export_subtitulos/', view_excel.export_subtitulos_to_excel, name='export_subtitulos'),
