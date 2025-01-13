@@ -31,19 +31,20 @@
 
   <br>
 
-{% for programa in programas %}
+  {% for programa in programas %}
   <h4 class="text-center" style="margin-bottom: 20px; margin-top: 20px"><b>{{ programa.1 }}</b></h4>
-  {% for subtitulo in subtitulos %}
-    {% if subtitulo.programa_presupuestario == programa.1 %}
-      <div class="accordion" id="accordionPanelsStayOpenExample">
+  <div class="accordion" id="accordion-programa-{{ programa.0 }}">
+    {% for subtitulo in subtitulos %}
+      {% if subtitulo.programa_presupuestario == programa.1 %}
         <div class="accordion-item">
           <h2 class="accordion-header"> 
-            <button class="accordion-button collapsed" style="" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ subtitulo.id }}" aria-expanded="false" aria-controls="collapse-{{ subtitulo.id }}">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panel-subtitulo-{{ subtitulo.id }}" aria-expanded="false" aria-controls="panel-subtitulo-{{ subtitulo.id }}">
               <div class="d-flex" style="flex-direction: row; width: 95%; justify-content: space-between">
                 <div class="mb-2" style="text-align: start; flex-basis: 450px; margin-top: 22px">
                   <h6>{{ subtitulo.subtitulo|truncatechars:50 }}</h6>
                 </div>
                 <div class="row" style="font-size: 14px !important; text-align: end; flex-grow: 1;">
+                  <!-- Inputs -->
                   <div class="col-3" style="padding: 0 !important;">
                     <div style="width: 100%; border-bottom: 1px solid rgba(254,59,75,1); text-align: center">
                       <label>Ley presupuestaria</label>
@@ -54,100 +55,87 @@
                     <div style="width: 100%; border-bottom: 1px solid rgba(254,59,75,1); text-align: center">
                       <label>Ajuste presupuestario</label>
                     </div>
-                    <input type="text" style="width: 100%; height: 30px; width: 100%; text-align: end;" id="monto-{{ forloop.counter }}" value="{{ subtitulo.monto_ajuste_presupuestaria_subtitulo|floatformat:0 }}" disabled>
+                    <input type="text" style="width: 100%; height: 30px; text-align: end;" value="{{ subtitulo.monto_ajuste_presupuestaria_subtitulo|floatformat:0 }}" disabled>
                   </div>
                   <div class="col-3" style="padding: 0 !important;">
                     <div style="width: 100%; border-bottom: 1px solid rgba(254,59,75,1); text-align: center">
                       <label>Saldo comprometido</label>
                     </div>
-                    <input type="text" style="width: 100%; height: 30px; width: 100%; text-align: end;" id="monto-{{ forloop.counter }}" value="{{ subtitulo.monto_comprometido_subtitulo|floatformat:0 }}" disabled>
+                    <input type="text" style="width: 100%; height: 30px; text-align: end;" value="{{ subtitulo.monto_comprometido_subtitulo|floatformat:0 }}" disabled>
                   </div>
                   <div class="col-3" style="padding: 0 !important;">
                     <div style="width: 100%; border-bottom: 1px solid rgba(57,190,239,1); text-align: center">
                       <label>Presupuesto total</label>
                     </div>
-                    <input type="text" style="width: 100%; height: 30px; width: 100%; text-align: end;" value="{{ subtitulo.monto_total_ajuste_presupuestario|floatformat:0 }}" disabled>
+                    <input type="text" style="width: 100%; height: 30px; text-align: end;" value="{{ subtitulo.monto_total_ajuste_presupuestario|floatformat:0 }}" disabled>
                   </div>  
                 </div>       
               </div>
             </button> 
           </h2>
-        </div>
-        <div id="collapse-{{ subtitulo.id }}" class="accordion-collapse collapse"><!-- Aqui va lo que se despliega -->
-          <div class="accordion-body">
-            <!-- Aqui despliego el contenido del acordeón -->
-            {% for item in items_presupuestarios %}
-              {% if subtitulo.id == item.subtitulo_presupuestario.id %}
-              <div class="accordion" id="accordionItems">
-                <div class="accordion-item">
-                  <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panel--{{ item.id }}" aria-expanded="false" aria-controls="panel--{{ item.id }}">
-                      <div class="d-flex" style="flex-direction: row; width: 95%; justify-content: space-between">
-                        <div class="mb-2" style="text-align: start; flex-basis: 450px; margin-top: 22px">
-                          <h6>{{ item.item|truncatechars:50 }}</h6>
+          <div id="panel-subtitulo-{{ subtitulo.id }}" class="accordion-collapse collapse" data-bs-parent="#accordion-programa-{{ programa.0 }}">
+            <div class="accordion-body">
+              <div class="accordion" id="accordion-items-{{ subtitulo.id }}">
+                {% for item in items_presupuestarios %}
+                  {% if subtitulo.id == item.subtitulo_presupuestario.id %}
+                    <div class="accordion-item">
+                      <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panel-item-{{ item.id }}" aria-expanded="false" aria-controls="panel-item-{{ item.id }}">
+                          <div class="d-flex" style="flex-direction: row; width: 95%; justify-content: space-between">
+                            <div class="mb-2" style="text-align: start; flex-basis: 450px; margin-top: 22px">
+                              <h6>{{ item.item|truncatechars:50 }}</h6>
+                            </div>
+                            <div class="row" style="font-size: 14px !important; text-align: end; flex-grow: 1;">
+                              <div class="col-3" style="padding: 0 !important;">
+                                <div style="width: 100%; border-bottom: 1px solid rgba(254,59,75,1); text-align: center">
+                                  <label>Item presupuestario</label>
+                                </div>
+                                <input type="text" style="width: 100%; height: 30px; text-align: end;" value="{{ item.ley_presupuestaria_item|floatformat:0 }}" disabled>
+                              </div>
+                              <div class="col-3" style="padding: 0 !important;">
+                                <div style="width: 100%; border-bottom: 1px solid rgba(254,59,75,1); text-align: center">
+                                  <label>Ajuste presupuestario</label>
+                                </div>
+                                <input type="text" style="width: 100%; height: 30px; text-align: end;" value="{{ item.monto_ajuste_presupuestaria_item|floatformat:0 }}" disabled>
+                              </div>
+                              <div class="col-3" style="padding: 0 !important;">
+                                <div style="width: 100%; border-bottom: 1px solid rgba(254,59,75,1); text-align: center">
+                                  <label>Saldo comprometido</label>
+                                </div>
+                                <input type="text" style="width: 100%; height: 30px; text-align: end;" value="{{ item.saldo_comprometido|floatformat:0 }}" disabled>
+                              </div>
+                              <div class="col-3" style="padding: 0 !important;">
+                                <div style="width: 100%; border-bottom: 1px solid rgba(57,190,239,1); text-align: center">
+                                  <label>Presupuesto total</label>
+                                </div>
+                                <input type="text" style="width: 100%; height: 30px; text-align: end;" value="{{ item.monto_total_ajuste_presupuestario|floatformat:0 }}" disabled>
+                              </div>  
+                            </div>       
+                          </div>
+                        </button>
+                      </h2>
+                      <div id="panel-item-{{ item.id }}" class="accordion-collapse collapse" data-bs-parent="#accordion-items-{{ subtitulo.id }}">
+                        <div class="accordion-body">
+                          <h6>Saldo comprometido base{{ item.monto_comprometido }}</h6>
+                          {% for cdp in cdps %}
+                            {% if item.id == cdp.item_presupuestario.id %}
+                              <h6>{{ cdp }}</h6>
+                            {% endif %}
+                          {% endfor %}
                         </div>
-                        <div class="row" style="font-size: 14px !important; text-align: end; flex-grow: 1;">
-                          <div class="col-3" style="padding: 0 !important;">
-                            <div style="width: 100%; border-bottom: 1px solid rgba(254,59,75,1); text-align: center">
-                              <label>Item presupuestario</label>
-                            </div>
-                            <input type="text" style="width: 100%; height: 30px; text-align: end;" value="{{ item.ley_presupuestaria_item|floatformat:0 }}" disabled>
-                          </div>
-                          <div class="col-3" style="padding: 0 !important;">
-                            <div style="width: 100%; border-bottom: 1px solid rgba(254,59,75,1); text-align: center">
-                              <label>Ajuste presupuestario</label>
-                            </div>
-                            <input type="text" style="width: 100%; height: 30px; width: 100%; text-align: end;" id="monto-{{ forloop.counter }}" value="{{ item.monto_ajuste_presupuestaria_item|floatformat:0 }}" disabled>
-                          </div>
-                          <div class="col-3" style="padding: 0 !important;">
-                            <div style="width: 100%; border-bottom: 1px solid rgba(254,59,75,1); text-align: center">
-                              <label>Saldo comprometido</label>
-                            </div>
-                            <input type="text" style="width: 100%; height: 30px; width: 100%; text-align: end;" id="monto-{{ forloop.counter }}" value="{{ item.saldo_comprometido|floatformat:0 }}" disabled>
-                          </div>
-                          <div class="col-3" style="padding: 0 !important;">
-                            <div style="width: 100%; border-bottom: 1px solid rgba(57,190,239,1); text-align: center">
-                              <label>Presupuesto total</label>
-                            </div>
-                            <input type="text" style="width: 100%; height: 30px; width: 100%; text-align: end;" value="{{ item.monto_total_ajuste_presupuestario|floatformat:0 }}" disabled>
-                          </div>  
-                        </div>       
                       </div>
-                    </button>
-                  </h2>
-                  <div id="panel--{{ item.id }}" class="accordion-collapse collapse">
-                    <div class="accordion-body">
-                      <h6>Saldo comprometido base{{ item.monto_comprometido }}</h6>
-
-                      {% for cdp in cdps %}
-                          {% if item.id == cdp.item_presupuestario.id %}
-                            <!--Aqui van los cdps con diseño-->
-                            <h6>{{ cdp }}</h6>
-                          {% endif %}
-                        {% endfor %}
                     </div>
-                  </div>
-                </div>
+                  {% endif %}
+                {% endfor %}
               </div>
-                <!-- Aqui van los items con diseño -->
-                
-                <hr>
-              {% endif %}
-            {% endfor %}<!-- Aqui despliego los items --> 
-          </div>
-        </div> 
-      </div>
-    {% endif %}
-  {% endfor %}
+            </div>
+          </div> 
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
 {% endfor %}
 
-<!--Esto es lo que va despues con los cdps-->
-{% comment %} {% for cdp in cdps %}
-                    {% if item.id == cdp.item_presupuestario.id %}
-                      <!--Aqui van los cdps con diseño-->
-                      <h6>{{ cdp }}</h6>
-                    {% endif %}
-                  {% endfor %} {% endcomment %}
 
 {%comment%}
 <a type="button" data-form="{% url 'historial_items' item.id %}" class="btn btn-thick btn-thick-azul abrir_modal" style="margin-top: 10px;">Modal</a>

@@ -43,7 +43,7 @@ class Subtitulo(models.Model):
     created=models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return "Subtitulo: "+self.n_subtitulo+", Denominacion: "+self.denominacion
+        return f"{self.n_subtitulo} {self.denominacion}"
 
 PROGRAMAS_PRESUPUESTARIOS = [
     ('P01 GASTOS ADMINISTRATIVOS', 'P01 GASTOS ADMINISTRATIVOS'),
@@ -108,7 +108,7 @@ class Item(models.Model):
     created=models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.subtitulo.n_subtitulo+", item: "+self.n_item+", Denominacion: "+self.denominacion
+        return f"{self.subtitulo.n_subtitulo}{self.n_item} {self.denominacion}"
 
 
 class ItemPresupuestario(models.Model):
