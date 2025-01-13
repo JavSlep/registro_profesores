@@ -62,13 +62,6 @@
         <div class="collapse show" id="presupuesto-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
             <li>
-              <a href="{% url 'actualizar_ley_presupuestaria' request.session.usuario_entidad.year %}" class="link-dark rounded">Actualizar Presupuesto {{request.session.usuario_entidad.year}}</a>
-            </li>
-          </ul>
-        </div>
-        <div class="collapse show" id="presupuesto-collapse">
-          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li>
               <a href="{% url 'generar_ley_presupuestaria' %}" class="link-dark rounded">Generar Ley presupuestaria anual</a>
             </li>
           </ul>

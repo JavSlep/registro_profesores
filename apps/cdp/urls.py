@@ -22,6 +22,7 @@ urlpatterns = [
 urlpatterns += [
     path('historial_items/<uuid:id>', historial_items, name='historial_items'),
     path('modal_prueba/', modal_prueba, name='modal_prueba'),
+    path('modal_cdps_item_ley_presupuestaria/<uuid:item_presupuestario_id>', modal_cdps_item_ley_presupuestaria, name='modal_cdps_item_ley_presupuestaria'),
 ]
 
 # URL excel

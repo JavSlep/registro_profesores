@@ -7,6 +7,7 @@ from django.views.generic import ListView, CreateView
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from uuid import UUID
+from django.http import Http404
 
 
 
@@ -231,4 +232,23 @@ def cambiar_programa(request):
     
 def modal_prueba(request):
     form = CDPForm()
-    return render(request, 'modal_prueba.html', {'form': form})
+    context= {
+        'form':form,
+        'cdps': Cdp.objects.all(),
+        
+    }
+    return render(request, 'modal_prueba.html', context)
+
+def modal_cdps_item_ley_presupuestaria(request,item_presupuestario_id):
+    
+    try:
+        item_presupuestario = ItemPresupuestario.objects.get(id=item_presupuestario_id)
+    except ItemPresupuestario.DoesNotExist:
+        raise Http404("El ítem presupuestario no existe.")
+    cdps = Cdp.objects.filter(item_presupuestario=item_presupuestario)
+    context= {
+        'cdps': cdps,
+        'item_presupuestario': item_presupuestario,
+        'programas': PROGRAMAS_PRESUPUESTARIOS,
+    }
+    return render(request, 'modal_cdps_item_ley_presupuestaria.html', context)

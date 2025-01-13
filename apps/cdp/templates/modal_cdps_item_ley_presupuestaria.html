@@ -1,0 +1,48 @@
+{% load utilidades %}
+<div class="modal-dialog modal-lg" id="myModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        {% if item_presupuestario.subtitulo_presupuestario.programa_presupuestario == "P01 GASTOS ADMINISTRATIVOS" %}
+          <h5 class="modal-title" id="exampleModalLabel">P01: Item {{ item_presupuestario.item }}</h5>
+        {% elif item_presupuestario.subtitulo_presupuestario.programa_presupuestario == "P02 SERVICIOS EDUCATIVOS" %}
+          <h5 class="modal-title" id="exampleModalLabel">P02: Item {{ item_presupuestario.item }}</h5>
+        {% endif %}
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h5>Monto base comprometido: {{item_presupuestario.monto_comprometido| montoConPuntos}}</h5>
+        <hr>
+        <table id="cdp-table" class="table">
+          <thead>
+            <tr>
+              <th scope="col">n°</th>
+              <th scope="col">fecha de CDP</th>
+              <th scope="col">fondo subvención</th>
+              <th scope="col">Monto Comprometido</th>
+              <th scope="col">Detalles</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for cdp in cdps %}
+            <tr>
+              <th scope="row">{{cdp.cdp}}</th>
+              <td>{{cdp.fecha_cdp| date:"d/m/Y"}}</td>
+              <td>{{cdp.fondo}}</td>
+              <td>{{ cdp.monto | montoConPuntos}}</td> <!-- Aquí mantuvimos el id correcto para cada monto -->
+              <td>{{cdp.detalle}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <hr>
+        <h5><strong>Total saldo comprometido: {{item_presupuestario.saldo_comprometido| montoConPuntos}}<strong></h5>
+        <!-- Contenido del modal como actualizar cdp -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+</div>
+
+

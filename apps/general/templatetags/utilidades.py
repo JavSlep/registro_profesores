@@ -24,3 +24,14 @@ def filter_by(queryset, arg):
         return queryset.filter(**{key: value})
     except ValueError:
         raise ValueError(f"El argumento '{arg}' no está en el formato 'key:value'")
+
+@register.filter(name='montoConPuntos')
+def montoConPuntos(monto):
+    try:
+        # Asegúrate de que el monto es un número
+        monto = int(monto)
+        # Formatea el número con puntos como separadores de miles
+        return f"{monto:,}".replace(",", ".")
+    except (ValueError, TypeError):
+        # Si el monto no es un número válido, devuélvelo como está
+        return monto
