@@ -49,20 +49,79 @@
       </li>
       <li class="mb-1">
         <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
-          data-bs-target="#presupuesto-collapse" aria-expanded="true">
+          data-bs-target="#cdp-collapse" aria-expanded="true">
+          CDP
+        </button>
+        <div class="collapse show" id="cdp-collapse" style="background-color: #ffcccc;">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li>
+              <a  href="{% url 'ver_cdp' request.session.usuario_entidad.year 'none' %}" class="link-dark rounded">Ingresar/Editar/Eliminar</a>
+            </li>
+          </ul>
+        </div>
+        <div class="collapse show" id="cdp-collapse" style="background-color: #ffcccc;">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li>
+              <a href="{% url 'generar_ley_presupuestaria' %}" class="link-dark rounded">Historial</a>
+            </li>
+          </ul>
+        </div>
+      </li>
+      <li class="mb-1">
+        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+          data-bs-target="#presupuesto-collapse" aria-expanded="false">
           Presupuesto
         </button>
-        <div class="collapse show" id="presupuesto-collapse">
+        <div class="collapse" id="presupuesto-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
             <li>
               <a href="{% url 'ley_presupuestaria' request.session.usuario_entidad.year %}" class="link-dark rounded">Ley Presupuesto</a>
             </li>
           </ul>
         </div>
-        <div class="collapse show" id="presupuesto-collapse">
+        <div class="collapse" id="presupuesto-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
             <li>
-              <a href="{% url 'generar_ley_presupuestaria' %}" class="link-dark rounded">Generar Ley presupuestaria anual</a>
+              <a href="{% url 'generar_ley_presupuestaria' %}" class="link-dark rounded">Generar Ley Presupuestaria (anual)</a>
+            </li>
+          </ul>
+        </div>
+      </li>
+      <li class="mb-1">
+        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+          data-bs-target="#reportes-collapse" aria-expanded="True">
+          Reportes
+        </button>
+        <div class="collapse show" id="reportes-collapse" style="background-color: #ffcccc;">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li>
+              <a href="{% url 'home_funcionarios' 'none'%}" class="link-dark rounded">Tipos de reportes??? solo por el rojo</a>
+            </li>
+          </ul>
+        </div>
+      </li>
+      <li class="mb-1">
+        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+          data-bs-target="#exploratorio-collapse" aria-expanded="false">
+          Exploratorio
+        </button>
+        <div class="collapse" id="exploratorio-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li>
+              <a href="{% url 'home_funcionarios' 'none'%}" class="link-dark rounded">Proximamente...</a>
+            </li>
+          </ul>
+        </div>
+      </li>
+      <li class="mb-1">
+        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+          data-bs-target="#configuracion-collapse" aria-expanded="true">
+          Configuración
+        </button>
+        <div class="collapse show" id="configuracion-collapse" style="background-color: #ffcccc;">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li>
+              <a href="{% url 'home_funcionarios' 'none'%}" class="link-dark rounded">Crear usuario con privilegios</a>
             </li>
           </ul>
         </div>

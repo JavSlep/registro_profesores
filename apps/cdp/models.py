@@ -73,7 +73,7 @@ class SubtituloPresupuestario(models.Model):
     
     @property
     def monto_ajuste_presupuestaria_subtitulo(self):
-        return sum(item.ajuste_presupuestaria_item for item in self.items_presupuestarios.all())
+        return sum(item.ajuste_presupuestario_item for item in self.items_presupuestarios.all())
     
     @property
     def monto_total_ajuste_presupuestario(self):
@@ -117,7 +117,7 @@ class ItemPresupuestario(models.Model):
     subtitulo_presupuestario = models.ForeignKey(SubtituloPresupuestario, on_delete=models.CASCADE,related_name='items_presupuestarios',default=99)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     ley_presupuestaria_item = models.IntegerField(null=False,default=0)#Este es un valor de la ley de presupuesto
-    ajuste_presupuestaria_item = models.IntegerField(default=0)
+    ajuste_presupuestario_item = models.IntegerField(default=0)
     monto_comprometido = models.IntegerField(null=False,default=0)
 
     updated=models.DateTimeField(auto_now=True, null=True, blank=True)
@@ -125,8 +125,8 @@ class ItemPresupuestario(models.Model):
     
     @property
     def monto_total_ajuste_presupuestario(self):
-        if self.ajuste_presupuestaria_item:
-            return self.ajuste_presupuestaria_item + self.ley_presupuestaria_item
+        if self.ajuste_presupuestario_item:
+            return self.ajuste_presupuestario_item + self.ley_presupuestaria_item
         return self.ley_presupuestaria_item
     @property
     def concepto_presupuestario_item(self):

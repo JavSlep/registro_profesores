@@ -15,7 +15,7 @@
     </div>
     <div class="vertical-divider"></div>
     <div class="d-flex flex-column">
-        <a href="{% url 'actualizar_ley_presupuestaria' current_year %}" class="btn btn-thick btn-thick-azul">Actualizar Ley Presupuesto Anual {{ current_year }}</a>
+        <a href="{% url 'ley_presupuestaria' current_year %}" class="btn btn-thick btn-thick-azul">Revisar Ley Presupuestaria {{ current_year }}</a>
         {% if state %}
         <a href="{% url 'generar_ley_presupuestaria' %}" class="btn btn-thick btn-thick-rojo" style="margin-top: 10px;">Debes generar Ley Presupuesto Anual {{ current_year }}</a>
         {% endif %}
@@ -42,11 +42,6 @@
 <div id="dinamico" style="margin:20px"><br></div>
 <hr>
 
-<div style="background-color: lightblue; padding: 20px; margin: 20px; text-align: center; display: flex; justify-content: space-between;">
-    <h1>Prueba</h1>
-    <button class="btn btn-thick btn-thick-azul">ingresar</button>
-    <h2>Prueba2</h2>
-</div>
 {% endblock %}
 {% block jscript %}
 

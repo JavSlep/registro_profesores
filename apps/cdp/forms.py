@@ -141,4 +141,12 @@ class CDPForm(forms.ModelForm):
             else:
                 raise forms.ValidationError("Debe seleccionar al menos un Establecimiento o Unidad.")
           return cleaned_data 
-        
+
+class CdpGeneralForm(forms.ModelForm):
+    class Meta:
+        model = Cdp
+        fields = '__all__'  # El campo para ingresar el código CDP
+    def __init__(self, *args, **kwargs):
+        programa = kwargs.pop('programa', None)
+        super().__init__(*args, **kwargs)
+        print(programa)

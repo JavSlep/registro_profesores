@@ -9,34 +9,30 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h2 class="text-center">Modificar Ley Presupuestaria {{ current_year }}</h2>
+    <h2 class="text-center">Modificar ajuste presupuestario {{ current_year }}</h2>
     <br>
 
+
     <!-- Formulario para actualizar la ley de presupuesto -->
-    <form method="post" class="actualizar-ley-presupuesto">
+    <form method="post" class="actualizar-ajuste-presupuesto">
         {% csrf_token %}
-        
-        <!-- Título grande para P01 GASTOS ADMINISTRATIVOS -->
-        <h3 class="mt-4 border-bottom pb-2">Programa 01: GASTOS ADMINISTRATIVOS</h3>
-        {% for subtitulo in subtitulos_p01 %}
-            <div class="form-group row" style="margin-top: 15px;">
-                <label for="ley_presupuestaria_{{ forloop.counter }}" class="col-sm-5 col-form-label">{{ subtitulo.subtitulo }}</label>
-                <div class="col-sm-7">
-                    <input type="text" class="form-control" id="ley_presupuestaria_{{ forloop.counter }}" name="ley_presupuestaria_{{ subtitulo.id }}" value="{{ subtitulo.ley_presupuestaria_subtitulo|floatformat:0 }}" style="background-color: rgb(200, 230, 250);" required>
-                </div>
-            </div>
-        {% endfor %}
-        
-        <!-- Título grande para P02 SERVICIOS EDUCATIVOS -->
-        <h3 class="mt-4 border-bottom pb-2">Programa 02: SERVICIOS EDUCATIVOS</h3>
-        {% for subtitulo in subtitulos_p02 %}
-            <div class="form-group row" style="margin-top: 15px;">
-                <label for="ley_presupuestaria_{{ forloop.counter }}" class="col-sm-5 col-form-label">{{ subtitulo.subtitulo }}</label>
-                <div class="col-sm-7">
-                    <input type="text" class="form-control" id="ley_presupuestaria_{{ forloop.counter }}" name="ley_presupuestaria_{{ subtitulo.id }}" value="{{ subtitulo.ley_presupuestaria_subtitulo|floatformat:0 }}" style="background-color: rgb(200, 230, 250);" required>
-                </div>
-            </div>
-        {% endfor %}
+        {% for programa in programas %}
+            <h3 class="text-center" style="margin-bottom: 40px; margin-top: 70px"><u>{{ programa.1 }}</u></h3>
+                {% for subtitulo in subtitulos %}
+                    {% if subtitulo.programa_presupuestario == programa.0 %}
+                        <h4 style="margin-top: 60px">{{ subtitulo.subtitulo }}</h4>
+                        {%for item in subtitulo.items_presupuestarios.all %}
+                            <div class="form-group row" style="margin-top: 35px;">
+                                <label for="ajuste_presupuestario_{{ forloop.counter }}" class="col-sm-5 col-form-label" style="font-weight: normal;">{{ item.item }} </label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" id="ajuste_presupuestario_{{ forloop.counter }}" name="ajuste_presupuestario_{{ item.id }}" value="{{ item.ajuste_presupuestario_item|floatformat:0 }}" style="background-color: rgb(200, 230, 250);" required>
+                                </div>
+                            </div>
+                            <hr>
+                        {%endfor%}
+                    {%endif%}
+                {% endfor%}
+        {% endfor%}
         
         <a href="{% url 'ley_presupuestaria' current_year %}" class="btn btn-thick btn-thick-amarillo">Cancelar</a>
         <button type="submit" class="btn btn-thick btn-thick-rosado">Guardar</button>

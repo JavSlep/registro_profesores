@@ -1,0 +1,60 @@
+{% extends 'base.html' %} 
+{% load static %}
+{% load utilidades %}
+{% load crispy_forms_tags %}
+{% block head %}
+
+<link href="{% static 'css/home_funcionarios.css' %}" rel="stylesheet">
+
+{% endblock %}
+{% block content %} 
+
+<div>
+    <h1>En un modal actualizamos el cdp y sabana de informacion</h1>
+    <div>
+        <h6 class="" style="font-size: 14px; color: rgba(31,132,236,1);">Seleccionar año de ley presupuestaria</h6>
+        <form id="yearForm" action="{% url 'cambiar_year_ver_cdp' current_program %}" method="post">
+            {% csrf_token %}
+            <select id="year" class="form-select" aria-label="Default select example" name="year">
+            {% for year in years %}
+            <option value="{{ year.year }}" {% if year.year == current_year %}selected{% endif %}>Año: {{ year.year }}</option>
+            {% endfor %}
+            </select>
+        </form>
+    </div>
+
+    {% for cdp in cdps %}
+        <h6>{{ cdp.monto }}</h6>
+    {% endfor %}
+</div>
+
+{% endblock %}
+{% block jscript %}
+<script>
+    // Detectar cambio en el <select> y enviar el formulario
+    document.getElementById('year').addEventListener('change', function() {
+      const year = this.value;
+
+      if (year) {
+        // Enviar el formulario automáticamente
+        document.getElementById('yearForm').submit();
+      } else {
+        alert('Por favor, selecciona un año válido.');
+      }
+    });
+  </script>
+
+<script>
+    // Variable con el año a preseleccionar
+    const preselectedYear = {{ current_year }}; // Cambia esto al año que necesites
+
+    // Preseleccionar el año al cargar la página
+    window.addEventListener('DOMContentLoaded', () => {
+      const yearSelect = document.getElementById('year');
+      if (preselectedYear) {
+        yearSelect.value = preselectedYear;
+      }
+    });
+</script>
+
+{% endblock %}

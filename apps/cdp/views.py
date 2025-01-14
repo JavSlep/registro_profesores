@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import CDPForm
+from .forms import *
 import datetime
 from ..establecimiento.models import Establecimiento
 from ..cdp.models import *
@@ -55,6 +55,21 @@ def cdp(request,programa):
         'programs': programas_presupuestarios,
     }
     return render(request, 'home_funcionarios.html',context)
+
+def ver_cdp(request, year, programa):
+    print(programa)
+    print(year)
+    cdps = Cdp.objects.filter(item_presupuestario__subtitulo_presupuestario__year__year=year)
+    if programa != 'none':
+        cdps = cdps.filter(item_presupuestario__subtitulo_presupuestario__programa_presupuestario=programa)
+    
+    context = {
+        'current_year': year,
+        'current_program': programa,
+        'years': Year.objects.all(),
+        'cdps': cdps
+    }
+    return render(request, 'ver_cdps.html', context)
 
 @csrf_exempt
 def ingresar_cdp(request,year,programa):
@@ -164,6 +179,44 @@ def actualizar_ley_presupuestaria(request, year):
 
     return render(request, 'actualizar_ley_presupuestaria.html', context)
 
+def actualizar_ajuste_presupuestario(request, year):
+    if request.method == 'POST':
+        # Obtener los subtítulos presupuestarios para el año especificado
+        items_presupuestarios = ItemPresupuestario.objects.filter(subtitulo_presupuestario__year__year=year)
+        for item in items_presupuestarios: print(item.ajuste_presupuestario_item)
+        # Recorrer los subtítulos y actualizar los valores
+        for item in items_presupuestarios:
+            field_name = f'ajuste_presupuestario_{item.id}'
+            if field_name in request.POST:
+                nuevo_valor = request.POST[field_name]
+                # Eliminar los puntos y convertir a número
+                nuevo_valor = nuevo_valor.replace('.', '')
+                try:
+                    nuevo_valor = int(nuevo_valor)  # O usa float(nuevo_valor) si es un número decimal
+                except ValueError:
+                    messages.error(request, f"Valor inválido para {field_name}: {nuevo_valor}")
+                    return redirect('ley_presupuestaria', year)
+                item.ajuste_presupuestario_item = nuevo_valor
+                item.save()
+        messages.success(request, "Ajuste presupuestario actualizado exitosamente")
+        return redirect( 'ley_presupuestaria',year)
+
+    subtitulos_presupuestarios = SubtituloPresupuestario.objects.filter(year__year=year).order_by('subtitulo__n_subtitulo')
+    
+    # Agrupar los subtítulos por programa_presupuestario
+    subtitulos_p01 = subtitulos_presupuestarios.filter(programa_presupuestario="P01 GASTOS ADMINISTRATIVOS")
+    subtitulos_p02 = subtitulos_presupuestarios.filter(programa_presupuestario="P02 SERVICIOS EDUCATIVOS")
+    
+    context = {
+        'subtitulos_p01': subtitulos_p01,
+        'subtitulos_p02': subtitulos_p02,
+        'subtitulos': subtitulos_presupuestarios,
+        'programas': PROGRAMAS_PRESUPUESTARIOS,
+        'current_year': year,
+    }
+
+    return render(request, 'actualizar_ajuste_presupuestario.html', context)
+
 def generar_ley_presupuestaria(request):
     current_year_value = datetime.datetime.now().year
     context={
@@ -223,6 +276,13 @@ def cambiar_year(request):
         year = request.POST.get('year')
         
         return redirect( 'ley_presupuestaria',year)
+
+def cambiar_year_ver_cdp(request,program):
+    print(f"Se cambio el año {program}")
+    if request.method == 'POST':
+        year = request.POST.get('year')
+        
+        return redirect( 'ver_cdp',year,program)
 
 def cambiar_programa(request):
     if request.method == 'POST':

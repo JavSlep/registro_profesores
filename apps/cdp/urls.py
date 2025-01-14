@@ -9,13 +9,16 @@ from django.contrib.auth.decorators import login_required as loguin_required
 urlpatterns = [
     path('home/<str:programa>', loguin_required(cdp), name='home_funcionarios'),
     path('ingresar-cdp/<int:year>/<str:programa>', ingresar_cdp, name='ingresar_cdp'),
+    path('ver-cdp/<int:year>/<str:programa>', ver_cdp, name='ver_cdp'),
     path('listado/<int:year>/<str:programa>', listado, name='listado'),
     path('ejemplo', Ejemplo.as_view(), name='ejemplo'),
     path('historial_cdp/', historial_cdp, name='historial_cdp'),
     path('ley_presupuestaria/<int:year>',ley_presupuestaria, name='ley_presupuestaria'),
     path('actualizar_ley_presupuestaria/<int:year>',actualizar_ley_presupuestaria, name='actualizar_ley_presupuestaria'),
+    path('actualizar_ajuste_presupuestario/<int:year>',actualizar_ajuste_presupuestario, name='actualizar_ajuste_presupuestario'),
     path('generar_ley_presupuestaria',generar_ley_presupuestaria, name='generar_ley_presupuestaria'),
     path('cambiar_year',cambiar_year, name='cambiar_year'),
+    path('cambiar_year_ver_cdp/<str:program>',cambiar_year_ver_cdp, name='cambiar_year_ver_cdp'),
     path('cambiar_programa',cambiar_programa, name='cambiar_programa'),
 ]
 
