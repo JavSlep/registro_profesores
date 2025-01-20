@@ -2,18 +2,77 @@
 {% load crispy_forms_tags %}
 {% load static %}
 
+
 <link rel="stylesheet" type="text/css" href="{% static 'libs/toast/toastr.min.css' %}" media="all" />
 
 <div>
-    <h3>Ingresar CDP para el Área</h3>
 
+    <h3>{{titulo_cdp}}</h3>
+    {% if form%}
     <form hx-post="{% url 'ingresar_cdp' current_year current_program %}" hx-target="#dinamico" hx-swap="innerHTML">
         {% csrf_token %}
         
-        {% crispy form %}
-        
+        {% comment %} {% crispy form %} {% endcomment %}
+
+        <div class="container-fluid">       
+            
+            <div class="row">
+                <div class="col-md-4">
+                    {%if current_program == "P01 GASTOS ADMINISTRATIVOS"%}
+                        {{ form.unidad|as_crispy_field}}
+                    {%elif current_program == "P02 SERVICIOS EDUCATIVOS"%}
+                        {{ form.establecimiento|as_crispy_field}}
+                    {%endif%}
+                </div>
+                <div class="col-md-4">
+                    {{ form.fondo|as_crispy_field}}
+                </div>
+                <div class="col-md-4">
+                    {{ form.item_presupuestario|as_crispy_field}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form.numero_requerimiento|as_crispy_field}}
+                </div>
+                <div class="col-md-6">
+                    {{ form.monto|as_crispy_field}}
+                </div>
+            </div>
+            <div class="col-md-12">
+                {{ form.folio_sigfe|as_crispy_field}}
+            </div>
+            <div class="col-md-12">
+                {{ form.n_orden|as_crispy_field}}
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form.detalle|as_crispy_field}}
+                </div>
+                <div class="col-md-6">
+                    {{ form.otros|as_crispy_field}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form.fecha_cdp|as_crispy_field}}
+                </div>
+                <div class="col-md-6">
+                    {{ form.fecha_guia_requerimiento|as_crispy_field}}
+                </div>
+            </div>
+            <div class="col-md-12">
+                {{ form.estado|as_crispy_field}}
+            </div>
+            
+            <div class="col-md-12">
+               <button class="btn btn-thick btn-thick-verde" type="submit">Ingresar CDP</button>
+            </div> 
+        </div>
+
     </form>
-    {% if form.errors %}
+    {% else %}
         <div class="alert alert-danger" role="alert" style="margin-top: 10px; width: 80%; max-width: 400px;">
             {% for field in form %}
                 {% for error in field.errors %}
@@ -26,6 +85,7 @@
         </div>
     {% endif %}
 </div>
+
 
 <script>
     $('.select-field').select2({

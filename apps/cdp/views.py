@@ -12,22 +12,6 @@ from django.http import Http404
 
 
 # Create your views here.
-class Ejemplo(ListView):
-    model = Cdp
-    template_name = 'ejemplo.html'
-
-    #Modificar metodo post
-    def post(self, request, *args, **kwargs):
-        form = CDPForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('ejemplo')
-        else:
-            return render(request, 'ejemplo.html', {'form': form})
-class crearCdp(CreateView):
-    model = Cdp
-    template_name = 'crear_cdp.html'
-    form_class = CDPForm
 
 # Vista 'cdp'
 def cdp(request,programa):
@@ -56,44 +40,103 @@ def cdp(request,programa):
     }
     return render(request, 'home_funcionarios.html',context)
 
-def ver_cdp(request, year, programa):
-    print(programa)
-    print(year)
-    cdps = Cdp.objects.filter(item_presupuestario__subtitulo_presupuestario__year__year=year)
-    if programa != 'none':
-        cdps = cdps.filter(item_presupuestario__subtitulo_presupuestario__programa_presupuestario=programa)
-    
+def ver_cdp(request,year):
+    cdps = Cdp.objects.all().order_by('cdp')
+
+    filter_year = year
+    filter_program = 'todos'
+    filter_establecimiento = 'todos'
+    filter_unidad = 'todos'
+
+    if request.method == 'POST':
+        cdps = Cdp.objects.all().order_by('cdp')
+        year = request.POST.get('filter_year')
+        program = request.POST.get('filter_program')
+        establecimiento = request.POST.get('filter_establecimiento')
+        unidad = request.POST.get('filter_unidad')
+        if year != '0':
+            cdps = cdps.filter(item_presupuestario__subtitulo_presupuestario__year__year=year)
+            filter_year = year
+
+        if program != 'todos':
+            cdps = cdps.filter(item_presupuestario__subtitulo_presupuestario__programa_presupuestario=program)
+            filter_program = program
+
+        if establecimiento != 'todos':
+            cdps = cdps.filter(establecimiento=establecimiento)
+            filter_establecimiento = establecimiento
+
+        if unidad != 'todos':
+            cdps = cdps.filter(unidad=unidad)
+            filter_unidad = unidad
+        context = {
+            'filter_year': filter_year,
+            'filter_program': filter_program,
+            'filter_establecimiento': filter_establecimiento,
+            'filter_unidad': filter_unidad,
+            'programs': PROGRAMAS_PRESUPUESTARIOS,
+            'unidades': Unidad.objects.all().order_by('nombre'),
+            'establecimientos': Establecimiento.objects.all().order_by('nombre'),
+            'years': Year.objects.all().order_by('year'),
+            'cdps': cdps
+        }
+        return render(request, 'ver_cdps.html', context)
+        
+    cdps = cdps.filter(year_presupuestario=filter_year)
+
     context = {
-        'current_year': year,
-        'current_program': programa,
-        'years': Year.objects.all(),
+        'filter_year': str(year),
+        'filter_program': filter_program,
+        'filter_establecimiento': filter_establecimiento,
+        'filter_unidad': filter_unidad,
+        'unidades': Unidad.objects.all().order_by('nombre'),
+        'programs': PROGRAMAS_PRESUPUESTARIOS,
+        'establecimientos': Establecimiento.objects.all().order_by('nombre'),
+        'years': Year.objects.all().order_by('year'),
         'cdps': cdps
     }
     return render(request, 'ver_cdps.html', context)
 
 @csrf_exempt
 def ingresar_cdp(request,year,programa):
-    if programa =='none':
-        programa = None
-    form = CDPForm(programa=programa)
+    titulo =""
+    if programa == 'P01 GASTOS ADMINISTRATIVOS':
+        titulo = 'Ingresar CDP Unidad'
+        form = CDPFormUnidad()
+        form.fields['estado'].initial = 'ingresado'
+        form.fields['estado'].choices = [item for item in form.fields['estado'].choices if item[0] == 'ingresado']
+    elif programa =='P02 SERVICIOS EDUCATIVOS':
+        titulo = 'Ingresar CDP Establecimiento'
+        form = CDPFormEstablecimiento()
+        form.fields['estado'].initial = 'ingresado'
+        form.fields['estado'].choices = [item for item in form.fields['estado'].choices if item[0] == 'ingresado']
+    else:
+        titulo = 'Seleccione un programa'
+        form = None
+    
     # Si el formulario se envía por POST
     if request.method == 'POST':
-        form = CDPForm(request.POST,programa=programa)
+        if programa == 'P01 GASTOS ADMINISTRATIVOS':
+            form = CDPFormUnidad(request.POST)
+        elif programa =='P02 SERVICIOS EDUCATIVOS':
+            form = CDPFormEstablecimiento(request.POST)
+        else:
+            programa=None
+        
+        form.fields['estado'].initial = 'ingresado'
         if form.is_valid():
-            
             cdp = form.save(commit=False)
-            
             cdp.save()
             #La alerta me salta despues de cambiar de pagina
             messages.success(request, "CDP guardado exitosamente")
-            cdps = Cdp.objects.filter(item_presupuestario__subtitulo_presupuestario__year__year=year, item_presupuestario__subtitulo_presupuestario__programa_presupuestario=programa)
+            cdps = Cdp.objects.filter(year_presupuestario=year, item_presupuestario__subtitulo_presupuestario__programa_presupuestario=programa).order_by('cdp')
             context = {
-                'cdps': cdps
+                'cdps': cdps,
             }
             
             return render(request, 'listado.html', context)
-    
     context = {
+        'titulo_cdp': titulo,
         'form': form,
         'current_program': programa,
         'current_year': year,
@@ -105,11 +148,104 @@ def ingresar_cdp(request,year,programa):
 def historial_cdp(request):
     if request.method == 'POST':
         ingresar_cdp(request)
-    cdp = Cdp.objects.all()
+    cdp = Cdp.objects.all().order_by('cdp')
     context = {
         'cdps': cdp
     }
     return render(request, 'historial_cdp.html',context)
+
+def historial_cdp_general(request,year):
+    cdps = Cdp.objects.all()
+    subtitulo ="Filtros aplicados"
+
+    filter_year = year
+    filter_program = 'todos'
+    filter_estado = 'todos'
+    filter_establecimiento = 'todos'
+    filter_unidad = 'todos'
+    filtros = []
+
+    if request.method == 'POST':
+        cdps = Cdp.objects.all()
+        year = request.POST.get('filter_year')
+        program = request.POST.get('filter_program')
+        estados = request.POST.getlist('filter_estado')
+        print(estados)
+        establecimiento = request.POST.get('filter_establecimiento')
+        unidad = request.POST.get('filter_unidad')
+        if year != '0':
+            cdps = cdps.filter(item_presupuestario__subtitulo_presupuestario__year__year=year)
+            filter_year = year
+            filtros.append(f"Año: {year}")
+
+        if program != 'todos':
+            cdps = cdps.filter(item_presupuestario__subtitulo_presupuestario__programa_presupuestario=program)
+            filter_program = program
+            filtros.append(f"Programa: {program}")
+
+        filtro_estados = "Estado/s:"
+        for estado in estados:
+            if estado == 'todos':
+                break
+            else:
+                cdps = cdps.filter(estado__in=estados)
+                filter_estado = estados
+                filtro_estados +=(f" {estado.upper()}")
+        if filtro_estados != "Estado/s:":
+            filtros.append(filtro_estados)
+        
+            
+
+        if establecimiento != 'todos':
+            cdps = cdps.filter(establecimiento=establecimiento)
+            filter_establecimiento = establecimiento
+            establecimiento_nombre = Establecimiento.objects.get(id=establecimiento).nombre
+            if establecimiento_nombre.__len__() > 30:
+                filtros.append(f"Establecimiento: {establecimiento_nombre[:30]}...")
+            else:
+                filtros.append(f"Establecimiento: {establecimiento_nombre}")
+            
+
+        if unidad != 'todos':
+            cdps = cdps.filter(unidad=unidad)
+            filter_unidad = unidad
+            unidad = Unidad.objects.get(id=unidad)
+            filtros.append(f"Unidad: {unidad}")
+
+        context = {
+            'subtitulo': subtitulo,
+            'filter_year': filter_year,
+            'filter_program': filter_program,
+            'filter_estado': filter_estado,
+            'filter_establecimiento': filter_establecimiento,
+            'filter_unidad': filter_unidad,
+            'filtros': filtros,
+            'estados': ESTADOS,
+            'programs': PROGRAMAS_PRESUPUESTARIOS,
+            'unidades': Unidad.objects.all().order_by('nombre'),
+            'establecimientos': Establecimiento.objects.all().order_by('nombre'),
+            'years': Year.objects.all().order_by('year'),
+            'cdps': cdps.order_by('-cdp')
+        }
+        return render(request, 'historial_cdp_general.html', context)
+        
+    cdps = cdps.filter(year_presupuestario=filter_year)
+    filtros.append(filter_year)
+    context = {
+        'subtitulo': subtitulo,
+        'filter_year': str(year),
+        'filter_program': filter_program,
+        'filter_establecimiento': filter_establecimiento,
+        'filter_unidad': filter_unidad,
+        'filtros': filtros,
+        'estados': ESTADOS,
+        'programs': PROGRAMAS_PRESUPUESTARIOS,
+        'establecimientos': Establecimiento.objects.all().order_by('nombre'),
+        'unidades': Unidad.objects.all().order_by('nombre'),
+        'years': Year.objects.all().order_by('year'),
+        'cdps': cdps.order_by('-cdp')
+    }
+    return render(request, 'historial_cdp_general.html', context)
 
 def historial_items(request, id):
     
@@ -129,9 +265,9 @@ def historial_items(request, id):
 
 def ley_presupuestaria(request,year):
     subtitulos_presupuestarios = SubtituloPresupuestario.objects.filter(year__year=year).order_by('subtitulo__n_subtitulo')
-
     items = ItemPresupuestario.objects.filter(subtitulo_presupuestario__year__year=year).order_by('item__n_item')
     cdps = Cdp.objects.filter(item_presupuestario__subtitulo_presupuestario__year__year=year).order_by('item_presupuestario__subtitulo_presupuestario__subtitulo__n_subtitulo')
+    
     context = {
         'cdps': cdps,
         'programas': PROGRAMAS_PRESUPUESTARIOS,
@@ -247,9 +383,13 @@ def generar_ley_presupuestaria(request):
 
 
 def listado(request,year,programa):
-    print(f"{programa} {year}")
     # Lógica para obtener el listado de CDPs
-    cdps = Cdp.objects.filter(item_presupuestario__subtitulo_presupuestario__year__year=year, item_presupuestario__subtitulo_presupuestario__programa_presupuestario=programa)
+    if programa != 'none':
+        print("Es distinto de none")
+        cdps = Cdp.objects.filter(year_presupuestario=year, item_presupuestario__subtitulo_presupuestario__programa_presupuestario=programa).order_by('cdp')
+    else:
+        cdps = Cdp.objects.filter(year_presupuestario=year).order_by('cdp')
+        
     context = {
         'cdps': cdps
     }
@@ -277,27 +417,12 @@ def cambiar_year(request):
         
         return redirect( 'ley_presupuestaria',year)
 
-def cambiar_year_ver_cdp(request,program):
-    print(f"Se cambio el año {program}")
-    if request.method == 'POST':
-        year = request.POST.get('year')
-        
-        return redirect( 'ver_cdp',year,program)
-
 def cambiar_programa(request):
     if request.method == 'POST':
         programa = request.POST.get('programa')
         
         return redirect( 'home_funcionarios',programa)
     
-def modal_prueba(request):
-    form = CDPForm()
-    context= {
-        'form':form,
-        'cdps': Cdp.objects.all(),
-        
-    }
-    return render(request, 'modal_prueba.html', context)
 
 def modal_cdps_item_ley_presupuestaria(request,item_presupuestario_id):
     
@@ -312,3 +437,38 @@ def modal_cdps_item_ley_presupuestaria(request,item_presupuestario_id):
         'programas': PROGRAMAS_PRESUPUESTARIOS,
     }
     return render(request, 'modal_cdps_item_ley_presupuestaria.html', context)
+
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse
+from django.http import Http404
+from .forms import CDPFormUnidad, CDPFormEstablecimiento
+from .models import Cdp
+
+def modal_actualizar_cdp(request, cdp_id):
+    cdp = get_object_or_404(Cdp, id=cdp_id)
+    # Decidir cuál formulario usar basado en el programa presupuestario
+    if cdp.unidad:
+        FormClass = CDPFormUnidad
+    elif cdp.establecimiento:
+        FormClass = CDPFormEstablecimiento
+    else:
+        raise Http404("No se puede determinar el formulario adecuado para este CDP.")
+
+    if request.method == 'POST':
+        form = FormClass(request.POST, instance=cdp)
+        print("Entro al post")
+        if form.is_valid():
+            print("El formulario es vlaidos")
+            cdp = form.save()
+            
+            # Redirigir o devolver respuesta exitosa
+            return redirect('historial_cdp_general',cdp.year_presupuestario) # Cambia a la URL deseada
+    else:
+        form = FormClass(instance=cdp)
+    program = cdp.item_presupuestario.subtitulo_presupuestario.programa_presupuestario
+    context = {
+        'current_program': program,
+        'form': form,
+        'cdp': cdp,
+    }
+    return render(request, 'modal_actualizar_cdp.html', context)

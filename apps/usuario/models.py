@@ -74,7 +74,7 @@ class Unidad(models.Model):
         verbose_name="unidad"
         verbose_name_plural="unidades" 
     def __str__(self):
-        return 'Nombre unidad: %s' %(self.nombre)
+        return f'{self.nombre}'
 
 
 class AreaUnidad(models.Model):

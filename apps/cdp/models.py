@@ -6,6 +6,8 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from ..establecimiento.models import Establecimiento
 from ..usuario.models import Unidad
+import datetime
+from ..general.templatetags.utilidades import montoConPuntos
 
 
 class Year(models.Model):
@@ -83,7 +85,7 @@ class SubtituloPresupuestario(models.Model):
 
     @property #Saldo total por comprometer
     def monto_por_comprometer(self):
-        return self.ley_presupuestaria_subtitulo - self.monto_comprometido_subtitulo
+        return self.monto_total_ajuste_presupuestario - self.monto_comprometido_subtitulo
 
     def formatear_monto(self, monto):
         return format_decimal(monto, locale='es_ES')
@@ -134,8 +136,15 @@ class ItemPresupuestario(models.Model):
     
     @property
     def saldo_comprometido(self):
-        monto_total = sum(cdp.monto for cdp in self.cdps.all())+self.monto_comprometido
+        monto_total_cdps = sum(cdp.monto for cdp in self.cdps.all() if cdp.estado in ['refrendado', 'ingresado'])
+        
+        monto_total= monto_total_cdps+self.monto_comprometido
+        
         return monto_total
+    
+    @property
+    def saldo_por_comprometer(self):
+        return self.monto_total_ajuste_presupuestario - self.saldo_comprometido
     
     def formatear_monto(self, monto):
         return format_decimal(monto, locale='es_ES')
@@ -144,10 +153,7 @@ class ItemPresupuestario(models.Model):
 
     def __str__(self):
         return(
-            f"Programa: {self.subtitulo_presupuestario.programa_presupuestario}, "
-            f"concepto presupuestario: {self.concepto_presupuestario_item}, "
-            f"Ley presupuestaria: {self.formatear_monto(self.ley_presupuestaria_item)}, "
-            f"Saldo comprometido: {self.formatear_monto(self.saldo_comprometido)}"
+            f"{self.item}:{self.subtitulo_presupuestario.year.year}:{self.subtitulo_presupuestario.programa_presupuestario}"
         )
 
 NIVELS = [
@@ -221,10 +227,16 @@ FONDOS = [
     ('APORTE FISCAL', 'APORTE FISCAL'),
     ('OTROS','OTROS')
 ]
+
+ESTADOS = [
+    ('ingresado', 'ingresado'),
+    ('refrendado', 'refrendado'),
+    ('rechazado', 'rechazado'),
+]
 # Create your models here.
 class Cdp(models.Model):
     id=models.CharField(primary_key=True, default=uuid.uuid4, editable=False, max_length=36)
-     
+    year_presupuestario = models.IntegerField(default=datetime.datetime.now().year)
     #Relaciones
     establecimiento = models.ForeignKey(Establecimiento, on_delete=models.CASCADE,null=True, blank=True)
     unidad = models.ForeignKey(Unidad, on_delete=models.PROTECT,null=True, blank=True)
@@ -232,16 +244,16 @@ class Cdp(models.Model):
     ##########################################################
     #El programa se saca del item presupuestario
     ##########################################################
-    numero_requerimiento = models.IntegerField()
+    numero_requerimiento = models.CharField(max_length=10, null=False, blank=False)
     fondo = models.CharField(max_length=20, choices=FONDOS)
     # cuenta_contable = models.CharField(max_length=50) Este dato se puede sacar de la tabla de items 2102
     cdp = models.CharField(max_length=4,blank=True,editable=False)
-    folio_sigfe = models.CharField(max_length=5)
-    n_orden = models.CharField(max_length=50)
+    folio_sigfe = models.CharField(max_length=11, default="Por definir", editable=True)
+    n_orden = models.CharField(max_length=50, default="Por definir", editable=True)
     monto = models.IntegerField()
     detalle = models.CharField(max_length=500)
-    otros = models.CharField(max_length=100, blank=True, null=True)
-
+    otros = models.CharField(max_length=100,default="-" ,blank=True, null=True)
+    estado = models.CharField(max_length=20, choices=ESTADOS, default='ingresado')
     fecha_cdp = models.DateField(default=timezone.now)
     fecha_guia_requerimiento = models.DateField()
     updated=models.DateTimeField(auto_now=True, null=True, blank=True)
@@ -256,7 +268,12 @@ class Cdp(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"CDP: {self.cdp}, {self.fecha_cdp}, monto: {self.monto}"
+        if self.estado == 'ingresado':
+            return f"{self.created.date().strftime('%d/%m/%Y')}, {self.item_presupuestario.concepto_presupuestario_item}, Monto a comprometer: {montoConPuntos(self.monto)}.-"
+        if self.estado == 'refrendado':
+            return f"{self.created.date().strftime('%d/%m/%Y')}, {self.item_presupuestario.concepto_presupuestario_item}, Monto comprometido: {montoConPuntos(self.monto)}.-"
+        if self.estado == 'rechazado':
+            return f"{self.created.date().strftime('%d/%m/%Y')}, {self.item_presupuestario.concepto_presupuestario_item}, Monto rechazado: {montoConPuntos(self.monto)}.-"
 
 
     

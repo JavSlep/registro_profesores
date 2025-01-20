@@ -1,3 +1,4 @@
+{% load utilidades %}
 
 <table class="table" id="datatable">
   <thead>
@@ -34,7 +35,7 @@
             {{ cdp.unidad.nombre }}
         {% endif %}
       </td>
-      <td>{{ cdp.monto }}</td>
+      <td>{{ cdp.monto |montoConPuntos }}</td>
       <td>{{ cdp.item_presupuestario.subtitulo_presupuestario.programa_presupuestario }}</td>
     </tr>
     {% endfor %}

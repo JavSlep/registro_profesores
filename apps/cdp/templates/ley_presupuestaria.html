@@ -111,36 +111,67 @@
                     <div class="accordion-item">
                       <h2 class="accordion-header">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panel-item-{{ item.id }}" aria-expanded="false" aria-controls="panel-item-{{ item.id }}">
-                          <div class="d-flex" style="flex-direction: row; width: 95%; justify-content: space-between">
-                            <div class="mb-2" style="text-align: start; flex-basis: 450px; margin-top: 22px">
+                          <div class="d-flex" style="display: flex; align-items: flex-start; margin-top: 10px;">
+                            <!-- Nombre: Ocupa el 25% del espacio -->
+                            <div style="display: flex; align-items: center; min-height: 40px; font-size: 14px !important; flex-basis: 25%;margin: 0 35px 0 0; max-width: 300px;">
                               <h6>{{ item.item|truncatechars:50 }}</h6>
                             </div>
-                            <div class="row" style="font-size: 14px !important; text-align: end; flex-grow: 1;">
-                              <div class="col-3" style="padding: 0 !important;">
-                                <div style="width: 100%; border-bottom: 1px solid rgba(254,59,75,1); text-align: center">
-                                  <label>Item presupuestario</label>
+                          
+                            <!-- Información: Ocupa el 75% del espacio -->
+                            <div style="flex: 1; font-size: 14px !important; text-align: end; margin-top: -10px; margin-right: 20px">
+                              <div class="row">
+                                <div class="col" style="padding: 0 !important;">
+                                  <div style="width: 100%; text-align: center;">
+                                    <label style="min-height: 40px; display: flex; align-items: center; justify-content: center;">
+                                      Item presupuestario
+                                    </label>
+                                  </div>
+                                  <input type="text" style="width: 100%; height: 30px; text-align: end; background-color: rgb(200, 230, 250);" 
+                                  value="{{ item.ley_presupuestaria_item|floatformat:0 }}" disabled>
                                 </div>
-                                <input type="text" style="width: 100%; height: 30px; text-align: end;" value="{{ item.ley_presupuestaria_item|floatformat:0 }}" disabled>
-                              </div>
-                              <div class="col-3" style="padding: 0 !important;">
-                                <div style="width: 100%; border-bottom: 1px solid rgba(254,59,75,1); text-align: center">
-                                  <label>Ajuste presupuestario</label>
+                                <div class="col" style="padding: 0 !important;">
+                                  <div style="width: 100%; text-align: center;">
+                                    <label style="min-height: 40px; display: flex; align-items: center; justify-content: center;">
+                                      Ajuste presupuestario
+                                    </label>
+                                  </div>
+                                  <input type="text" style="width: 100%; height: 30px; text-align: end; background-color: rgb(200, 230, 250);" 
+                                         value="{{ item.ajuste_presupuestario_item|floatformat:0 }}" disabled>
                                 </div>
-                                <input type="text" style="width: 100%; height: 30px; text-align: end;" value="{{ item.ajuste_presupuestario_item|floatformat:0 }}" disabled>
-                              </div>
-                              <div class="col-3" style="padding: 0 !important;">
-                                <div style="width: 100%; border-bottom: 1px solid rgba(57,190,239,1); text-align: center">
-                                  <label>Presupuesto total</label>
+                                <div class="col" style="padding: 0 !important;">
+                                  <div style="width: 100%; text-align: center;">
+                                    <label style="min-height: 40px; display: flex; align-items: center; justify-content: center;">
+                                      Presupuesto total
+                                    </label>
+                                  </div>
+                                  <input type="text" style="width: 100%; height: 30px; text-align: end; background-color: rgb(200, 230, 250);" 
+                                         value="{{ item.monto_total_ajuste_presupuestario|floatformat:0 }}" disabled>
                                 </div>
-                                <input type="text" style="width: 100%; height: 30px; text-align: end;" value="{{ item.monto_total_ajuste_presupuestario|floatformat:0 }}" disabled>
-                              </div>
-                              <div class="col-3" style="padding: 0 !important;">
-                                <div style="width: 100%; border-bottom: 1px solid rgba(254,59,75,1); text-align: center">
-                                  <label>Saldo comprometido</label>
+                                <div class="col" style="padding: 0 !important; margin-left: 20px">
+                                  <div style="width: 100%; text-align: center;">
+                                    <label style="min-height: 40px; display: flex; align-items: center; justify-content: center;">
+                                      Presupuesto comprometido
+                                    </label>
+                                  </div>
+                                  <input type="text" style="width: 100%; height: 30px; text-align: end; background-color: rgb(200, 230, 250);" 
+                                  value="{{ item.saldo_comprometido|floatformat:0 }}" disabled>
                                 </div>
-                                <input type="text" style="width: 100%; height: 30px; text-align: end;" value="{{ item.saldo_comprometido|floatformat:0 }}" disabled>
+                                <div class="col" style="padding: 0 !important;">
+                                  <div style="width: 100%;  text-align: center;">
+                                    <label style="min-height: 40px; display: flex; align-items: center; justify-content: center;">
+                                      Saldo a comprometer
+                                    </label>
+                                  </div>
+                                  {% if item.saldo_por_comprometer < 0 %}
+                                    <input type="text" style="width: 100%; height: 30px; text-align: end; background-color:rgb(254,121,137,1);" 
+                                          value="{{ item.saldo_por_comprometer|floatformat:0 }}" disabled>
+                                  {% elif item.saldo_por_comprometer >= 0 %}
+                                    <input type="text" style="width: 100%; height: 30px; text-align: end; background-color: rgb(200, 230, 250);" 
+                                          value="{{ item.saldo_por_comprometer|floatformat:0 }}" disabled>
+                                  {% endif %}
+                                </div>
                               </div>
-                            </div>       
+                            </div>
                           </div>
                         </button>
                       </h2>
@@ -228,6 +259,29 @@
     });
 </script>
 
+<script>
+  // Función para cambiar el color del fondo del selector cuando cambia el valor
+  function changeBackgroundColor(selectElement) {
+    if (selectElement.value !== "0" && selectElement.value !== "todos") {
+      selectElement.style.backgroundColor = "#d1e7dd"; // Color de fondo cuando está seleccionado
+    } else {
+      selectElement.style.backgroundColor = ""; // Color de fondo por defecto
+    }
+  }
 
+  // Asignar el evento a todos los selectores con clase form-select
+  document.addEventListener("DOMContentLoaded", function () {
+    const selectElements = document.querySelectorAll(".form-select");
+    selectElements.forEach(function (select) {
+      // Cambiar el color inicial basado en el valor seleccionado
+      changeBackgroundColor(select);
+
+      // Escuchar cambios y actualizar el color de fondo
+      select.addEventListener("change", function () {
+        changeBackgroundColor(select);
+      });
+    });
+  });
+</script>
 
 {% endblock %}

@@ -12,49 +12,158 @@
 <div>
     <h1>En un modal actualizamos el cdp y sabana de informacion</h1>
     <div>
-        <h6 class="" style="font-size: 14px; color: rgba(31,132,236,1);">Seleccionar año de ley presupuestaria</h6>
-        <form id="yearForm" action="{% url 'cambiar_year_ver_cdp' current_program %}" method="post">
-            {% csrf_token %}
-            <select id="year" class="form-select" aria-label="Default select example" name="year">
-            {% for year in years %}
-            <option value="{{ year.year }}" {% if year.year == current_year %}selected{% endif %}>Año: {{ year.year }}</option>
-            {% endfor %}
-            </select>
-        </form>
+        <h6 class="" style="font-size: 14px; color: rgba(31,132,236,1);">Seleccione Los filtros</h6>
+    </div>
+</div>
+<hr>
+<form method="post" name="formulario para filtrar">
+  {% csrf_token %}
+  <div class="row">
+    <div class="col-2">
+      <select id ="year" class="form-select" name="filter_year">
+        <option value="0">Todos los años</option>
+        {% for year in years %}
+          <option value="{{ year.year }}" {% if filter_year == year.year|stringformat:"s" %}selected{% endif %}>{{ year.year }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-2">
+      <select id ="program" class="form-select" name="filter_program">
+        <option value="todos">Todos los programas</option>
+        {% for program in programs %}
+          <option value="{{ program.0 }}" {% if filter_program == program.0%}selected{% endif %}>{{ program.0 }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-2">
+      <select id ="estado" class="form-select" name="filter_estado">
+        <option value="todos">Todos los estados</option>
+        {% for estado in estados %}
+          <option value="{{ estado.0 }}" {% if filter_estado == estado.0%}selected{% endif %}>{{ estado.0 }}</option>
+        {% endfor %}
+      </select>
     </div>
 
-    {% for cdp in cdps %}
-        <h6>{{ cdp.monto }}</h6>
-    {% endfor %}
-</div>
+    <div class="col-3">
+      <select id="establecimiento" class="form-select" name="filter_establecimiento">
+        <option value="todos">Todos los establecimientos</option>
+        {% for establecimiento in establecimientos %}
+          <option value="{{ establecimiento.id }}" {% if filter_establecimiento == establecimiento.id|stringformat:"s" %}selected{% endif %}>{{ establecimiento.nombre }}</option>
+        {% endfor %}
+      </select>
+    </div>
 
+    <div class="col-2">
+      <select id="unidad" class="form-select" name="filter_unidad">
+        <option value="todos">Todas las unidades</option>
+        {% for unidad in unidades %}
+          <option value="{{ unidad.id }}" {% if filter_unidad == unidad.id|stringformat:"s" %}selected{% endif %}>{{ unidad.nombre }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    
+    <div class="col-1">
+      <button type="submit" class="btn btn-primary">Filtrar</button>
+      <a href={% url 'exportar_cdps' filter_year filter_program filter_establecimiento %} class="btn btn-primary">Exportar</a>
+    </div>
+</div>
+</form>
+<hr>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">N° CDP</th>
+      <th scope="col">FECHA CDP</th>
+      <th scope="col">FONDO</th>
+      <th scope="col">MONTO</th>
+      <th scope="col">ESTABLECIMIENTO</th>
+      <th scope="col">UNIDAD</th>
+      <th scope="col">ESTADO</th>
+    </tr>
+  </thead>
+  <tbody>
+    {%for cdp in cdps%}
+      {% if cdp.estado == "rechazado" %}
+        <tr style="background-color: rgba(238, 116, 116, 0.5);">
+          
+          <td>{{cdp.cdp}}</td>
+          <td>{{cdp.fecha_cdp|date:"d/m/Y"}}</td>
+          <td>{{cdp.fondo}}</td>
+          <td>{{cdp.monto|montoConPuntos}}</td>
+          {% if cdp.establecimiento%}
+            <td>
+                {{cdp.establecimiento}}
+            </td>
+            <td>
+              -
+            </td>
+          {%elif cdp.unidad%}
+          <td>
+            -
+          </td>
+          <td>
+            {{cdp.unidad}}
+          </td>
+          {%endif%}
+          </td>
+          <td>{{cdp.estado}}</td>
+        </tr>
+      {% else %}
+      
+      <tr>
+        <td>{{cdp.cdp}}</td>
+        <td>{{cdp.fecha_cdp|date:"d/m/Y"}}</td>
+        <td>{{cdp.fondo}}</td>
+        <td>{{cdp.monto|montoConPuntos}}</td>
+        {% if cdp.establecimiento%}
+          <td>
+              {{cdp.establecimiento}}
+          </td>
+          <td>
+            -
+          </td>
+        {%elif cdp.unidad%}
+        <td>
+          -
+        </td>
+        <td>
+          {{cdp.unidad}}
+        </td>
+        {%endif%}
+        </td>
+        <td>{{cdp.estado}}</td>
+      </tr>
+      {% endif %}
+    
+    {%endfor%}
+  </tbody>
+</table>
 {% endblock %}
 {% block jscript %}
 <script>
-    // Detectar cambio en el <select> y enviar el formulario
-    document.getElementById('year').addEventListener('change', function() {
-      const year = this.value;
+  // Función para cambiar el color del fondo del selector cuando cambia el valor
+  function changeBackgroundColor(selectElement) {
+    if (selectElement.value !== "0" && selectElement.value !== "todos") {
+      selectElement.style.backgroundColor = "rgba(183, 225, 239, 0.5)"; // Color de fondo cuando está seleccionado
+    } else {
+      selectElement.style.backgroundColor = ""; // Color de fondo por defecto
+    }
+  }
 
-      if (year) {
-        // Enviar el formulario automáticamente
-        document.getElementById('yearForm').submit();
-      } else {
-        alert('Por favor, selecciona un año válido.');
-      }
+  // Asignar el evento a todos los selectores con clase form-select
+  document.addEventListener("DOMContentLoaded", function () {
+    const selectElements = document.querySelectorAll(".form-select");
+    selectElements.forEach(function (select) {
+      // Cambiar el color inicial basado en el valor seleccionado
+      changeBackgroundColor(select);
+
+      // Escuchar cambios y actualizar el color de fondo
+      select.addEventListener("change", function () {
+        changeBackgroundColor(select);
+      });
     });
-  </script>
-
-<script>
-    // Variable con el año a preseleccionar
-    const preselectedYear = {{ current_year }}; // Cambia esto al año que necesites
-
-    // Preseleccionar el año al cargar la página
-    window.addEventListener('DOMContentLoaded', () => {
-      const yearSelect = document.getElementById('year');
-      if (preselectedYear) {
-        yearSelect.value = preselectedYear;
-      }
-    });
+  });
 </script>
 
 {% endblock %}
