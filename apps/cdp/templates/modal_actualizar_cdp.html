@@ -3,17 +3,13 @@
 <div class="modal-dialog modal-lg" id="myModal">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modificar</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Refrendar/Modificar</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <form method="POST" action="{% url 'modal_actualizar_cdp' cdp.id %}">
       <div class="modal-body">
-        <p>Modal body text goes here.</p>
-        {{cdp}}
         
           {% csrf_token %}
-          
-          {% comment %} {% crispy form %} {% endcomment %}
   
           <div class="container-fluid">       
               
@@ -72,7 +68,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-thick btn-thick-rosado" data-bs-dismiss="modal">Cancelar</button>
-        <button class="btn btn-thick btn-thick-verde" type="submit">Refrendar</button>
+        <button class="btn btn-thick btn-thick-celeste" type="submit">Refrendar</button>
       </div>
     </form>
     </div>

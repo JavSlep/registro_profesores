@@ -91,7 +91,7 @@
                         </label>
                       </div>
                       {% if subtitulo.monto_por_comprometer < 0 %}
-                        <input type="text" style="width: 100%; height: 30px; text-align: end; background-color:rgb(254,121,137,1);" 
+                        <input type="text" style="width: 100%; height: 30px; text-align: end; color: white; background-color:rgb(192,0,0,1);" 
                               value="{{ subtitulo.monto_por_comprometer|floatformat:0 }}" disabled>
                       {% elif subtitulo.monto_por_comprometer >= 0 %}
                         <input type="text" style="width: 100%; height: 30px; text-align: end; background-color: rgb(200, 230, 250);" 
@@ -163,7 +163,7 @@
                                     </label>
                                   </div>
                                   {% if item.saldo_por_comprometer < 0 %}
-                                    <input type="text" style="width: 100%; height: 30px; text-align: end; background-color:rgb(254,121,137,1);" 
+                                    <input type="text" style="width: 100%; height: 30px; text-align: end; color: white; background-color:rgb(192,0,0,1);" 
                                           value="{{ item.saldo_por_comprometer|floatformat:0 }}" disabled>
                                   {% elif item.saldo_por_comprometer >= 0 %}
                                     <input type="text" style="width: 100%; height: 30px; text-align: end; background-color: rgb(200, 230, 250);" 
@@ -191,11 +191,6 @@
     {% endfor %}
   </div>
 {% endfor %}
-
-<div class="d-flex flex-row justify-content-center" style="margin-top: 40px; gap: 50px;">
-  <a href="{% url 'actualizar_ley_presupuestaria' current_year %}" class="btn btn-thick btn-thick-rosado">Modificar ley presupuestaria {{current_year}}</a>
-  <a href="{% url 'actualizar_ajuste_presupuestario' current_year %}" class="btn btn-thick btn-thick-rosado">Modificar ajuste presupuestario {{current_year}}</a>
-</div
 {% if error %}
     <div class="alert alert-danger mt-4" role="alert">
         <p>{{ error }}</p>

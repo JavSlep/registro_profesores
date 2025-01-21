@@ -1,0 +1,39 @@
+{% extends 'base.html' %} 
+{% load static %}
+{% load utilidades %}
+{% load crispy_forms_tags %}
+{% block head %}
+<link href="{% static 'css/home_funcionarios.css' %}" rel="stylesheet">
+{% endblock %}
+{% block content %} 
+
+<h1>
+    Ingresar Item Presupuestario
+</h1>
+<form method="post">
+    {% csrf_token %}
+    <div class="container-fluid">
+        <div class="col-12">
+            {{ form.subtitulo_presupuestario|as_crispy_field}}
+        </div>
+        <div class="col-12">
+            {{ form.item|as_crispy_field}}
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                {{ form.ley_presupuestaria_item|as_crispy_field}}
+            </div>
+            <div class="col-md-4">
+                {{ form.ajuste_presupuestario_item|as_crispy_field}}
+            </div>
+            <div class="col-md-4">
+                {{ form.monto_comprometido|as_crispy_field}}
+            </div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-thick btn-thick-celeste">Guardar</button>
+</form>
+
+{% endblock %}
+{% block jscript %}
+{% endblock %}

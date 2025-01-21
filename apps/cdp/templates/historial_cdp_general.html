@@ -57,17 +57,17 @@
           {% endfor %}
         </select>
       </div>
-      <div class="col-8">
+      <div class="col-3">
         <select id ="estado" class="form-select select-estado" name="filter_estado" multiple>
-          <option value="todos">Todos los estados</option>
+          <option value="todos" {% if filter_estado == 'todos' %}selected{% endif %}>Todos los estados</option>
           {% for estado in estados %}
-            <option value="{{ estado.0 }}" {% if filter_estado == estado.0%}selected{% endif %}>{{ estado.0 }}</option>
+                <option value="{{ estado.0 }}" {%for e in filter_estado%}{% if e == estado.0%}selected{% endif %}{% endfor %}>{{ estado.0 }}</option>
           {% endfor %}
         </select>
       </div>
 
       <div class="col-2">
-        <select id="establecimiento" class="form-select" name="filter_establecimiento">
+        <select id="establecimiento" class="form-select select-field" name="filter_establecimiento">
           <option value="todos">Todos los establecimientos</option>
           {% for establecimiento in establecimientos %}
             <option value="{{ establecimiento.id }}" {% if filter_establecimiento == establecimiento.id|stringformat:"s" %}selected{% endif %}>{{ establecimiento.nombre }}</option>
@@ -85,7 +85,7 @@
       </div>
       
       <div class="col-1">
-        <button type="submit" class="btn btn-primary">Filtrar</button>
+        <button type="submit" class="btn btn-info" style=" color: white">Filtrar</button>
       </div>
   </div>
 </form>
@@ -119,7 +119,7 @@
             <li class="list-group-item list-group-item-danger col-7 rounded"><b>N°{{cdp.cdp}}-{{cdp.estado|upper}}:</b> {{ cdp }}<br> {{ cdp.unidad }}</li>
           {%endif%}
         {%endif%}
-        <a type="button" data-form="{% url 'modal_actualizar_cdp' cdp.id %}" class="btn btn-thick btn-thick-azul abrir_modal col-2"
+        <a type="button" data-form="{% url 'modal_actualizar_cdp' cdp.id %}" class="btn btn-thick btn-thick-celeste abrir_modal col-2"
           style="margin-left: 20px">Refrendar</a>
       </div>
     {%endfor%}

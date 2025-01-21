@@ -6,11 +6,29 @@
 {% endblock %}
 {% block content %} 
 
-<h3>Genere la nueva ley presupuestaria para el año: {{current_year}}</h3>
-
+<h3>Genere subtitulos presupuestarios para el año: {{current_year}}</h3>
+{% if year is None %}
+    <p style= "font-size: 20px;">Se generaran los siguientes subtitulos:
+        {%for subt in subtitulos%}
+            <br> <li><b>{{subt}}</b></li> 
+        {%endfor%}
+        <br> para el año {{current_year}}.
+    </p>
+{% else %}
+    <p style= "font-size: 20px;">Ya se han generado los siguientes subtitulos:
+        {%for subt in subtitulos%}
+            <br> <li><b>{{subt}}</b></li> 
+        {%endfor%}
+        <br> para el año {{current_year}}.
+    </p>
+{% endif %}
 <form action="{% url 'generar_ley_presupuestaria' %}" method="post">
     {% csrf_token %}
-    <button type="submit" class="btn btn-thick btn-thick-rojo" style="margin-top: 10px;">Generar ley presupuestaria año {{current_year}}</button>
+    {% if year is None %}
+    <button type="submit" class="btn btn-thick btn-thick-celeste" style="margin-top: 10px;">Generar</button>
+    {% else %}
+        <button type="submit" class="btn btn-thick btn-thick-rosado" style="margin-top: 10px;">Ya se han generado</button>
+    {% endif %}
 </form>
 
     

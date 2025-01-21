@@ -36,33 +36,27 @@
       {% if '/home-funcionarios/' in request.path  %}
       <li class="mb-1">
         <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
-          data-bs-target="#general-collapse" aria-expanded="true">
-          General
-        </button>
-        <div class="collapse show" id="general-collapse">
-          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li>
-              <a href="{% url 'home_funcionarios' 'none'%}" class="link-dark rounded">Home Funcionarios</a>
-            </li>
-          </ul>
-        </div>
-      </li>
-      <li class="mb-1">
-        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
           data-bs-target="#cdp-collapse" aria-expanded="false">
           CDP
         </button>
-        <div class="collapse " id="cdp-collapse" style="background-color: #ffcccc;">
+        <div class="collapse" id="cdp-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
             <li>
-              <a href="{% url 'historial_cdp_general' request.session.usuario_entidad.year %}" class="link-dark rounded">Historial/Modificar</a>
+              <a href="{% url 'home_funcionarios' request.session.usuario_entidad.year 'none'%}" class="link-dark rounded">Ingresar</a>
             </li>
           </ul>
         </div>
         <div class="collapse " id="cdp-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
             <li>
-              <a  href="{% url 'ver_cdp' request.session.usuario_entidad.year %}" class="link-dark rounded">Reportes CDP</a>
+              <a href="{% url 'historial_cdp_general' request.session.usuario_entidad.year %}" class="link-dark rounded">Modificar</a>
+            </li>
+          </ul>
+        </div>
+        <div class="collapse " id="cdp-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li>
+              <a  href="{% url 'ver_cdp' request.session.usuario_entidad.year %}" class="link-dark rounded">Reportes</a>
             </li>
           </ul>
         </div>
@@ -75,14 +69,42 @@
         <div class="collapse" id="presupuesto-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
             <li>
-              <a href="{% url 'ley_presupuestaria' request.session.usuario_entidad.year %}" class="link-dark rounded">Ley Presupuesto</a>
+              <a href="{% url 'generar_ley_presupuestaria' %}" class="link-dark rounded">Generar subtitulos (anual)</a>
             </li>
           </ul>
         </div>
         <div class="collapse" id="presupuesto-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
             <li>
-              <a href="{% url 'generar_ley_presupuestaria' %}" class="link-dark rounded">Generar Ley Presupuestaria (anual)</a>
+              <a href="{% url 'ley_presupuestaria' request.session.usuario_entidad.year %}" class="link-dark rounded">Ley Presupuestaria</a>
+            </li>
+          </ul>
+        </div>
+        <div class="collapse" id="presupuesto-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li>
+              <a href="{% url 'actualizar_ley_presupuestaria' request.session.usuario_entidad.year %}" class="link-dark rounded">Modificar Ley Presupuestaria</a>
+            </li>
+          </ul>
+        </div>
+        <div class="collapse" id="presupuesto-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li>
+              <a href="{% url 'ingresar_item_presupuestario' %}" class="link-dark rounded">Ingresar items</a>
+            </li>
+          </ul>
+        </div>
+        <div class="collapse" id="presupuesto-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li>
+              <a href="{% url 'modificar_items' request.session.usuario_entidad.year %}" style="background-color: #ffcccc;" class="link-dark rounded">Modificar items</a>
+            </li>
+          </ul>
+        </div>
+        <div class="collapse" id="presupuesto-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li>
+              <a href="{% url 'actualizar_ajuste_presupuestario' request.session.usuario_entidad.year %}" class="link-dark rounded">Modificar Ajuste Presupuestario</a>
             </li>
           </ul>
         </div>
@@ -95,7 +117,7 @@
         <div class="collapse " id="reportes-collapse" style="background-color: #ffcccc;">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
             <li>
-              <a href="{% url 'home_funcionarios' 'none'%}" class="link-dark rounded">Tipos de reportes??? solo por el rojo</a>
+              <a href="{% url 'home_funcionarios' request.session.usuario_entidad.year 'none'%}" class="link-dark rounded">Tipos de reportes??? solo por el rojo</a>
             </li>
           </ul>
         </div>
@@ -108,7 +130,7 @@
         <div class="collapse" id="exploratorio-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
             <li>
-              <a href="{% url 'home_funcionarios' 'none'%}" class="link-dark rounded">Proximamente...</a>
+              <a href="{% url 'home_funcionarios' request.session.usuario_entidad.year 'none'%}" class="link-dark rounded">Proximamente...</a>
             </li>
           </ul>
         </div>
@@ -121,7 +143,7 @@
         <div class="collapse " id="configuracion-collapse" style="background-color: #ffcccc;">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
             <li>
-              <a href="{% url 'home_funcionarios' 'none'%}" class="link-dark rounded">Crear usuario con privilegios</a>
+              <a href="{% url 'home_funcionarios' request.session.usuario_entidad.year 'none'%}" class="link-dark rounded">Crear usuario con privilegios</a>
             </li>
           </ul>
         </div>

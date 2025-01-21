@@ -1,5 +1,5 @@
 from django import forms
-from .models import Cdp,ItemPresupuestario, FONDOS
+from .models import Cdp,ItemPresupuestario, FONDOS, SubtituloPresupuestario
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column, HTML
 import datetime
@@ -45,3 +45,15 @@ class CDPFormEstablecimiento(forms.ModelForm):
         self.fields['fondo'].choices = [choice for choice in self.fields['fondo'].choices if choice[0] not in ['APORTE FISCAL', 'OTROS']]
         self.fields['establecimiento'].queryset = Establecimiento.objects.all().order_by('nombre')
 
+class ItemPresupuestarioForm(forms.ModelForm):
+    class Meta:
+        model = ItemPresupuestario
+        fields = '__all__'
+        exclude = ('id','updated','created')
+        widgets = {
+            'item':forms.Select(attrs={'class':'form-select select-field'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(ItemPresupuestarioForm, self).__init__(*args, **kwargs)
+        self.fields['subtitulo_presupuestario'].queryset = SubtituloPresupuestario.objects.filter(year__year=datetime.datetime.now().year).order_by('programa_presupuestario','subtitulo__n_subtitulo')

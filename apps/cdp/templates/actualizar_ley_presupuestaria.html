@@ -11,7 +11,17 @@
 <div class="container mt-4">
     <h2 class="text-center">Modificar Ley Presupuestaria {{ current_year }}</h2>
     <br>
-
+    <div>
+        <h6 class="" style="font-size: 14px; color: rgba(31,132,236,1);">Seleccionar año de ley presupuestaria</h6>
+        <form id="yearForm" action="{% url 'cambiar_year_actualizar_ley_presupuestaria' %}" method="post">
+        {% csrf_token %}
+        <select id="year" class="form-select" aria-label="Default select example" name="year">
+            {% for year in years %}
+            <option value="{{ year.year }}" {% if year.year == current_year %}selected{% endif %}>Año presupuestario: {{ year.year }}</option>
+            {% endfor %}
+        </select>
+        </form>
+    </div>
     <!-- Formulario para actualizar la ley de presupuesto -->
     <form method="post" class="actualizar-ley-presupuesto">
         {% csrf_token %}
@@ -38,8 +48,8 @@
             </div>
         {% endfor %}
         
-        <a href="{% url 'ley_presupuestaria' current_year %}" class="btn btn-thick btn-thick-amarillo">Cancelar</a>
-        <button type="submit" class="btn btn-thick btn-thick-rosado">Guardar</button>
+        <a href="{% url 'ley_presupuestaria' current_year %}" class="btn btn-thick btn-thick-rosado">Cancelar</a>
+        <button type="submit" class="btn btn-thick btn-thick-celeste">Guardar</button>
     </form>
 
 
@@ -79,4 +89,17 @@
         });
     });
 </script>
+<script>
+    // Detectar cambio en el <select> y enviar el formulario
+    document.getElementById('year').addEventListener('change', function() {
+      const year = this.value;
+
+      if (year) {
+        // Enviar el formulario automáticamente
+        document.getElementById('yearForm').submit();
+      } else {
+        alert('Por favor, selecciona un año válido.');
+      }
+    });
+  </script>
 {% endblock %}

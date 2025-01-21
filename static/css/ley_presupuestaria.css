@@ -8,13 +8,13 @@
 /* Estilo cuando el botón está expandido */
 .accordion-button:not(.collapsed) {
     color: black !important; /* Azul */
-    background-color: rgba(255, 193, 7, 1) !important;
+    background-color: rgba(117, 236, 255, 1) !important;
 }
 
 /* Cambiar color de texto y fondo al pasar el mouse */
 .accordion-button:hover {
     color: black !important; /* Azul */
-    background-color: rgba(57, 190, 239, 1) !important;
+    background-color: rgba(57, 190, 239, 0.7) !important;
 }
 
 
