@@ -4,6 +4,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column, HTML
 import datetime
 from .models import Year
+from .models_proyeccion import MesProyectado
 from ..establecimiento.models import Establecimiento
 from ..usuario.models import Unidad
 
@@ -57,3 +58,9 @@ class ItemPresupuestarioForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ItemPresupuestarioForm, self).__init__(*args, **kwargs)
         self.fields['subtitulo_presupuestario'].queryset = SubtituloPresupuestario.objects.filter(year__year=datetime.datetime.now().year).order_by('programa_presupuestario','subtitulo__n_subtitulo')
+
+class MesProyectadoForm(forms.ModelForm):
+    class Meta:
+        model = MesProyectado
+        fields = '__all__'
+        exclude = ('id','updated','created','subvencion','mes')

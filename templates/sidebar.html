@@ -53,10 +53,23 @@
             </li>
           </ul>
         </div>
-        <div class="collapse " id="cdp-collapse">
+      </li>
+      <li class="mb-1">
+        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+          data-bs-target="#proyeccion-collapse" aria-expanded="false">
+          Proyeccion Anual
+        </button>
+        <div class="collapse" id="proyeccion-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
             <li>
-              <a  href="{% url 'ver_cdp' request.session.usuario_entidad.year %}" class="link-dark rounded">Reportes</a>
+              <a href="{% url 'ingresar_proyeccion_inicial' 'todos' %}" class="link-dark rounded">Ingresar</a>
+            </li>
+          </ul>
+        </div>
+        <div class="collapse " id="proyeccion-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li>
+              <a href="{% url 'historial_cdp_general' request.session.usuario_entidad.year %}" class="link-dark rounded">Modificar</a>
             </li>
           </ul>
         </div>
@@ -66,47 +79,59 @@
           data-bs-target="#presupuesto-collapse" aria-expanded="false">
           Presupuesto
         </button>
-        <div class="collapse" id="presupuesto-collapse">
-          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li>
-              <a href="{% url 'generar_ley_presupuestaria' %}" class="link-dark rounded">Generar subtitulos (anual)</a>
-            </li>
-          </ul>
+        <div class="collapse" style="margin-left: 10px;" id="presupuesto-collapse">
+          <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+          data-bs-target="#subtitulo-collapse" aria-expanded="false">
+          Subtitulos
+          </button>
+          <div class="collapse" id="subtitulo-collapse">
+            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+              <li>
+                <a href="{% url 'generar_ley_presupuestaria' %}" class="link-dark rounded">Generar subtitulos (anual)</a>
+              </li>
+            </ul>
+          </div>
+          <div class="collapse" id="subtitulo-collapse">
+            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+              <li>
+                <a href="{% url 'ley_presupuestaria' request.session.usuario_entidad.year %}" class="link-dark rounded">Ley Presupuestaria</a>
+              </li>
+            </ul>
+          </div>
+          <div class="collapse" id="subtitulo-collapse">
+            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+              <li>
+                <a href="{% url 'actualizar_ley_presupuestaria' request.session.usuario_entidad.year %}" class="link-dark rounded">Modificar Ley Presupuestaria</a>
+              </li>
+            </ul>
+          </div>
         </div>
-        <div class="collapse" id="presupuesto-collapse">
-          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li>
-              <a href="{% url 'ley_presupuestaria' request.session.usuario_entidad.year %}" class="link-dark rounded">Ley Presupuestaria</a>
-            </li>
-          </ul>
-        </div>
-        <div class="collapse" id="presupuesto-collapse">
-          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li>
-              <a href="{% url 'actualizar_ley_presupuestaria' request.session.usuario_entidad.year %}" class="link-dark rounded">Modificar Ley Presupuestaria</a>
-            </li>
-          </ul>
-        </div>
-        <div class="collapse" id="presupuesto-collapse">
-          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li>
-              <a href="{% url 'ingresar_item_presupuestario' %}" class="link-dark rounded">Ingresar items</a>
-            </li>
-          </ul>
-        </div>
-        <div class="collapse" id="presupuesto-collapse">
-          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li>
-              <a href="{% url 'modificar_items' request.session.usuario_entidad.year %}" style="background-color: #ffcccc;" class="link-dark rounded">Modificar items</a>
-            </li>
-          </ul>
-        </div>
-        <div class="collapse" id="presupuesto-collapse">
-          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li>
-              <a href="{% url 'actualizar_ajuste_presupuestario' request.session.usuario_entidad.year %}" class="link-dark rounded">Modificar Ajuste Presupuestario</a>
-            </li>
-          </ul>
+        <div class="collapse" style="margin-left: 10px;" id="presupuesto-collapse">
+          <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+          data-bs-target="#item-collapse" aria-expanded="false">
+          Items
+          </button>
+          <div class="collapse" id="item-collapse">
+            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+              <li>
+                <a href="{% url 'ingresar_item_presupuestario' %}" class="link-dark rounded">Ingresar items</a>
+              </li>
+            </ul>
+          </div>
+          <div class="collapse" id="item-collapse">
+            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+              <li>
+                <a href="{% url 'modificar_items' request.session.usuario_entidad.year %}" class="link-dark rounded">Modificar items</a>
+              </li>
+            </ul>
+          </div>
+          <div class="collapse" id="item-collapse">
+            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+              <li>
+                <a href="{% url 'actualizar_ajuste_presupuestario' request.session.usuario_entidad.year %}" class="link-dark rounded">Modificar Ajuste Presupuestario</a>
+              </li>
+            </ul>
+          </div>
         </div>
       </li>
       <li class="mb-1">
@@ -114,6 +139,13 @@
           data-bs-target="#reportes-collapse" aria-expanded="false">
           Reportes
         </button>
+        <div class="collapse " id="reportes-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li>
+              <a  href="{% url 'ver_cdp' request.session.usuario_entidad.year %}" class="link-dark rounded">Reportes CDP</a>
+            </li>
+          </ul>
+        </div>
         <div class="collapse " id="reportes-collapse" style="background-color: #ffcccc;">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
             <li>

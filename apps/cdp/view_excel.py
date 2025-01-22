@@ -125,3 +125,9 @@ def exportar_cdps(request, year, program, establecimiento):
     workbook.save(response)
 
     return response
+
+def exportar_meses_proyectados():
+    pass
+
+def exportar_estimacion_subvencion():
+    pass

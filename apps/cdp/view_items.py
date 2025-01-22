@@ -43,7 +43,27 @@ def modificar_items(request,year):
 
 def modal_modificar_item(request, item_presupuestario_id):
     item_presupuestario = get_object_or_404(ItemPresupuestario, id=item_presupuestario_id)
+    form = ItemPresupuestarioForm(instance=item_presupuestario)
+    
+
+    if request.method == 'POST':
+        form = ItemPresupuestarioForm(request.POST, instance=item_presupuestario)
+        if form.is_valid():
+            item_presupuestario = get_object_or_404(ItemPresupuestario, id=item_presupuestario_id)
+            item_presupuestario_form = form.save(commit=False)
+
+            if item_presupuestario.subtitulo_presupuestario != item_presupuestario_form.subtitulo_presupuestario:
+                messages.error(request, f"El item {item_presupuestario.item} Se le ha modificado el subtitulo: {item_presupuestario.subtitulo_presupuestario.subtitulo}.")
+                return redirect('modificar_items', request.session['usuario_entidad'].get('year'))
+            if item_presupuestario.item != item_presupuestario_form.item:
+                messages.error(request, f"El item {item_presupuestario.item} no pertenece al mismo subtitulo {item_presupuestario.subtitulo_presupuestario.subtitulo}.")
+                return redirect('modificar_items', request.session['usuario_entidad'].get('year'))
+
+            item_presupuestario_form.save()
+            messages.success(request, "Item creado correctamente.")
+            return redirect('modificar_items', request.session['usuario_entidad'].get('year'))
     context = {
+        'form': form,
         'item_presupuestario': item_presupuestario
     }
     return render(request, 'modal_modificar_item.html', context)

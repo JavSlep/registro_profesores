@@ -238,8 +238,8 @@ class Cdp(models.Model):
     id=models.CharField(primary_key=True, default=uuid.uuid4, editable=False, max_length=36)
     year_presupuestario = models.IntegerField(default=datetime.datetime.now().year)
     #Relaciones
-    establecimiento = models.ForeignKey(Establecimiento, on_delete=models.CASCADE,null=True, blank=True)
-    unidad = models.ForeignKey(Unidad, on_delete=models.PROTECT,null=True, blank=True)
+    establecimiento = models.ForeignKey(Establecimiento, on_delete=models.CASCADE,null=True, blank=True, related_name='cdps')
+    unidad = models.ForeignKey(Unidad, on_delete=models.PROTECT,null=True, blank=True, related_name='cdps')
     item_presupuestario = models.ForeignKey(ItemPresupuestario, on_delete=models.CASCADE, related_name='cdps',null=False, blank=False)
     ##########################################################
     #El programa se saca del item presupuestario

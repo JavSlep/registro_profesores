@@ -25,7 +25,7 @@
 <form action="{% url 'generar_ley_presupuestaria' %}" method="post">
     {% csrf_token %}
     {% if year is None %}
-    <button type="submit" class="btn btn-thick btn-thick-celeste" style="margin-top: 10px;">Generar</button>
+    <button id="generar_ley" type="submit" class="btn btn-thick btn-thick-celeste" style="margin-top: 10px;">Generar</button>
     {% else %}
         <button type="submit" class="btn btn-thick btn-thick-rosado" style="margin-top: 10px;">Ya se han generado</button>
     {% endif %}
@@ -35,4 +35,12 @@
 
 {% endblock %}
 {% block jscript %}
+<script>
+    document.getElementById("generar_ley").addEventListener("click", function(){
+        event.preventDefault();
+        this.disabled = true;
+        this.innerHTML = "Generando...";
+        this.form.submit();
+    });
+</script>
 {% endblock %}

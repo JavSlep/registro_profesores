@@ -1,0 +1,26 @@
+{% load crispy_forms_tags %}
+{% load utilidades %}
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modificar proyeccion anual</h5><!--Cambiarle el titulo al modal-->
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <form method="post" action="{% url 'modal_modificar_proyeccion' mes.id %}">
+
+        <div class="modal-body" >
+            {% csrf_token %}
+            {{ form|crispy }}
+            <h1>
+                {{ mes.nombre_establecimiento}}: 
+                {{ mes }}
+            </h1>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-thick btn-thick-rosado" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-thick btn-thick-celeste">Guardar</button>
+        </div>
+    </form>
+</div>
+</div>

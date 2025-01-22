@@ -1,0 +1,76 @@
+{% extends 'base.html' %} 
+{% load static %}
+{% load utilidades %}
+{% block head %}
+<link href="{% static 'css/home_funcionarios.css' %}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+
+<h1>
+    Ingresar Proyeccion Inicial
+</h1>
+<hr>
+<form method="post" action="{% url 'ingresar_proyeccion_inicial' filter_establecimiento %}" name="formulario para filtrar" >
+    {% csrf_token %}
+    <div class="row justify-content-center">
+        <div class="col-3">
+            <select id="establecimiento" class="form-select select-field" name="filter_establecimiento">
+                <option value="todos">Todos los establecimientos</option>
+                {% for establecimiento in establecimientos %}
+                <option value="{{ establecimiento.id }}" {% if filter_establecimiento == establecimiento.id|stringformat:"s" %}selected{% endif %}>{{ establecimiento.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+      <div class="col-2">
+        <select id ="subvencion" class="form-select" name="filter_subvencion">
+          <option value="todos">Todos los fondos</option>
+          {% for subvencion in subvenciones %}
+            <option value="{{ subvencion.id }}" {% if filter_subvencion == subvencion.id|stringformat:"s" %}selected{% endif %}>{{ subvencion.fondo }}</option>
+          {% endfor %}
+        </select>
+      </div>
+  
+      <div class="col-1">
+        <button type="submit" class="btn btn-info" style=" color: white">Filtrar</button>
+      </div>
+    </div>
+</form>
+<hr>
+<div class="container">
+<div class="row">
+    <div class="col-md-4">
+    {{current_subvencion.fondo}}
+    </div>
+    <div class="col-md-4 offset-md-4 text-end">
+        {{current_subvencion.fondo}}
+    </div>
+</div>
+</div>
+<div class ="container">
+    <div class="row text-center" style="padding: 25px">
+        <h3>{{establecimiento.nombre}}</h3>
+    </div>
+    <div class="row text-center justify-content-center" style="padding: 25px">
+        {%for mes in meses%}
+          {%if mes.estado == 'Estimado'%}
+            <a type="button" data-form="{% url 'modal_modificar_proyeccion' mes.id %}" class="col-3 btn btn-thick btn-thick-celeste abrir_modal" style="margin: 5px">
+                    <h6 style="font-size: 12px;">{{mes.mes}}</h6>
+                    <h6 style="font-size: 12px;">{{mes.estado}}</h6>
+                    <h6>{{mes.monto|montoConPuntos}}</h6>
+            </a>
+          {%elif mes.estado == 'Real'%}
+            <a type="button" data-form="{% url 'modal_modificar_proyeccion' mes.id %}" class="col-3 btn btn-thick btn-thick-verde abrir_modal" style="margin: 5px">
+              <h6 style="font-size: 12px;"><b>{{mes.mes}}</b></h6>
+              <h6 style="font-size: 12px;">{{mes.estado}}</h6>
+              <h6>{{mes.monto|montoConPuntos}}</h6>
+            </a>
+          {%endif%}
+        {%endfor%}
+    </div>
+    
+</div>
+
+{% endblock %}
+{% block jscript %}
+
+{% endblock %}

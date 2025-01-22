@@ -398,6 +398,21 @@
         });
     </script>
     <script>
+        $('.select-field-establecimiento').select2({
+            theme: 'bootstrap-5'
+        });
+        // Maneja el evento de cambio en Select2
+        $('#establecimiento').on('change', function() {
+            const establecimiento = $(this).val();
+
+            if (establecimiento) {
+                $('#establecimientoForm').submit();
+            } else {
+                alert('Por favor, selecciona un año válido.');
+            }
+        });
+    </script>
+    <script>
         $(".select-estado").select2({
             placeholder: 'Seleccione...',
             maximumSelectionLength: 2,

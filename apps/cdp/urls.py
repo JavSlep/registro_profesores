@@ -2,6 +2,7 @@ from django.urls import path, include
 from .views import *
 from .view_excel import *
 from .view_items import *
+from .view_proyeccion_anual import *
 from django.contrib.auth.decorators import login_required as loguin_required
 
 
@@ -34,9 +35,17 @@ urlpatterns += [
     path('modificar_items/<int:year>', modificar_items, name='modificar_items'),
     path('modal_modificar_item/<uuid:item_presupuestario_id>', modal_modificar_item, name='modal_modificar_item'),
 ]
+
+urlpatterns += [
+    path('ingresar_proyeccion_inicial/<str:filter_establecimiento>', ingresar_proyeccion_inicial, name='ingresar_proyeccion_inicial'),
+    path('modal_modificar_proyeccion/<uuid:mes_id>', modal_modificar_proyeccion, name='modal_modificar_proyeccion'),
+]
+
 # URL excel
 urlpatterns += [
     path('export_cdps/<int:year>/<str:program>/<str:establecimiento>', exportar_cdps, name='exportar_cdps'),
+    path('exportar_meses_proyectados/', exportar_meses_proyectados, name='exportar_meses_proyectados'),
+    path('exportar_estimacion_subvencion/', exportar_estimacion_subvencion, name='exportar_estimacion_subvencion'),
     path('subir-archivo/', subir_archivo, name='subir_archivo'),
 ]
 

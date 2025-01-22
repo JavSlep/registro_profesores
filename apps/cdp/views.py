@@ -1,13 +1,18 @@
+import threading
 from django.shortcuts import render, redirect
 from .forms import *
 import datetime
+import calendar
 from ..establecimiento.models import Establecimiento
 from ..cdp.models import *
+from .models_proyeccion import *
 from django.views.generic import ListView, CreateView
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from uuid import UUID
 from django.http import Http404
+from django.shortcuts import get_object_or_404, redirect
+
 
 
 
@@ -384,42 +389,74 @@ def actualizar_ajuste_presupuestario(request, year):
 
     return render(request, 'actualizar_ajuste_presupuestario.html', context)
 
+
+
 def generar_ley_presupuestaria(request):
     current_year_value = datetime.datetime.now().year
     subtitulos = Subtitulo.objects.all().order_by('n_subtitulo')
+    # Fondos filtrados
+    fondos = [(fondo[0], fondo[1]) for fondo in FONDOS if 'SEP' in fondo[1] or 'PIE' in fondo[1] or 'NORMAL/REGULAR' in fondo[1]]
+
     try:
         year = Year.objects.get(year=current_year_value)
     except Year.DoesNotExist:
         year = None
-    context={
-            'subtitulos': subtitulos,
-            'current_year':current_year_value,
-            'year':year
-        }
+
+    context = {
+        'subtitulos': subtitulos,
+        'current_year': current_year_value,
+        'year': year,
+    }
+
     if request.method == 'POST':
-        
-        # Buscar el año actual en el modelo Year
         try:
             current_year = Year.objects.get(year=current_year_value)
             messages.info(request, "El año ya se ha creado anteriormente y sus subtitulos adjuntos")
             context = {
                 'subtitulos': subtitulos,
-                'current_year':current_year_value,
-                'year':current_year
+                'current_year': current_year_value,
+                'year': current_year,
             }
-            return render(request,'generar_ley_presupuestaria.html',context)
+            return render(request, 'generar_ley_presupuestaria.html', context)
         except Year.DoesNotExist:
-            current_year = Year.objects.create(year=current_year_value)
-            for subt in Subtitulo.objects.all():
-                for prog in PROGRAMAS_PRESUPUESTARIOS:
-                    subtitulo = SubtituloPresupuestario.objects.create(
-                        year=current_year,
-                        subtitulo=subt,
-                        programa_presupuestario=prog[0],
-                        ley_presupuestaria_subtitulo=0,
+            def create_year_and_related_data():
+                current_year = Year.objects.create(year=current_year_value)
+                for subt in Subtitulo.objects.all():
+                    for prog in PROGRAMAS_PRESUPUESTARIOS:
+                        SubtituloPresupuestario.objects.create(
+                            year=current_year,
+                            subtitulo=subt,
+                            programa_presupuestario=prog[0],
+                            ley_presupuestaria_subtitulo=0,
                         )
-            messages.success(request, f"El año presupuestario {current_year_value} se ha creado correctamente con sus subtitulos")
-            return render(request,'generar_ley_presupuestaria.html',context)
+                for establecimiento in Establecimiento.objects.all():
+                    proyeccion = ProyeccionAnual.objects.create(
+                        year=current_year,
+                        establecimiento=establecimiento
+                    )
+                    for fondo in fondos:
+                        if fondo[0] in [f[0] for f in FONDOS]:
+                            subvencion = Subvencion.objects.create(
+                                proyeccion_anual=proyeccion,
+                                fondo=fondo[0],
+                            )
+                            for mes in MESES:
+                                MesProyectado.objects.create(
+                                    subvencion=subvencion,
+                                    mes=mes[1],
+                                    monto=0,
+                                    estado=ESTADOS_MONTO[0][1],
+                                )
+                print("Se ejecutó el método completo")
+                #Mandar correo al director, a rodrigo y a andra para avisar de que el año presupuestario esta creado correctamente
+                messages.success(request, f"El año presupuestario {current_year_value} se ha creado correctamente con sus subtitulos")
+
+            # Crear y lanzar el hilo
+            thread = threading.Thread(target=create_year_and_related_data)
+            thread.start()
+
+            messages.success(request, "El proceso se está ejecutando en segundo plano. Recibirá una notificación al completarse.")
+            return render(request, 'generar_ley_presupuestaria.html', context)
 
     return render(request, 'generar_ley_presupuestaria.html', context)
     
@@ -493,11 +530,7 @@ def modal_cdps_item_ley_presupuestaria(request,item_presupuestario_id):
     }
     return render(request, 'modal_cdps_item_ley_presupuestaria.html', context)
 
-from django.shortcuts import get_object_or_404, redirect
-from django.urls import reverse
-from django.http import Http404
-from .forms import CDPFormUnidad, CDPFormEstablecimiento
-from .models import Cdp
+
 
 def modal_actualizar_cdp(request, cdp_id):
     cdp = get_object_or_404(Cdp, id=cdp_id)
@@ -511,13 +544,10 @@ def modal_actualizar_cdp(request, cdp_id):
 
     if request.method == 'POST':
         form = FormClass(request.POST, instance=cdp)
-        print("Entro al post")
         if form.is_valid():
-            print("El formulario es vlaidos")
             cdp = form.save(commit=False)
             cdp.year_presupuestario = cdp.item_presupuestario.subtitulo_presupuestario.year.year
             cdp.save()
-            
             # Redirigir o devolver respuesta exitosa
             return redirect('historial_cdp_general',cdp.year_presupuestario) # Cambia a la URL deseada
     else:
