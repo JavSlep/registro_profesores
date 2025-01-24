@@ -25,19 +25,20 @@ def ingresar_item_presupuestario(request):
             messages.success(request, "Item creado correctamente.")
             return redirect('ingresar_item_presupuestario')
     context = {
-        'form': form
+        'form': form,
+        'title_nav': 'Ingresar ítems',
     }
     return render(request, 'ingresar_item_presupuestario.html', context)
 
 def modificar_items(request,year):
-    print(year)
     subtitulos_presupuestarios = SubtituloPresupuestario.objects.filter(year__year=year).order_by('subtitulo__n_subtitulo')
     items = ItemPresupuestario.objects.filter(subtitulo_presupuestario__year__year=year).order_by('subtitulo_presupuestario__subtitulo__n_subtitulo', 'item__n_item')
     programs = PROGRAMAS_PRESUPUESTARIOS
     context = {
         'subtitulos_presupuestarios': subtitulos_presupuestarios,
         'items': items,
-        'programs': programs
+        'programs': programs,
+        'title_nav': 'Modificar ítems',
     }
     return render(request, 'modificar_items.html', context)
 

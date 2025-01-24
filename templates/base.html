@@ -398,20 +398,40 @@
         });
     </script>
     <script>
+        // Inicializa Select2 con el tema Bootstrap 5
         $('.select-field-establecimiento').select2({
             theme: 'bootstrap-5'
         });
-        // Maneja el evento de cambio en Select2
-        $('#establecimiento').on('change', function() {
+    
+        // Cambiar el color del fondo al cambiar la selección
+        $('#establecimiento').on('change', function () {
             const establecimiento = $(this).val();
-
-            if (establecimiento) {
+    
+            // Obtén el contenedor de Select2 generado
+            const select2Container = $(this).next('.select2-container');
+    
+            if (establecimiento && establecimiento !== 'todos') {
+                // Cambiar el color de fondo
+                select2Container.find('.select2-selection').css('background-color', 'rgba(183, 225, 239, 0.5)');
                 $('#establecimientoForm').submit();
             } else {
+                // Restaurar el color por defecto
+                select2Container.find('.select2-selection').css('background-color', '');
                 alert('Por favor, selecciona un año válido.');
             }
         });
+    
+        // Configurar el color inicial basado en el valor seleccionado
+        $(document).ready(function () {
+            const initialValue = $('#establecimiento').val();
+            const select2Container = $('#establecimiento').next('.select2-container');
+    
+            if (initialValue && initialValue !== 'todos') {
+                select2Container.find('.select2-selection').css('background-color', 'rgba(183, 225, 239, 0.5)');
+            }
+        });
     </script>
+    
     <script>
         $(".select-estado").select2({
             placeholder: 'Seleccione...',

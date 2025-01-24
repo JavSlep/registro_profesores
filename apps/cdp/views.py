@@ -2,11 +2,9 @@ import threading
 from django.shortcuts import render, redirect
 from .forms import *
 import datetime
-import calendar
 from ..establecimiento.models import Establecimiento
 from ..cdp.models import *
 from .models_proyeccion import *
-from django.views.generic import ListView, CreateView
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from uuid import UUID
@@ -115,7 +113,8 @@ def ver_cdp(request,year):
             'unidades': Unidad.objects.all().order_by('nombre'),
             'establecimientos': Establecimiento.objects.all().order_by('nombre'),
             'years': Year.objects.all().order_by('year'),
-            'cdps': cdps.order_by('cdp')
+            'cdps': cdps.order_by('cdp'),
+            'title_nav': 'Reportes CDP',
         }
         return render(request, 'ver_cdps.html', context)
         
@@ -130,7 +129,8 @@ def ver_cdp(request,year):
         'programs': PROGRAMAS_PRESUPUESTARIOS,
         'establecimientos': Establecimiento.objects.all().order_by('nombre'),
         'years': Year.objects.all().order_by('year'),
-        'cdps': cdps
+        'cdps': cdps,
+        'title_nav': 'Reportes CDP',
     }
     return render(request, 'ver_cdps.html', context)
 
@@ -258,7 +258,8 @@ def historial_cdp_general(request,year):
             'unidades': Unidad.objects.all().order_by('nombre'),
             'establecimientos': Establecimiento.objects.all().order_by('nombre'),
             'years': Year.objects.all().order_by('year'),
-            'cdps': cdps.order_by('-cdp')
+            'cdps': cdps.order_by('-cdp'),
+            'title_nav': 'Modificar CDP',
         }
         return render(request, 'historial_cdp_general.html', context)
         
@@ -277,7 +278,8 @@ def historial_cdp_general(request,year):
         'establecimientos': Establecimiento.objects.all().order_by('nombre'),
         'unidades': Unidad.objects.all().order_by('nombre'),
         'years': Year.objects.all().order_by('year'),
-        'cdps': cdps.order_by('-cdp')
+        'cdps': cdps.order_by('-cdp'),
+        'title_nav': 'Modificar CDP',
     }
     return render(request, 'historial_cdp_general.html', context)
 
@@ -309,6 +311,7 @@ def ley_presupuestaria(request,year):
         'items_presupuestarios': items,
         'years': Year.objects.all(),
         'current_year': year,
+        'title_nav': 'Ley presupuestaria',
     }
 
     return render(request, 'ley_presupuestaria.html', context)
@@ -345,7 +348,8 @@ def actualizar_ley_presupuestaria(request, year):
         'subtitulos_p01': subtitulos_p01,
         'subtitulos_p02': subtitulos_p02,
         'current_year': year,
-        'years': years
+        'years': years,
+        'title_nav': 'Actualizar subtítulos de la ley presupuestaria',
     }
 
     return render(request, 'actualizar_ley_presupuestaria.html', context)
@@ -384,7 +388,8 @@ def actualizar_ajuste_presupuestario(request, year):
         'subtitulos': subtitulos_presupuestarios,
         'programas': PROGRAMAS_PRESUPUESTARIOS,
         'current_year': year,
-        'years': years
+        'years': years,
+        'title_nav': 'Actualizar ajuste presupuestario',
     }
 
     return render(request, 'actualizar_ajuste_presupuestario.html', context)
@@ -406,6 +411,7 @@ def generar_ley_presupuestaria(request):
         'subtitulos': subtitulos,
         'current_year': current_year_value,
         'year': year,
+        'title_nav': 'Generar ley presupuestaria',
     }
 
     if request.method == 'POST':
@@ -416,6 +422,7 @@ def generar_ley_presupuestaria(request):
                 'subtitulos': subtitulos,
                 'current_year': current_year_value,
                 'year': current_year,
+                'title_nav': 'Generar ley presupuestaria',
             }
             return render(request, 'generar_ley_presupuestaria.html', context)
         except Year.DoesNotExist:
@@ -446,6 +453,15 @@ def generar_ley_presupuestaria(request):
                                     mes=mes[1],
                                     monto=0,
                                     estado=ESTADOS_MONTO[0][1],
+                                    tipo=TIPO_MONTO[0][0]
+                                )
+                            for mes in MESES:
+                                MesProyectado.objects.create(
+                                    subvencion=subvencion,
+                                    mes=mes[1],
+                                    monto=0,
+                                    estado=ESTADOS_MONTO[0][1],
+                                    tipo=TIPO_MONTO[1][0]
                                 )
                 print("Se ejecutó el método completo")
                 #Mandar correo al director, a rodrigo y a andra para avisar de que el año presupuestario esta creado correctamente

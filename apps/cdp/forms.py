@@ -4,7 +4,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column, HTML
 import datetime
 from .models import Year
-from .models_proyeccion import MesProyectado
+from .models_proyeccion import MesProyectado, ESTADOS_MONTO
 from ..establecimiento.models import Establecimiento
 from ..usuario.models import Unidad
 
@@ -63,4 +63,7 @@ class MesProyectadoForm(forms.ModelForm):
     class Meta:
         model = MesProyectado
         fields = '__all__'
-        exclude = ('id','updated','created','subvencion','mes')
+        exclude = ('id','updated','created','subvencion','mes','tipo')
+
+    def __init__(self, *args, **kwargs):
+        super(MesProyectadoForm, self).__init__(*args, **kwargs)

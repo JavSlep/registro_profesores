@@ -3,6 +3,7 @@ from .views import *
 from .view_excel import *
 from .view_items import *
 from .view_proyeccion_anual import *
+from .view_creacion_privilegios import *
 from django.contrib.auth.decorators import login_required as loguin_required
 
 
@@ -39,13 +40,18 @@ urlpatterns += [
 urlpatterns += [
     path('ingresar_proyeccion_inicial/<str:filter_establecimiento>', ingresar_proyeccion_inicial, name='ingresar_proyeccion_inicial'),
     path('modal_modificar_proyeccion/<uuid:mes_id>', modal_modificar_proyeccion, name='modal_modificar_proyeccion'),
+    path('reportes_proyeccion_anual/<str:filter_establecimiento>', reportes_proyeccion_anual, name='reportes_proyeccion_anual'),
+]
+
+urlpatterns += [
+    path('creacion_usuarios/', creacion_usuarios, name='creacion_usuarios'),
 ]
 
 # URL excel
 urlpatterns += [
     path('export_cdps/<int:year>/<str:program>/<str:establecimiento>', exportar_cdps, name='exportar_cdps'),
-    path('exportar_meses_proyectados/', exportar_meses_proyectados, name='exportar_meses_proyectados'),
-    path('exportar_estimacion_subvencion/', exportar_estimacion_subvencion, name='exportar_estimacion_subvencion'),
+    path('exportar_meses_proyectados/<str:establecimiento>/<str:subvencion>/<str:tipo>', exportar_meses_proyectados, name='exportar_meses_proyectados'),
+    path('exportar_estimacion_subvencion/<str:establecimiento>/<str:subvencion>', exportar_estimacion_subvencion, name='exportar_estimacion_subvencion'),
     path('subir-archivo/', subir_archivo, name='subir_archivo'),
 ]
 

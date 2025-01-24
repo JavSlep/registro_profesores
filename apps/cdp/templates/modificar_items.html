@@ -8,7 +8,7 @@
 {% block content %}
 
 <h1>
-    Modificar Items Presupuestarios
+    Modificar ítems presupuestarios
 </h1>
 <hr>
 {%for programa in programs%}
@@ -34,7 +34,7 @@
                             </div>
                             <div class="col-4">
                                 <a type="button" data-form="{% url 'modal_modificar_item' item.id %}" class="btn btn-thick btn-thick-celeste abrir_modal"
-                                style="margin-left: 20px">Modificar item</a>
+                                style="margin-left: 20px">Modificar ítem</a>
                             </div>
                         </div>
                     {% endif %}

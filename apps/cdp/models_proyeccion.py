@@ -13,6 +13,8 @@ class ProyeccionAnual(models.Model):
 
     updated=models.DateTimeField(auto_now=True, null=True, blank=True)
     created=models.DateTimeField(auto_now_add=True)
+
+    
     
     def __str__(self):
         return f"{self.year.year} - {self.establecimiento.nombre}"
@@ -27,12 +29,22 @@ class Subvencion(models.Model):
     updated=models.DateTimeField(auto_now=True, null=True, blank=True)
     created=models.DateTimeField(auto_now_add=True)
     
+    @property
+    def monto_total_proyectado_ingreso(self):
+        return sum(mes.monto for mes in self.meses_proyectados.filter(tipo=TIPO_MONTO[0][0]))
+    @property
+    def monto_total_proyectado_remuneraciones(self):
+        return sum(mes.monto for mes in self.meses_proyectados.filter(tipo=TIPO_MONTO[1][0]))
     def __str__(self):
         return f"{self.fondo} - {self.proyeccion_anual.year.year}"
 
 ESTADOS_MONTO = [
     ('Estimado', 'Estimado'),
     ('Real', 'Real'),
+]
+TIPO_MONTO = [
+    ('INGRESO', 'INGRESO'),
+    ('REMUNERACIONES', 'REMUNERACIONES'),
 ]
 MESES = [
     (1, 'Enero'),
@@ -55,6 +67,7 @@ class MesProyectado(models.Model):
     mes = models.CharField(max_length=20, choices=MESES)
     monto = models.IntegerField()
     estado = models.CharField(max_length=20, choices=ESTADOS_MONTO, null=False, blank=False)
+    tipo = models.CharField(max_length=20, choices=TIPO_MONTO, null=False, blank=False, default=TIPO_MONTO[0][0])
     #----------------------------------------------------------#
 
     updated=models.DateTimeField(auto_now=True, null=True, blank=True)

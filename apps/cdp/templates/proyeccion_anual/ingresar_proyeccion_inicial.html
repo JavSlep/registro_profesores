@@ -21,35 +21,90 @@
                 {% endfor %}
             </select>
         </div>
-      <div class="col-2">
-        <select id ="subvencion" class="form-select" name="filter_subvencion">
-          <option value="todos">Todos los fondos</option>
-          {% for subvencion in subvenciones %}
-            <option value="{{ subvencion.id }}" {% if filter_subvencion == subvencion.id|stringformat:"s" %}selected{% endif %}>{{ subvencion.fondo }}</option>
-          {% endfor %}
-        </select>
-      </div>
-  
+        {% if filter_establecimiento == "todos"%}
+          <div class="col-2">
+            <select id ="subvencion" class="form-select" name="filter_subvencion" disabled>
+              <option value="todos">Todos los fondos</option>
+              {% for subvencion in subvenciones %}
+                <option value="{{ subvencion.id }}" {% if filter_subvencion == subvencion.id|stringformat:"s" %}selected{% endif %}>{{ subvencion.fondo }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-2">
+            <select id ="tipo" class="form-select" name="filter_tipo" disabled>
+              <option value="todos">Tipo de proyección</option>
+              {% for tipo in tipos %}
+                <option value="{{ tipo.0 }}" {% if filter_tipo == tipo.0|stringformat:"s" %}selected{% endif %}>{{ tipo.0 }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        {%else%}
+        <div class="col-2">
+          <select id ="subvencion" class="form-select" name="filter_subvencion">
+            <option value="todos">Todos los fondos</option>
+            {% for subvencion in subvenciones %}
+              <option value="{{ subvencion.id }}" {% if filter_subvencion == subvencion.id|stringformat:"s" %}selected{% endif %}>{{ subvencion.fondo }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-2">
+          <select id ="tipo" class="form-select" name="filter_tipo">
+            <option value="todos">Tipo de proyección</option>
+            {% for tipo in tipos %}
+              <option value="{{ tipo.0 }}" {% if filter_tipo == tipo.0|stringformat:"s" %}selected{% endif %}>{{ tipo.0 }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        {%endif%}
+
+
       <div class="col-1">
         <button type="submit" class="btn btn-info" style=" color: white">Filtrar</button>
       </div>
     </div>
 </form>
 <hr>
+{% if filter_subvencion == none or filter_subvencion == "todos" and filter_establecimiento != "todos"%}
 <div class="container">
-<div class="row">
-    <div class="col-md-4">
-    {{current_subvencion.fondo}}
-    </div>
-    <div class="col-md-4 offset-md-4 text-end">
-        {{current_subvencion.fondo}}
-    </div>
+  <div class="row">
+      <div class="col-md-4">
+        Seleccione un fondo
+      </div>
+      <div class="col-md-4 offset-md-4 text-end">
+        Seleccione un fondo
+      </div>
+  </div>
 </div>
+{%else%}
+<div class="container">
+  <div class="row">
+      <div class="col-md-4">
+      {{current_subvencion.fondo}}
+      </div>
+      <div class="col-md-4 offset-md-4 text-end">
+          {{current_subvencion.fondo}}
+      </div>
+  </div>
 </div>
+{%endif%}
+
 <div class ="container">
     <div class="row text-center" style="padding: 25px">
         <h3>{{establecimiento.nombre}}</h3>
     </div>
+    {%if filter_subvencion == none%}
+      <div class="row text-center" style="padding: 25px">
+        <h4>Seleccione un tipo de proyección</h4>
+      </div>
+    {%elif filter_tipo == "todos"%}
+      <div class="row text-center" style="padding: 25px">
+        <h4>Seleccione un tipo de proyección</h4>
+      </div>
+    {%else%}
+      <div class="row text-center" style="padding: 25px">
+        <h4>{{filter_tipo}}</h4>
+      </div>
+    {%endif%}
     <div class="row text-center justify-content-center" style="padding: 25px">
         {%for mes in meses%}
           {%if mes.estado == 'Estimado'%}
@@ -66,11 +121,90 @@
             </a>
           {%endif%}
         {%endfor%}
+      
+
     </div>
+    {%if filter_subvencion == "todos"%}
+      <div class="row justify-content-end">
+        <div class="col-md-4 d-flex justify-content-end">
+            <button href="#" 
+              class="btn btn-thick btn-thick-azul" 
+              style="margin: 5px" disabled>Exportar</button>
+        </div>
+      </div>
+    {%elif filter_establecimiento == "todos" and filter_subvencion == "todos"%}
+      <div class="row justify-content-end">
+        <div class="col-md-4 d-flex justify-content-end">
+            <button href="#" 
+              class="btn btn-thick btn-thick-azul" 
+              style="margin: 5px" disabled>Exportar</button>
+        </div>
+      </div>
+    {%elif filter_establecimiento != "todos" and filter_tipo == none and filter_subvencion == none %}
+      <div class="row justify-content-end">
+        <div class="col-md-4 d-flex justify-content-end">
+            <button href="#" 
+              class="btn btn-thick btn-thick-azul" 
+              style="margin: 5px" disabled>Exportar</button>
+        </div>
+      </div>
+    {%elif filter_tipo == "todos"%}
+      <div class="row justify-content-end">
+        <div class="col-md-4 d-flex justify-content-end">
+            <button href="#" 
+              class="btn btn-thick btn-thick-azul" 
+              style="margin: 5px" disabled>Exportar</button>
+        </div>
+      </div>
+    {%else%}
+      <div class="row text-center justify-content-center">
+        <div class="col-8">
+          <li class="list-group-item list-group-item-primary rounded">
+            <h6><b>Total de la proyeccion anual para el fondo: {{current_subvencion.fondo}}: </b></h6>
+            {% if filter_tipo == "INGRESO"%}
+              <h6>${{current_subvencion.monto_total_proyectado_ingreso|montoConPuntos}}</h6>
+            {% elif filter_tipo == "REMUNERACIONES"%}
+              <h6>${{current_subvencion.monto_total_proyectado_remuneraciones|montoConPuntos}}</h6>
+            {%endif%}
+          </li>
+        </div>
+      </div>
+      <div class="row justify-content-end">
+        <a href="{% url 'exportar_meses_proyectados' establecimiento.id current_subvencion.id filter_tipo %}" 
+          class="col-3 btn btn-thick btn-thick-azul"
+          style="margin: 5px 20px 5px 20px; padding: 8px 12px; font-size: 0.9rem;">Exportar proyección anual: <br>{{current_subvencion.fondo}}</a>
+        <a href="{% url 'exportar_estimacion_subvencion' establecimiento.id current_subvencion.id %}"
+          class="col-3 btn btn-thick btn-thick-azul"
+          style="margin: 5px 20px 5px 20px; padding: 8px 12px; font-size: 0.9rem;">Exportar estimación<br>anual subvención</a>
+      </div>
+    {%endif%}
     
 </div>
 
 {% endblock %}
 {% block jscript %}
+<script>
+  // Función para cambiar el color del fondo del selector cuando cambia el valor
+  function changeBackgroundColor(selectElement) {
+    if (selectElement.value !== "todos") {
+      selectElement.style.backgroundColor = "rgba(183, 225, 239, 0.5)"; // Color de fondo cuando está seleccionado
+    } else {
+      selectElement.style.backgroundColor = ""; // Color de fondo por defecto
+    }
+  }
 
+  // Asignar el evento a todos los selectores con clase form-select
+  document.addEventListener("DOMContentLoaded", function () {
+    const selectElements = document.querySelectorAll(".form-select");
+    selectElements.forEach(function (select) {
+      // Cambiar el color inicial basado en el valor seleccionado
+      changeBackgroundColor(select);
+
+      // Escuchar cambios y actualizar el color de fondo
+      select.addEventListener("change", function () {
+        changeBackgroundColor(select);
+      });
+    });
+  });
+</script>
 {% endblock %}
