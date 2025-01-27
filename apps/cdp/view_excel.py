@@ -99,15 +99,24 @@ def exportar_cdps(request, year, program, establecimiento):
     for row in worksheet.iter_rows(min_row=2, max_row=worksheet.max_row):
         for col_idx, cell in enumerate(row, start=1):
             cell.border = thin_border  # Aplicar bordes negros a cada celda
+            cell.alignment = centered_style.alignment
+
             if col_idx == 12:  # Columna del monto
                 cell.number_format = '#,##0'
-                cell.alignment = centered_style.alignment
+                
             elif col_idx == 8 or col_idx == 13 or col_idx == 14:  # Columna del concepto presupuestario
                 pass
             else:
                 cell.alignment = Alignment(wrap_text=True)
-                cell.alignment = centered_style.alignment
-
+            
+            #if cell.row % 2 != 0:
+            #        cell.fill = PatternFill(start_color='BFBFBF', end_color='BFBFBF', fill_type='solid')
+    
+    for i in range(2, worksheet.max_row + 1):#Iterar sobre las filas
+        for j in range(1 , worksheet.max_column + 1):
+            if i % 2 == 0:
+                cell = worksheet.cell(row=i, column=j)
+                cell.fill = PatternFill(start_color='BFBFBF', end_color='BFBFBF', fill_type='solid')
     # Ajustar el ancho de las columnas según el contenido, con límite a 50
     for column_cells in worksheet.columns:
         max_length = 0

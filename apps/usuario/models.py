@@ -87,6 +87,28 @@ class AreaUnidad(models.Model):
     created=models.DateTimeField(auto_now_add=True)
 
 
+
+
+ROL_SISTEMA=[
+    ("DIRECTOR_EJECUTIVO","DIRECTOR_EJECUTIVO"),
+    ("SUBDIRECTOR","SUBDIRECTOR"),
+    ("PROFESIONAL_ENCARGADO","PROFESIONAL_ENCARGADO"),
+    ("TECNICO_PRESUPUESTO","TECNICO_PRESUPUESTO"),
+]
+class Rol(models.Model):
+    id = models.CharField(primary_key=True, default=uuid.uuid4, editable=False, max_length=36)
+    nombre = models.CharField(max_length=100, choices=ROL_SISTEMA)
+    crear_usuarios = models.BooleanField(default=False)
+    crear_cdps = models.BooleanField(default=False)
+    crear_presupuesto = models.BooleanField(default=False)
+    crear_proyeccion = models.BooleanField(default=False)
+    consultas = models.BooleanField(default=False)
+    updated=models.DateTimeField(auto_now=True, null=True, blank=True)
+    created=models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.nombre}'
+
 class UsuarioEntidad(models.Model):
     id=models.CharField(primary_key=True, default=uuid.uuid4, editable=False, max_length=36)
     #Relaciones entre entidades
@@ -94,9 +116,9 @@ class UsuarioEntidad(models.Model):
     entidad=models.ForeignKey(Entidad, on_delete=models.PROTECT)
     establecimiento = models.ForeignKey(Establecimiento, on_delete=models.PROTECT,null=True, blank=True)
     area_unidad = models.ForeignKey(AreaUnidad, on_delete=models.PROTECT, null=True, blank=True)
+    rol_sistema = models.ForeignKey(Rol, on_delete=models.CASCADE, null=True, blank=True)
     ########################################
     cargo=models.CharField(max_length=200, null=True, blank=True)
-    """ departamento_unidad = models.ForeignKey(Establecimiento, on_delete=models.PROTECT,null=True, blank=True) """
     administrador = models.BooleanField(default=False, null=True, blank=True)
     estado=models.BooleanField(default=True)
     created=models.DateTimeField(auto_now_add=True)
@@ -106,4 +128,3 @@ class UsuarioEntidad(models.Model):
         verbose_name_plural="usuarios entidad" 
     def __str__(self):
         return '%s | Entidad: %s' %(self.usuario.nombre_completo, self.entidad)
-

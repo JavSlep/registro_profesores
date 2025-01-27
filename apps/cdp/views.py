@@ -80,13 +80,16 @@ def ver_cdp(request,year):
 
     filter_year = year
     filter_program = 'todos'
+    filter_estado = 'todos'
     filter_establecimiento = 'todos'
     filter_unidad = 'todos'
+    
 
     if request.method == 'POST':
         cdps = Cdp.objects.all()
         year = request.POST.get('filter_year')
         program = request.POST.get('filter_program')
+        estados = request.POST.getlist('filter_estado')
         establecimiento = request.POST.get('filter_establecimiento')
         unidad = request.POST.get('filter_unidad')
         if year != '0':
@@ -96,6 +99,16 @@ def ver_cdp(request,year):
         if program != 'todos':
             cdps = cdps.filter(item_presupuestario__subtitulo_presupuestario__programa_presupuestario=program)
             filter_program = program
+
+        filtro_estados = "Estado/s:"
+        for estado in estados:
+            if estado == 'todos':
+                break
+            else:
+                cdps = cdps.filter(estado__in=estados)
+                filtro_estados +=(f" {estado.upper()}")
+        if filtro_estados != "Estado/s:":
+            filter_estado = estados
 
         if establecimiento != 'todos':
             cdps = cdps.filter(establecimiento=establecimiento)
@@ -107,9 +120,11 @@ def ver_cdp(request,year):
         context = {
             'filter_year': filter_year,
             'filter_program': filter_program,
+            'filter_estado': filter_estado,
             'filter_establecimiento': filter_establecimiento,
             'filter_unidad': filter_unidad,
             'programs': PROGRAMAS_PRESUPUESTARIOS,
+            'estados': ESTADOS,
             'unidades': Unidad.objects.all().order_by('nombre'),
             'establecimientos': Establecimiento.objects.all().order_by('nombre'),
             'years': Year.objects.all().order_by('year'),
@@ -127,6 +142,7 @@ def ver_cdp(request,year):
         'filter_unidad': filter_unidad,
         'unidades': Unidad.objects.all().order_by('nombre'),
         'programs': PROGRAMAS_PRESUPUESTARIOS,
+        'estados':ESTADOS,
         'establecimientos': Establecimiento.objects.all().order_by('nombre'),
         'years': Year.objects.all().order_by('year'),
         'cdps': cdps,

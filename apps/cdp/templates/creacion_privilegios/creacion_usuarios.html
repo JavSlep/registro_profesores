@@ -9,6 +9,13 @@
 <h1>
     Creacion de Usuarios
 </h1>
+<h2>privilegios:</h2>
+{{request.session.privilegios.rol_sistema}}
+{{request.session.privilegios.crear_usuarios}}
+{{request.session.privilegios.crear_cdps}}
+{{request.session.privilegios.crear_presupuesto}}
+{{request.session.privilegios.crear_proyeccion}}
+{{request.session.privilegios.consultas}}
 {% endblock %}
 {% block jscript %}
 {% endblock %}

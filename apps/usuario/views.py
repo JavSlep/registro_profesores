@@ -54,7 +54,16 @@ def loginUsuario(request):
                 request.session['unidad'] =  {
                   'id': usuario_entidad.area_unidad.unidad.id,
                   'nombre': usuario_entidad.area_unidad.unidad.nombre,
-                }             
+                }
+              if usuario_entidad.rol_sistema:
+                request.session['privilegios'] = {
+                  'rol_sistema': usuario_entidad.rol_sistema.nombre,
+                  'crear_usuarios': usuario_entidad.rol_sistema.crear_usuarios,
+                  'crear_cdps': usuario_entidad.rol_sistema.crear_cdps,
+                  'crear_presupuesto': usuario_entidad.rol_sistema.crear_presupuesto,
+                  'crear_proyeccion': usuario_entidad.rol_sistema.crear_proyeccion,
+                  'consultas': usuario_entidad.rol_sistema.consultas
+                }
               return redirect('home_funcionarios',year=datetime.datetime.now().year,programa='none')
             else:
               return redirect('index')
