@@ -13,7 +13,7 @@ from django.db.models import Sum
 
 
 def exportar_cdps(request, year, program, establecimiento):
-    cdps = Cdp.objects.all()
+    cdps = Cdp.objects.exclude(estado='rechazado')
     nombre_archivo = "Reporte_cdp"
     if year != 0:
         cdps = cdps.filter(item_presupuestario__subtitulo_presupuestario__year__year=year)

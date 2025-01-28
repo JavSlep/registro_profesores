@@ -45,6 +45,7 @@ urlpatterns += [
 
 urlpatterns += [
     path('creacion_usuarios/', creacion_usuarios, name='creacion_usuarios'),
+    path('modal_asignar_rol/<uuid:user_id>', modal_asignar_rol, name='modal_asignar_rol'),
 ]
 
 # URL excel

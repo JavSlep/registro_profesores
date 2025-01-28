@@ -35,3 +35,7 @@ def montoConPuntos(monto):
     except (ValueError, TypeError):
         # Si el monto no es un número válido, devuélvelo como está
         return monto
+
+@register.filter(name='textoConEspacios')
+def textoConEspacios(texto):
+    return texto.replace("_", " ")

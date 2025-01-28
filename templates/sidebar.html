@@ -197,23 +197,30 @@
               </li>
             </ul>
           </div>
+          <div class="collapse show" id="exploratorio-collapse">
+            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+              <li>
+                <a href="{% url 'home_funcionarios' request.session.usuario_entidad.year 'none'%}" class="link-dark rounded">Registrar profesor</a>
+              </li>
+            </ul>
+          </div>
         </li>
         <li class="mb-1">
           {% if request.session.privilegios.crear_usuarios %}
             <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
               data-bs-target="#configuracion-collapse" aria-expanded="false">
-              Configuración
+              Privilegios
             </button>
           {% else %}
             <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
               data-bs-target="#configuracion-collapse" aria-expanded="false" disabled>
-              Configuración
+              Privilegios
             </button>
           {% endif %}
           <div class="collapse " id="configuracion-collapse">
             <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
               <li>
-                <a href="{% url 'creacion_usuarios' %}" class="link-dark rounded">Crear usuario con privilegios</a>
+                <a href="{% url 'creacion_usuarios' %}" class="link-dark rounded">Asignar privilegios</a>
               </li>
             </ul>
           </div>

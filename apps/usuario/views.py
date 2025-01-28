@@ -64,6 +64,15 @@ def loginUsuario(request):
                   'crear_proyeccion': usuario_entidad.rol_sistema.crear_proyeccion,
                   'consultas': usuario_entidad.rol_sistema.consultas
                 }
+              if usuario_entidad.rol_sistema.nombre == 'DIRECTOR_EJECUTIVO':
+                return redirect('ley_presupuestaria',year=datetime.datetime.now().year)
+              elif usuario_entidad.rol_sistema.nombre == 'SUBDIRECTOR':
+                return redirect('ley_presupuestaria',year=datetime.datetime.now().year)
+              elif usuario_entidad.rol_sistema.nombre == 'PROFESIONAL_ENCARGADO':
+                return redirect('ingresar_proyeccion_inicial',filter_establecimiento='todos')
+              elif usuario_entidad.rol_sistema.nombre == 'TECNICO_PRESUPUESTO':
+                return redirect('home_funcionarios',year=datetime.datetime.now().year,programa='P02 SERVICIOS EDUCATIVOS')
+
               return redirect('home_funcionarios',year=datetime.datetime.now().year,programa='none')
             else:
               return redirect('index')

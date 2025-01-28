@@ -86,6 +86,8 @@ class AreaUnidad(models.Model):
     updated=models.DateTimeField(auto_now=True, null=True, blank=True)
     created=models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f'{self.nombre}'
 
 
 

@@ -7,16 +7,7 @@
 <script src="https://unpkg.com/htmx.org@1.6.1"></script>
 {% endblock %}
 {% block content %} 
-<div class="d-flex justify-content-between align-items-center main-content">
-    <div class="info-section">
-        <h3>Bienvenido, {{ request.session.usuario_entidad.usuario }}</h3>
-        <h5 class="card-title">Información del Área</h5>
-        <p><strong>Unidad: </strong>{{ request.session.unidad.nombre }}</p>
-        <p><strong>Área: </strong>{{ request.session.area_unidad.nombre }}</p>
-    </div>
-    <div class="vertical-divider"></div>
-</div>
-<hr>
+
 <h4>SELECCIONAR PROGRAMA</h4>
 <form id="programaForm" action="{% url 'cambiar_programa' %}" method="post">
     {% csrf_token %}
