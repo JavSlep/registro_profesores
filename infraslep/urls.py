@@ -11,6 +11,7 @@ urlpatterns = [
     path('', include('apps.mantenimiento.urls')),
     path('', include('apps.utilidades.urls')),
     path('home-funcionarios/', include('apps.cdp.urls')),
+    path('registrar-profesor/', include('apps.profesores.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

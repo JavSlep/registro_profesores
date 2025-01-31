@@ -424,6 +424,74 @@
         });
     </script>
     <script>
+        $(document).ready(function() {
+            // Inicializa los select con Select2
+            if ($('.select-field-rc').length) {
+                $('.select-field-rc').select2({
+                    theme: 'bootstrap-5',
+                    placeholder: 'Seleccione...'
+                });
+    
+                // Evento select2:select, se dispara cuando se selecciona una opción
+                $('.select-field-rc').on('select2:select', function(e) {
+                    var value = $(this).val();
+                    if (value && value !== '0') {
+                        $(this).next('.select2-container').find('.select2-selection').addClass('select2-selection--valid');
+                    } else {
+                        $(this).next('.select2-container').find('.select2-selection').removeClass('select2-selection--valid');
+                    }
+                });
+    
+                // Evento select2:unselect, se dispara cuando se deselecciona una opción
+                $('.select-field-rc').on('select2:unselect', function(e) {
+                    $(this).next('.select2-container').find('.select2-selection').removeClass('select2-selection--valid');
+                });
+    
+                // Inicializar el estado de los selects (validación inicial)
+                $('.select-field-rc').each(function() {
+                    var value = $(this).val();
+                    if (value && value !== '0') {
+                        $(this).next('.select2-container').find('.select2-selection').addClass('select2-selection--valid');
+                    } else {
+                        $(this).next('.select2-container').find('.select2-selection').removeClass('select2-selection--valid');
+                    }
+                });
+            }
+    
+            // Captura el evento submit del formulario
+            const form = document.querySelector('#profesor_form');  // Asegúrate de que el formulario tenga este ID.
+            
+            if (form) {
+                form.addEventListener('submit', function(event) {
+                    let valid = true;  // Variable para controlar si la validación pasa
+                    
+                    // Captura todos los selects de Select2
+                    const selectFields = form.querySelectorAll('.select-field-rc');
+                    
+                    // Itera sobre los selects y valida si el valor es la opción por defecto
+                    selectFields.forEach(select => {
+                        const value = $(select).val(); // Usamos jQuery para obtener el valor
+                        // Aquí verificamos si el valor es la opción por defecto
+                        if (value === '' || value === '0') {
+                            valid = false; // Si el valor es inválido, marcamos como no válido
+                            $(select).next('.select2-container').find('.select2-selection').addClass('select2-selection--invalid');  // Opcional: añade una clase para resaltar el error
+                        } else {
+                            $(select).next('.select2-container').find('.select2-selection').removeClass('select2-selection--invalid');
+                        }
+                    });
+    
+                    // Si alguna de las validaciones no pasó, prevenimos el envío del formulario
+                    if (!valid) {
+                        event.preventDefault();  // Previene el envío del formulario
+                        alert('Por favor, selecciona una comuna o región válida.');  // Muestra un mensaje de advertencia
+                    }
+                });
+            }
+        });
+    </script>
+    
+    
+    <script>
         // Inicializa Select2 con el tema Bootstrap 5
         $('.select-field-establecimiento').select2({
             theme: 'bootstrap-5'

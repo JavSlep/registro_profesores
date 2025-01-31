@@ -1,0 +1,15 @@
+{% extends 'base.html' %} 
+{% load static %}
+{% load utilidades %}
+{% load crispy_forms_tags %}
+{% block head %}
+{% endblock %}
+{% block content %}
+<h1>
+    ¡Hola! 👋Datos Tecnicos
+</h1>
+<a href="{% url 'calendario_disponibilidad' %}" class="btn btn-primary">Calendario de disponibilidad</a>
+<a href="{% url 'datos_experiencia' %}" class="btn btn-secondary">volver datos experiencia</a>
+{% endblock %}
+{% block jscript %}
+{% endblock %}

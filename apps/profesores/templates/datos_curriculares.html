@@ -1,0 +1,16 @@
+{% extends 'base.html' %} 
+{% load static %}
+{% load utilidades %}
+{% load crispy_forms_tags %}
+{% block head %}
+{% endblock %}
+{% block content %}
+<h1>
+    ¡Hola! 👋Datos curriculares
+</h1>
+<hr>
+<a href="{% url 'datos_experiencia' %}" class="btn btn-primary">Datos de experiencia</a>
+<a href="{% url 'datos_personales' 'nada' %}" class="btn btn-secondary">volver datos personales</a>
+{% endblock %}
+{% block jscript %}
+{% endblock %}

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'apps.mantenimiento',
     'captcha',
     'apps.cdp',
+    'apps.profesores',
 ]
 
 MIDDLEWARE = [

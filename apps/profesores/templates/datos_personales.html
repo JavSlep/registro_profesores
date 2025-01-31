@@ -1,0 +1,222 @@
+{% extends 'base.html' %} 
+{% load static %}
+{% load utilidades %}
+{% load crispy_forms_tags %}
+{% block head %}
+<link href="{% static 'css/register_teacher.css' %}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+<div class="titulos_register">
+    <h1>
+        ¡Hola! 👋
+    </h1>
+    <h6>En este apartado podremos conocerte mejor</6>
+</div>
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card text-center custom-card">
+                <div class="card-body">
+                    <h5 class="card-title">Datos personales</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Esto nos ayudará a identificar tu cuenta</h6>
+                    <form method="post" id="profesor_form" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class = container>
+                            <div class = "row">
+                                <div class = "col-6">
+                                    {{ profesor_form.nombre|as_crispy_field}}
+                                </div>
+                                <div class = "col-6">
+                                    {{ profesor_form.apellidos|as_crispy_field}}
+                                </div>
+                            </div>
+                            <div class = "row">
+                                <div class = "col-6">
+                                    {{ profesor_form.email|as_crispy_field}}
+                                </div>
+                                <div class = "col-6">
+                                    {{ profesor_form.telefono|as_crispy_field}}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class = "row">
+                                <div class = "col-6">
+                                    {{ profesor_form.nacionalidad|as_crispy_field}}
+                                </div>
+                                <div class = "col-6">
+                                    {{ profesor_form.teacher_user.rut|as_crispy_field}}
+                                </div>
+                            </div>
+                            <div class = "row">
+                                <div class = "col-6">
+                                    <div class = "row">
+                                        <div class = "col-4">
+                                            {{ fecha_form.day|as_crispy_field}}
+                                        </div>
+                                        <div class = "col-4">
+                                            {{ fecha_form.month|as_crispy_field}}
+                                        </div>
+                                        <div class = "col-4">
+                                            {{ fecha_form.year|as_crispy_field}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class = "col-6">
+                                    {{ profesor_form.sexo|as_crispy_field}}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class = "row">
+                                {{ direccion_form.pais|as_crispy_field}}
+                            </div>
+                            <div class = "row">
+                                <div class = "col-4">
+                                    {{ direccion_form.region|as_crispy_field}}
+                                </div>
+                                <div class = "col-4">
+                                    {{ direccion_form.comuna|as_crispy_field}}
+                                </div>
+                                <div class = "col-4">
+                                    {{ direccion_form.direccion|as_crispy_field}}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class = "row">
+                                <div class = "col-6">
+                                    {{ profesor_form.cv|as_crispy_field}}
+                                </div>
+                                
+                                <div class = "col-6">
+                                    {{ profesor_form.foto|as_crispy_field}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-around mt-3">
+                            <button type="submit" class="btn btn-primary">Continuar</button>
+                            <a href="{% url 'login' %}" class="btn btn-secondary">Volver</a>
+                        </div>
+                    </form>
+
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+{% block jscript %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function (){
+        const form = document.querySelector('#profesor_form');
+        if (form) 
+        {
+            
+            //Aqui obtienes (casi) todos los elementos de tu formulario
+            const inputs = form.querySelectorAll('input, select, textarea');
+
+            for (let input of inputs) {
+                if(input.name === 'rut'){
+                    input.maxlength = 12;
+                    input.readOnly = true
+                    input.addEventListener('input', function() {
+                        let value = input.value.replace(/[^0-9kK]/g, ''); // Elimina los puntos
+                        // Permitir solo una sola "k" o "K"
+                        const kCount = (value.match(/[kK]/g) || []).length;
+                        if (kCount > 1) {
+                            // Si hay más de una "k" o "K", eliminamos la última
+                            value = value.replace(/([kK]).*/, '$1'); // Mantener solo la primera "k" o "K"
+                        }
+                        if(value[value.length - 1] !== 'k'){
+                            value = value.replace(/[^0-9]/g, '');
+                        }
+
+                        if(value.length >=4 && value.length <= 6){
+                            value = value.replace(/^(\d{1,3})(\d{3})/, '$1.$2')
+                        }
+                        else if(value.length > 6 && value.length <= 7){
+                            value = value.replace(/^(\d{1,2})(\d{3})(\d{3})/, '$1.$2.$3')
+                        }
+                        else if(value.length > 7 && value.length <= 9){
+                            value = value.replace(/^(\d{1,2})(\d{3})(\d{3})([0-9Kk]{1})/, '$1.$2.$3-$4')
+                        }
+                        input.value = value
+                        
+                    })
+                }
+            }
+        }
+    })
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Selecciona el formulario por su ID (o clase si prefieres)
+        const form = document.querySelector('#profesor_form');
+
+        // Verifica si el formulario está presente en el DOM
+        if (form) 
+        {
+            
+            // Obtiene todos los elementos de formulario (input, select, textarea)
+            const inputs = form.querySelectorAll('input, select, textarea');
+
+            // Itera sobre todos los campos
+            inputs.forEach(input => {
+
+                // Verifica si es el campo de teléfono
+                if (input.name === 'telefono') 
+                {
+                    // Agrega el evento 'input' para detectar cada cambio mientras se escribe
+                    input.addEventListener('input', function () 
+                    {
+                        let value = input.value.replace(/\D/g, ''); // Elimina cualquier carácter no numérico
+                        
+                        if (value.length > 9) 
+                        {
+                            value = value.slice(0, 9);
+                        }
+
+                        if (value.length > 1 && value.length <= 5) 
+                        {
+                            value = value.replace(/(\d{1})(\d{1,4})/, '$1 $2'); // Formato "9 9999 9999"
+                        }
+                        else if(value.length >= 6 && value.length <= 9){
+                            value = value.replace(/(\d{1})(\d{1,4})(\d{1,4})/, '$1 $2 $3'); // Formato "9 9999 9999"
+                        }
+                        
+                        input.value = value;
+                        // Verificar si el número tiene menos de 9 caracteres
+                        if (value.length < 11) {
+                            input.setCustomValidity('El número de teléfono debe tener al menos 9 dígitos.');
+                            input.style.borderColor = 'red'; // Resaltar el campo en rojo
+                        } else {
+                            input.setCustomValidity(''); // Eliminar el mensaje de error si tiene 9 dígitos
+                            input.style.borderColor = ''; // Restaurar el borde original
+                        }
+                    });
+                }
+                });
+        }
+    });    
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const inputs = document.querySelectorAll('input, textarea');
+
+        inputs.forEach(input => {
+            input.addEventListener('input', function () {
+                if (this.value.trim() !== "") {
+                    this.style.backgroundColor = "#e7f1fb";
+                    this.style.borderColor = "#5c6bc0";
+                } else {
+                    this.style.backgroundColor = ""; // Vuelve al color original
+                    this.style.borderColor = "";
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}
