@@ -1,5 +1,0 @@
-{% load utilidades %}
-<span id="id_total_{{id_recinto_partida}}" hx-swap-oob="true">{{total_partida | montoFormateado}}</span>
-<span id="total_recinto" hx-swap-oob="true">{{total_recinto | montoFormateado}}</span>
-<input type="number" name="cantidad" style="width: 70px; padding: 3px !important; font-size: 13px !important;" min="0" step="1" class="form-control form-control-sm" value="{{cantidad}}" required>
-{% include 'base_toast.html' %}

@@ -39,12 +39,8 @@ INSTALLED_APPS = [
     'django_dump_load_utf8',
     'import_export',
     'apps.utilidades',
-    'apps.establecimiento',
-    'apps.general',
     'apps.usuario',
-    'apps.mantenimiento',
     'captcha',
-    'apps.cdp',
     'apps.profesores',
 ]
 

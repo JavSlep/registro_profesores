@@ -28,8 +28,3 @@ class UsuarioEntidadAdmin(admin.ModelAdmin):
   list_filter=('entidad', 'establecimiento')  
 
 admin.site.register(User,CustomUserAdmin)
-admin.site.register(Entidad)
-admin.site.register(Unidad)
-admin.site.register(AreaUnidad)
-admin.site.register(Rol)
-admin.site.register(UsuarioEntidad, UsuarioEntidadAdmin)

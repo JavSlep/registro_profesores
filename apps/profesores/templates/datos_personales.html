@@ -1,6 +1,5 @@
 {% extends 'base.html' %} 
 {% load static %}
-{% load utilidades %}
 {% load crispy_forms_tags %}
 {% block head %}
 <link href="{% static 'css/register_teacher.css' %}" rel="stylesheet">
@@ -44,7 +43,7 @@
                                     {{ profesor_form.nacionalidad|as_crispy_field}}
                                 </div>
                                 <div class = "col-6">
-                                    {{ profesor_form.teacher_user.rut|as_crispy_field}}
+                                    <!-- profesor_form.teacher_user.rut|as_crispy_field: tiene un error-->
                                 </div>
                             </div>
                             <div class = "row">

@@ -10,8 +10,6 @@ urlpatterns = [
     path('password_reset_done/',passwordResetDone, name="password_reset_done"),
     path('password_reset_confirm/<email>/<token>',passwordResetConfirm, name="password_reset_confirm"),
     path('token_invalido',tokenInvalido, name="token_invalido"),    
-    path('',login_required(misEntidades), name="mis_entidades"),
-    path('seleccion_entidad/<str:id_entidad>',login_required(seleccionEntidad), name="seleccion_entidad"),    
     
 ]
 
