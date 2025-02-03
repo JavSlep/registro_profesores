@@ -1,0 +1,45 @@
+crear
+python -m venv env
+
+
+activar
+.\env\Scripts\activate
+
+desactivar
+deactivate
+
+*** Instalados****
+pip install Django==5.1.2
+pip install django-session-timeout==0.1.0
+pip install django-recaptcha==3.0.0
+pip install django-import-export==4.1.0   #Libreria para importar y exportar archivos
+pip install django-dump-load-utf8==0.0.4
+pip install requests==2.32.3
+pip install jwt==1.3.1
+pip install crispy-bootstrap5
+pip install xhtml2pdf==0.2.15
+pip install openpyxl==3.1.5               #Libreria para importar y exportar archivos
+pip install python-decouple==3.8
+pip install pillow==11.0.0
+*** Instalaciones posteriores ***
+pip install django-select2==8.2.3
+
+
+
+
+*** No Instalados****
+pip install django-quill-editor==0.1.40
+
+
+
+https://pypi.org/project/django-dump-load-utf8/
+pip install django-dump-load-utf8==0.0.4
+python manage.py dumpdatautf8 --indent 2 mantenimiento.archivo -o data.json
+
+
+https://django-import-export.readthedocs.io/en/latest/
+pip install django-import-export==4.1.0
+
+
+
+https://github.com/django-crispy-forms/crispy-bootstrap5

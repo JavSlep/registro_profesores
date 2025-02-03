@@ -1,0 +1,91 @@
+{% extends 'base.html' %} 
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head %}
+<link href="{% static 'css/register_teacher.css' %}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+<h1>
+    ¡Hola! 👋 Bienvenida/o 
+</h1>
+<div class="container ">
+    <div class="row">
+        <div class="col-5">
+            <div class="card text-center custom-card">
+                <div class="card-body">
+                    <h5 class="card-title">Registrarse</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Si es primera vez que ingresa a este sistema, complete los siguientes datos</h6>
+                    <form id="log_rut" method="POST" action="{% url 'registrar_profesor' %}">
+                        {% csrf_token %}
+                        {{ form_register.rut|as_crispy_field }}
+                        {{ form_register.password|as_crispy_field }}
+                        {{ form_register.confirmar_password|as_crispy_field }}
+                        <button type="submit" class="btn btn-primary">Ingresar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-5">
+            <div class="card text-center custom-card">
+                <div class="card-body">
+                    <h5 class="card-title">Mis antecedentes</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Este apartado esta enfocado en actualizar sus datos</h6>
+                    <form id="log_rut2" method="POST">
+                        {% csrf_token %}
+                        {{ form_login.rut|as_crispy_field }}
+                        {{ form_login.password|as_crispy_field }}
+                        <button type="submit" class="btn btn-primary">Ingresar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+{% block jscript %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Función que configura las validaciones para un formulario específico
+        function setupRutValidation(formId) {
+            const form = document.querySelector(formId);
+            if (form) {
+                const inputs = form.querySelectorAll('input, select, textarea');
+
+                for (let input of inputs) {
+                    if (input.name === 'rut') {
+                        input.maxlength = 12;
+                        input.addEventListener('input', function () {
+                            let value = input.value.replace(/[^0-9kK]/g, ''); // Elimina caracteres no permitidos
+
+                            // Permitir solo una sola "k" o "K"
+                            const kCount = (value.match(/[kK]/g) || []).length;
+                            if (kCount > 1) {
+                                value = value.replace(/([kK]).*/, '$1'); // Mantener solo la primera "k" o "K"
+                            }
+                            if (value[value.length - 1] !== 'k') {
+                                value = value.replace(/[^0-9]/g, ''); // Elimina letras no válidas
+                            }
+
+                            // Formateo del RUT según la longitud
+                            if (value.length >= 4 && value.length <= 6) {
+                                value = value.replace(/^(\d{1,3})(\d{3})/, '$1.$2');
+                            } else if (value.length > 6 && value.length <= 7) {
+                                value = value.replace(/^(\d{1,2})(\d{3})(\d{3})/, '$1.$2.$3');
+                            } else if (value.length > 7 && value.length <= 9) {
+                                value = value.replace(/^(\d{1,2})(\d{3})(\d{3})([0-9Kk]{1})/, '$1.$2.$3-$4');
+                            }
+                            input.value = value;
+                        });
+                    }
+                }
+            }
+        }
+
+        // Aplicar validación a ambos formularios
+        setupRutValidation('#log_rut');
+        setupRutValidation('#log_rut2');
+    });
+</script>
+{% endblock %}

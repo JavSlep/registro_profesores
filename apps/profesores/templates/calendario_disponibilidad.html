@@ -1,0 +1,14 @@
+{% extends 'base.html' %} 
+{% load static %}
+{% load crispy_forms_tags %}
+{% block head %}
+{% endblock %}
+{% block content %}
+<h1>
+    ¡Hola! 👋 Calendario de disponibilidad
+</h1>
+<a href="{% url 'ranking_evaluacion' %}" class="btn btn-primary">Ranking y evaluacion</a>
+<a href="{% url 'datos_tecnicos' %}" class="btn btn-secondary">volver datos tecnicos</a>
+{% endblock %}
+{% block jscript %}
+{% endblock %}

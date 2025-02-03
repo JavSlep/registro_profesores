@@ -1,0 +1,104 @@
+.custom-card{
+    box-shadow: 0 4px 8px rgba(1, 77, 255, 0.2); /* Sombra ligera */
+    background-color: #f8f9fa; /* Fondo ✓*/
+    padding: 20px; /* Espaciado interno */
+    transition: transform 0.2s, box-shadow 0.2s; /* Animación */
+}
+
+.custom-card:hover {
+    box-shadow: 0 8px 16px rgba(217, 0, 255, 0.3); /* Aumenta la sombra */
+}
+
+/* Estilo inicial de los inputs */
+input, select, textarea {
+    background-color: #ffffff; /* Fondo blanco */
+    border: 1px solid #ced4da; /* Borde gris claro */
+    border-radius: 4px; /* Bordes redondeados */
+    padding: 0.375rem 0.75rem; /* Espaciado interno */
+    font-size: 1rem; /* Tamaño de fuente */
+    color: #495057; /* Color del texto */
+    transition: background-color 0.3s ease, border-color 0.3s ease; /* Animación suave */
+}
+
+/* Estilo cuando los campos están llenos (válidos) */
+input:valid, select:valid, textarea:valid {
+    background-color: #e7f1fb; /* Fondo azul claro */
+    border-color: #5c6bc0; /* Borde azul oscuro */
+    box-shadow: 0 8px 16px rgba(0, 123, 255, 0.3); /* Sombra azul suave */
+}
+
+
+/* Cambios al hacer focus (cuando el usuario selecciona el campo) */
+input:focus, select:focus, textarea:focus {
+    outline: none; /* Quita el borde azul por defecto */
+    border-color: #5c6bc0; /* Borde azul oscuro */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Sombra azul clara */
+}
+
+/* Estilos específicos para Select2 */
+.select2-container--bootstrap-5 .select2-selection {
+    background-color: #ffffff;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    color: #495057;
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .select2-container--bootstrap-5 .select2-selection--single {
+    height: calc(1.5em + 0.75rem + 2px);
+  }
+  
+  /* Estilo cuando el campo de select2 está validado (lleno) */
+  .select2-container--bootstrap-5 .select2-selection--single.select2-selection--valid {
+    background-color: #e7f1fb;
+    border-color: #5c6bc0;
+    box-shadow: 0 8px 16px rgba(0, 123, 255, 0.3);
+  }
+  
+  /* Estilo cuando el campo de select2 tiene focus */
+  .select2-container--bootstrap-5.select2-container--focus .select2-selection,
+  .select2-container--bootstrap-5.select2-container--open .select2-selection {
+    border-color: #5c6bc0;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+  
+  /* Estilo para el dropdown de select2 (la lista de opciones) */
+  .select2-container--bootstrap-5 .select2-dropdown {
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+    background-color: #ffffff;
+  }
+  
+  /* Estilo cuando un elemento está seleccionado en el dropdown */
+  .select2-container--bootstrap-5 .select2-results__option--selected {
+    background-color: #5c6bc0;
+    color: #ffffff;
+  }
+  
+  
+
+/* Estilo para el asterisco rojo */
+.asteriskField {
+    color: rgb(246, 107, 107) !important;
+    margin-left: 2px;
+  }
+  
+  /* Asegurarse de que el asterisco esté visible */
+  .form-group label.requiredField {
+    display: flex !important;
+    align-items: center !important;
+  }
+  
+  .form-group label.requiredField .asteriskField {
+    order: 2 !important;
+  }
+  
+  /* Sobrescribir estilos de crispy forms si es necesario */
+  .form-group label.requiredField::after {
+    content: "*";
+    color: rgb(246, 107, 107) !important;
+    margin-left: 2px;
+  }
+  
